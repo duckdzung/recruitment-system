@@ -23,4 +23,7 @@ public class Profile {
 
     @Column(name = "date_of_processing")
     private LocalDateTime dateOfProcessing;
+
+    @Column(name = "file_path")
+    private String filePath;
 }
