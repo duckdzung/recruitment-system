@@ -1,5 +1,6 @@
 package com.duckdzung.recruitmentsystem.model;
 
+import com.duckdzung.recruitmentsystem.model.idClass.EnterpriseId;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,13 +12,13 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class Enterprise {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+
+    @EmbeddedId
+    private String memberId;
 
     @OneToOne
+    @MapsId
     @JoinColumn(name = "member_id", nullable = false, unique = true, referencedColumnName = "id")
     private Member member;
 
