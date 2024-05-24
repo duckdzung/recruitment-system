@@ -19,6 +19,7 @@ public class AuthRequest {
     private String address;
     private String name;
     private String companyName;
+    private String companyRepresentative;
     private String taxCode;
     private String accessToken;
     private String refreshToken;

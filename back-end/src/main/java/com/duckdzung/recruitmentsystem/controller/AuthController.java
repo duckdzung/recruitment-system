@@ -56,11 +56,8 @@ public class AuthController {
 
     @PostMapping("/validate-token")
     public ResponseEntity<Boolean> validateToken(@RequestHeader("Authorization") String authorization){
-        System.out.println(authorization);
         String token = authorization.replace("Bearer ", "");
-        System.out.println(token);
         Boolean isValid = tokenRepository.isTokenValid(token);
-        System.out.println(isValid);
         return ResponseEntity.ok().body(isValid);
     }
 
