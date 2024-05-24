@@ -1,5 +1,6 @@
 package com.duckdzung.recruitmentsystem.service;
 
+import com.duckdzung.recruitmentsystem.repository.CandidateRepository;
 import com.duckdzung.recruitmentsystem.security.jwt.JwtService;
 import com.duckdzung.recruitmentsystem.exception.*;
 import com.duckdzung.recruitmentsystem.model.*;
@@ -21,6 +22,7 @@ import java.util.List;
 public class AuthService {
     private final MemberRepository memberRepository;
     private final EnterpriseRepository enterpriseRepository;
+    private final CandidateRepository candidateRepository;
     private final TokenRepository<AccessToken> accessTokenRepository;
     private final TokenRepository<RefreshToken> refreshTokenRepository;
     private final JwtService jwtService;
@@ -28,9 +30,10 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final TokenRepository<?> tokenRepository;
 
-    public AuthService(MemberRepository memberRepository, EnterpriseRepository enterpriseRepository, TokenRepository<AccessToken> accessTokenRepository, TokenRepository<RefreshToken> refreshTokenRepository, JwtService jwtService, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, TokenRepository<?> tokenRepository) {
+    public AuthService(MemberRepository memberRepository, EnterpriseRepository enterpriseRepository, CandidateRepository candidateRepository, TokenRepository<AccessToken> accessTokenRepository, TokenRepository<RefreshToken> refreshTokenRepository, JwtService jwtService, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, TokenRepository<?> tokenRepository) {
         this.memberRepository = memberRepository;
         this.enterpriseRepository = enterpriseRepository;
+        this.candidateRepository = candidateRepository;
         this.accessTokenRepository = accessTokenRepository;
         this.refreshTokenRepository = refreshTokenRepository;
         this.jwtService = jwtService;
@@ -51,33 +54,80 @@ public class AuthService {
         if (validationError != null) {
             throw new InvalidRequestException(validationError);
         }
+        if (isEmailOrUsernameTaken(signUpRequest)) {
+            throw new DataIntegrityViolationException("Email or username is already taken");
+        }
+        Member member = createUser(signUpRequest, Role.MEMBER);
 
-        if (isEmailOrPhoneTaken(signUpRequest)) {
-            throw new DataIntegrityViolationException("Email or phone number is already taken");
-        }
-        Member member;
-        if (signUpRequest.getCompanyName() != null) {
-            member = createUser(signUpRequest, Role.ENTERPRISE);
-            Enterprise enterprise = Enterprise.builder()
-                    .member(member)
-                    .companyName(signUpRequest.getCompanyName())
-                    .taxCode(signUpRequest.getTaxCode())
-                    .build();
-            enterpriseRepository.save(enterprise);
-        } else {
-            member = createUser(signUpRequest, Role.CANDIDATE);
-        }
 
         return createTokenResponse(member);
     }
 
+    public TokenResponse updateMember(String memberId, AuthRequest signUpRequest) {
+        String validationError = InputValidator.isValidPhoneNumber(truncateSpaceFromPhoneNumber(signUpRequest.getPhoneNum())) ? null : "Invalid phone number format";
+        if (validationError != null) {
+            throw new InvalidRequestException(validationError);
+        }
+
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new ResourceNotFoundException("Member not found"));
+
+        updateMemberDetails(member, signUpRequest);
+
+        memberRepository.save(member);
+
+        return createTokenResponse(member);
+    }
+
+    private void updateMemberDetails(Member member, AuthRequest signUpRequest) {
+        // Set common details
+        member.setName(signUpRequest.getName());
+        member.setAddress(signUpRequest.getAddress());
+        member.setPhoneNumber(truncateSpaceFromPhoneNumber(signUpRequest.getPhoneNum()));
+
+        // Check if company name is provided
+        if (signUpRequest.getCompanyName() != null) {
+            // Update as enterprise
+            member.setRole(Role.ENTERPRISE);
+            updateAsEnterprise(member, signUpRequest);
+        } else {
+            // Update as candidate
+            member.setRole(Role.CANDIDATE);
+            updateAsCandidate(member);
+        }
+    }
+
+    private void updateAsEnterprise(Member member, AuthRequest signUpRequest) {
+        Enterprise enterprise = Enterprise.builder()
+                .id(generateUserID(Role.ENTERPRISE))
+                .member(member)
+                .companyName(signUpRequest.getCompanyName())
+                .taxCode(signUpRequest.getTaxCode())
+                .build();
+        enterpriseRepository.save(enterprise);
+    }
+
+    private void updateAsCandidate(Member member) {
+        Candidate candidate = Candidate.builder()
+                .id(generateUserID(Role.CANDIDATE))
+                .member(member)
+                .build();
+        candidateRepository.save(candidate);
+    }
+
+
     public TokenResponse createAdmin(AuthRequest signUpRequest) {
-        if (isEmailOrPhoneTaken(signUpRequest)) {
-            throw new DataIntegrityViolationException("Email or phone number is already taken");
+        if (isEmailOrPhoneOrUsernameTaken(signUpRequest)) {
+            throw new DataIntegrityViolationException("Email or username or phone number is already taken");
         }
 
         Member member = createUser(signUpRequest, Role.ADMIN);
         return createTokenResponse(member);
+    }
+
+    private boolean isEmailOrPhoneOrUsernameTaken(AuthRequest signUpRequest) {
+        return memberRepository.existsByEmail(signUpRequest.getEmail())
+                || memberRepository.existsByPhoneNumber(signUpRequest.getPhoneNum())
+                || memberRepository.existsByUsername(signUpRequest.getUsername());
     }
 
     private TokenResponse createTokenResponse(Member member) {
@@ -157,34 +207,20 @@ public class AuthService {
                 new ResourceNotFoundException("User not found"));
     }
 
-    private String validateSignUpRequest(AuthRequest signUpRequest) {
-        if (!InputValidator.isValidEmail(signUpRequest.getEmail())) {
-            return "Invalid email format";
-        }
-
-        if (!InputValidator.isValidPassword(signUpRequest.getPassword())) {
-            return "Invalid password format. Password must contain at least one uppercase letter and be at least 8 characters long";
-        }
-
-        if (!InputValidator.isValidPhoneNumber(signUpRequest.getPhoneNum())) {
-            return "Invalid phone number format";
-        }
-        return null;
-    }
-
-    private boolean isEmailOrPhoneTaken(AuthRequest signUpRequest) {
+    private boolean isEmailOrUsernameTaken(AuthRequest signUpRequest) {
         return memberRepository.existsByEmail(signUpRequest.getEmail())
-                || memberRepository.existsByPhoneNumber(signUpRequest.getPhoneNum());
+                || memberRepository.existsByUsername(signUpRequest.getUsername());
     }
 
     private Member createUser(AuthRequest signUpRequest, Role role) {
         Member member = Member.builder()
                 .id(generateUserID(role))
-                .password(passwordEncoder.encode(signUpRequest.getPassword()))
-                .phoneNumber(truncateSpaceFromPhoneNumber(signUpRequest.getPhoneNum()))
+                .username(signUpRequest.getUsername())
                 .email(signUpRequest.getEmail())
-                .name(signUpRequest.getName())
-                .address(signUpRequest.getAddress())
+                .password(passwordEncoder.encode(signUpRequest.getPassword()))
+                .phoneNumber(role != Role.ADMIN ? null : truncateSpaceFromPhoneNumber(signUpRequest.getPhoneNum()))
+                .name(role != Role.ADMIN ? null : signUpRequest.getName())
+                .address(role != Role.ADMIN ? null : signUpRequest.getAddress())
                 .role(role)
                 .build();
         memberRepository.save(member);
@@ -258,13 +294,29 @@ public class AuthService {
             case CANDIDATE -> "CA";
             case ENTERPRISE -> "EN";
             case ADMIN -> "AD";
+            case MEMBER -> "ME";
         };
-        String latestId = memberRepository.findTopByRoleOrderByIdDesc(role)
+        String latestId = memberRepository.findFirstByIdStartsWithOrderByIdDesc(prefix)
                 .map(Member::getId)
                 .orElse(prefix + "000");
 
         int id = Integer.parseInt(latestId.substring(2)) + 1;
         return prefix + String.format("%03d", id);
+    }
+
+    private String validateSignUpRequest(AuthRequest signUpRequest) {
+        if (!InputValidator.isValidEmail(signUpRequest.getEmail())) {
+            return "Invalid email format";
+        }
+
+        if (!InputValidator.isValidPassword(signUpRequest.getPassword())) {
+            return "Password must contain at least 8 characters, including uppercase, lowercase letters and numbers, and special characters";
+        }
+
+        if (!InputValidator.isValidUsername(signUpRequest.getUsername())) {
+            return "Username must contain only letters, numbers, and underscores, and have a length of 5-30 characters";
+        }
+        return null;
     }
 
     private String truncateSpaceFromPhoneNumber(String phoneNumber) {
