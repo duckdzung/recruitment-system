@@ -1,7 +1,7 @@
 package com.duckdzung.recruitmentsystem.controller;
 
 import com.duckdzung.recruitmentsystem.common.ResponseObject;
-import com.duckdzung.recruitmentsystem.model.AuthRequest;
+import com.duckdzung.recruitmentsystem.common.AuthRequest;
 import com.duckdzung.recruitmentsystem.security.jwt.JwtService;
 import com.duckdzung.recruitmentsystem.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
