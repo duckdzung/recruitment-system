@@ -1,4 +1,4 @@
-package com.duckdzung.recruitmentsystem.model;
+package com.duckdzung.recruitmentsystem.common;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;

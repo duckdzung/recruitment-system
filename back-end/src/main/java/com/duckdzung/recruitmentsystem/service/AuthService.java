@@ -1,5 +1,7 @@
 package com.duckdzung.recruitmentsystem.service;
 
+import com.duckdzung.recruitmentsystem.common.AuthRequest;
+import com.duckdzung.recruitmentsystem.common.TokenResponse;
 import com.duckdzung.recruitmentsystem.repository.CandidateRepository;
 import com.duckdzung.recruitmentsystem.security.jwt.JwtService;
 import com.duckdzung.recruitmentsystem.exception.*;
