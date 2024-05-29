@@ -1,0 +1,567 @@
+/* CSS for all */
+.centered {
+    justify-content: center;
+    align-items: center;
+}
+
+.displayFlex {
+    display: flex;
+}
+/* CSS for all */
+
+/* CSS for body */
+.home {
+    display: grid;
+    width: 15.6in;
+    grid-template-rows: 179px 646px 550px 700px 250px;
+    font-family: 'Inter', sans-serif;
+}
+/* CSS for body */
+
+/* CSS for header */
+.header {
+    display: grid;
+    grid-template-rows: 1fr 2fr;
+    gap: 20px;
+    margin: 0px 20px;
+}
+
+.headerTop {
+    justify-content: space-between;
+    font-size: 14px;
+}
+
+.leftTop {
+    align-items: center;
+    gap: 50px;
+}
+
+.leftTopItem {
+    color: #0aadeb;
+    align-items: center;
+    gap: 10px;
+}
+
+.rightTop {
+    color: white;
+    align-items: center;
+    gap: 10px;
+}
+
+.home {
+    p {
+        color: white;
+    }
+}
+
+.searchBox {
+    background-color: rgba(217, 217, 217, 0.4);
+    border-radius: 50px;
+}
+
+.searchBox {
+    .searchText {
+        border: none;
+        outline: none;
+        background: none;
+        width: 0px;
+        height: 43px;
+        border-radius: 50px;
+        transition: all 0.25s ease-in-out;
+    }
+}
+
+.searchBox {
+    &:hover .searchText,
+    .searchText:valid {
+        width: 221px;
+        padding-left: 20px;
+        color: white;
+    }
+}
+
+.searchPlaceholder {
+    &::placeholder {
+        color: rgba(255, 255, 255, 0.4);
+    }
+}
+
+.searchBox {
+    & .searchButton {
+        color: white;
+        background: none;
+        outline: none;
+        border: none;
+        cursor: pointer;
+        margin-right: 8px;
+    }
+}
+
+.account {
+    background-color: #0c121d;
+    width: 100px;
+    height: 43px;
+    border-radius: 50px;
+    gap: 10px;
+    padding-left: 20px;
+    font-weight: bold;
+}
+
+.account {
+    &:hover {
+        background-color: rgba(10, 173, 235, 0.3);
+        transition: all 0.3s ease-in-out;
+    }
+}
+
+.headerBottom {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    font-size: 16px;
+}
+
+.leftBottom {
+    align-items: center;
+    justify-content: flex-start;
+    gap: 105px;
+}
+
+.menuItem {
+    gap: 30px;
+}
+
+.menuItem {
+    > a {
+        position: relative;
+        padding-bottom: 7px;
+    }
+}
+
+.menuItem {
+    > a::after {
+        content: '';
+        height: 5px;
+        width: 0px;
+        background: #0aadeb;
+        position: absolute;
+        bottom: 0px;
+        left: 0px;
+        transition: all 0.5s ease-in-out;
+    }
+}
+
+.menuItem {
+    > a {
+        &:hover::after {
+            width: 50%;
+            transform: translateX(100%);
+        }
+    }
+}
+
+.home {
+    a {
+        color: white;
+        font-weight: bold;
+        text-decoration: none;
+    }
+}
+
+.rightBottom {
+    gap: 20px;
+    justify-content: flex-end;
+}
+
+.rightBottom {
+    > a {
+        color: rgba(10, 173, 235, 0.3);
+    }
+}
+
+.rightBottom {
+    i {
+        &:hover {
+            color: #0aadeb;
+        }
+    }
+}
+
+.chatButton {
+    font-size: 60px;
+    margin-bottom: 25px;
+}
+/* CSS for header */
+
+/* CSS for Banner01 */
+.firstBanner {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    margin-bottom: 50px;
+}
+
+.firstBanner {
+    p.headText {
+        font-size: 14px;
+        text-transform: uppercase;
+        margin-left: 5px;
+    }
+}
+
+.firstBanner {
+    h1.bodyText {
+        font-size: 70px;
+        color: white;
+    }
+}
+
+.firstBannerCol01Row02 {
+    gap: 100px;
+    margin-top: 60px;
+    font-weight: bold;
+}
+
+.contactButton {
+    text-transform: uppercase;
+    border: 2.5px solid white;
+    border-radius: 10px;
+    width: 200px;
+    height: 60px;
+    justify-content: center;
+    align-items: center;
+}
+
+.contactButton {
+    &:hover {
+        background-color: rgba(10, 173, 235, 0.3);
+        transition: all 0.35s ease-in-out;
+        color: #0aadeb;
+    }
+}
+
+.contactButtonTitle {
+    margin-left: 15px;
+}
+
+.playButton {
+    font-size: 50px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.playButton {
+    &:hover {
+        background-color: #0aadeb;
+        transition: all 0.35s ease-in-out;
+    }
+}
+
+.nonePaddingMargin {
+    padding: 0px;
+    margin: 0px;
+}
+
+.firstBannerPicture {
+    width: 207px;
+    height: 116px;
+    margin-top: 135px;
+    margin-left: 190px;
+}
+/* CSS for Banner01 */
+
+/* CSS for Banner02 */
+.secondBanner {
+    display: flex;
+    justify-content: center;
+    gap: 60px;
+    position: relative;
+}
+
+.secondBannerItem {
+    background-color: white;
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr;
+    border-radius: 10px;
+    width: 250px;
+    height: 220px;
+}
+
+.bannerNumber {
+    color: rgba(0, 0, 0, 0);
+    font-weight: bold;
+    -webkit-text-stroke: 2px #5f5f5f;
+    font-size: 90px;
+    justify-content: space-between;
+    margin: 0px 20px;
+}
+
+.bannerNumber {
+    p {
+        margin: 0px;
+        padding: 0px;
+        font-family: 'Nunito', sans-serif;
+    }
+}
+
+.bannerNumber {
+    img {
+        height: 60px;
+        width: 60px;
+    }
+}
+
+.secondBannerItem {
+    p.headContent {
+        color: black;
+        font-size: 16px;
+        font-weight: bold;
+        padding: 0px;
+        margin-bottom: 10px;
+        margin-top: 0px;
+    }
+}
+
+.secondBannerItem {
+    p.bodyContent {
+        color: #5f5f5f;
+        font-size: 13px;
+        padding: 0px;
+        margin: 0px;
+    }
+}
+
+.rectangle {
+    background-color: black;
+    border-radius: 0 0 10px 10px;
+    color: white;
+    font-size: 25px;
+    height: 30px;
+}
+
+.rectangle {
+    &:hover {
+        color: #0aadeb;
+    }
+}
+
+.secondBannerBackground {
+    position: absolute;
+    background-color: rgba(10, 173, 235, 0.8);
+    z-index: -1;
+    height: 430px;
+    margin-top: 117px;
+}
+
+.secondBannerBackground {
+    > img {
+        max-width: fit-content;
+    }
+}
+
+.verticalLine {
+    width: 1px;
+    height: 100px;
+    background-color: white;
+}
+
+.backgroundText {
+    gap: 55px;
+    position: relative;
+    bottom: 250px;
+}
+
+.backgroundText {
+    p {
+        font-family: 'Nunito', sans-serif;
+        font-size: 16px;
+    }
+}
+
+.leftText {
+    font-weight: bold;
+    text-wrap: wrap;
+    width: 380px;
+    gap: 15px;
+}
+
+.rightText {
+    text-wrap: wrap;
+    width: 380px;
+}
+
+.backgroundText {
+    i {
+        position: relative;
+        font-size: 50px;
+        bottom: 30px;
+        color: white;
+    }
+}
+
+/* CSS for Banner02 */
+
+/* CSS for Banner03 */
+.thirdBanner {
+    display: grid;
+    grid-template-rows: 1fr 4fr;
+    margin-top: 30px;
+}
+
+.thirdBannerTop {
+    > p {
+        color: #0c121d;
+        font-family: 'Inter', sans-serif;
+        text-align: center;
+    }
+}
+
+.thirdBannerTopFirstText {
+    color: rgba(184, 184, 184, 1);
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+.thirdBannerTopSecondText {
+    font-size: 50px;
+    font-weight: bold;
+}
+
+.thirdBannerBottom {
+    gap: 70px;
+    padding: 0px 170px;
+}
+
+.thirdBannerBottom {
+    p {
+        color: #6d7a8c;
+        font-size: 16px;
+    }
+}
+
+.thirdBannerBottom {
+    p {
+        span {
+            color: black;
+            font-weight: bold;
+        }
+    }
+}
+
+.thirdBannerBottomLeft {
+    > img {
+        height: 360px;
+    }
+}
+
+.thirdBannerBottomRight {
+    width: 500px;
+}
+
+.thirdBannerBottomRight {
+    a {
+        color: black;
+        text-decoration: underline;
+    }
+}
+
+.thirdBannerBottomRight {
+    a:hover {
+        color: #0aadeb;
+        text-decoration: underline;
+    }
+}
+
+/* CSS for Banner03 */
+
+/* CSS for footer */
+
+.footer {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+}
+
+.footerTop {
+    display: flex;
+    background-color: #0aadeb;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 50px;
+    border-radius: 5px;
+}
+
+.footerTopLeft {
+    gap: 20px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.footerTop {
+    > .footerTopLeft {
+        > a {
+            font-size: 50px;
+            color: black;
+            background-color: white;
+            height: 90px;
+            width: 90px;
+            border-radius: 50%;
+        }
+    }
+}
+
+.footerTop {
+    > .footerTopLeft {
+        > a:hover {
+            color: #0aadeb;
+        }
+    }
+}
+
+.footerTopRight {
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 14px;
+    border: 2px solid white;
+    height: 50px;
+    width: 200px;
+    border-radius: 10px;
+}
+
+.footerTopRight {
+    &:hover {
+        font-size: 16px;
+        height: 60px;
+        width: 210px;
+        transition: all 0.25s ease-in-out;
+    }
+}
+
+.footerBottom {
+    justify-content: space-around;
+    font-size: 16px;
+}
+
+.footerBottom {
+    > a,
+    p {
+        color: black;
+    }
+}
+
+.footerBottom {
+    > a:hover {
+        color: #0aadeb;
+    }
+}
+
+/* CSS for footer */
+
+/* CSS for backtop */
+.backtop {
+    font-size: 50px;
+    color: rgba(10, 173, 235, 0.4);
+    position: fixed;
+    right: 20px;
+    bottom: 40px;
+    cursor: pointer;
+}
+/* CSS for backtop */

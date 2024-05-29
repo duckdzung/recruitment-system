@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import PrivateRoute from './routes/PrivateRoute';
 import PublicRoute from './routes/PublicRoute';
 import Dashboard from './pages/Dashboard';
-import Home from './pages/Home';
+import Home from './pages/Home/Home';
 import Login from './components/Login';
 import Register from './components/Register';
 import { ToastContainer } from 'react-toastify';
