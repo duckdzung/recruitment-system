@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Entity
 @Data
 @Builder
@@ -21,10 +23,11 @@ public class Enterprise {
     private Member member;
 
     @Column(name = "company_name", length = 50, nullable = false)
-    private String companyName;
+    private String company_Name;
 
     @Column(name = "tax_code", length = 13, nullable = false)
     private String taxCode;
 
+    LocalDate dateOfExpiration;
 
 }

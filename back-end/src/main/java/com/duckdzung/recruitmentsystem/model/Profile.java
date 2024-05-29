@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Entity
@@ -26,4 +27,13 @@ public class Profile {
 
     @Column(name = "file_path")
     private String filePath;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "candidate_id", nullable = false)
+    @Setter
+    private Candidate candidate;
+
+    @OneToMany(mappedBy = "profile", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<ApplicationForm> applicationForms;
+
 }

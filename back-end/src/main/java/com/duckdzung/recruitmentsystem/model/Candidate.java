@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Data
 @Builder
@@ -19,4 +21,7 @@ public class Candidate {
     @JoinColumn(name = "member_id", nullable = false, unique = true, referencedColumnName = "id")
     private Member member;
 
+
+    @OneToMany(mappedBy = "candidate", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Profile> profiles;
 }
