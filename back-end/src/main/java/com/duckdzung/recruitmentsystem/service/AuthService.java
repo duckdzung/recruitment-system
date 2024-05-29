@@ -77,6 +77,10 @@ public class AuthService {
 
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new ResourceNotFoundException("Member not found"));
 
+        if(member.getRole() != Role.MEMBER) {
+            throw new InvalidRequestException("Member can only upgrade their account once");
+        }
+
         updateMemberDetails(member, signUpRequest);
 
         memberRepository.save(member);

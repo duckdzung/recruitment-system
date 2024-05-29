@@ -23,7 +23,7 @@ public class Enterprise {
     private Member member;
 
     @Column(name = "company_name", length = 50, nullable = false)
-    private String company_Name;
+    private String companyName;
 
     @Column(name = "tax_code", length = 13, nullable = false)
     private String taxCode;
