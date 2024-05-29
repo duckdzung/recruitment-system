@@ -1,33 +1,36 @@
 version: '3.8'
 
 services:
-  app:
+  recruitment-system:
     build: .
     restart: on-failure
     container_name: recruitment_system_service
     ports:
       - "8080:8080"
+    volumes:
+      - .:/app
+      - ~/.m2:/root/.m2
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/recruitment_system?useSSL=false&allowPublicKeyRetrieval=true
+      - JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005,
+      - SPRING_PROFILES_ACTIVE=dev
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/recruitment_system?useSSL=false&allowPublicKeyRetrieval=true
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=abcd1234
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
     depends_on:
-      - db
-
-  db:
+      - mysql
+  mysql:
     image: mysql:8.0
-    restart: on-failure
+    restart: always
     container_name: recruitment_system_db
     environment:
-      MYSQL_ROOT_PASSWORD: abcd1234
       MYSQL_DATABASE: recruitment_system
       MYSQL_USER: user
-      MYSQL_PASSWORD: password
+      MYSQL_PASSWORD: abcd1234
+      MYSQL_ROOT_PASSWORD: abcd1234
     ports:
       - "3306:3306"
     volumes:
-      - db-data:/var/lib/mysql
+      - mysql_data:/var/lib/mysql
 
 volumes:
-  db-data:
+  mysql_data:
