@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AuthService {
@@ -77,7 +78,7 @@ public class AuthService {
 
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new ResourceNotFoundException("Member not found"));
 
-        if(member.getRole() != Role.MEMBER) {
+        if (member.getRole() != Role.MEMBER) {
             throw new InvalidRequestException("Member can only upgrade their account once");
         }
 
@@ -300,18 +301,32 @@ public class AuthService {
     }
 
     private String generateUserID(Role role) {
-        String prefix = switch (role) {
-            case CANDIDATE -> "CA";
-            case ENTERPRISE -> "EN";
-            case ADMIN -> "AD";
-            case MEMBER -> "ME";
+        String prefix;
+        Optional<String> latestIdOpt = switch (role) {
+            case CANDIDATE -> {
+                prefix = "CA";
+                yield candidateRepository.findFirstByIdStartsWithOrderByIdDesc(prefix)
+                        .map(Candidate::getId);
+            }
+            case ENTERPRISE -> {
+                prefix = "EN";
+                yield enterpriseRepository.findFirstByIdStartsWithOrderByIdDesc(prefix)
+                        .map(Enterprise::getId);
+            }
+            case ADMIN -> {
+                prefix = "AD";
+                yield memberRepository.findFirstByIdStartsWithOrderByIdDesc(prefix)
+                        .map(Member::getId);
+            }
+            case MEMBER -> {
+                prefix = "ME";
+                yield memberRepository.findFirstByIdStartsWithOrderByIdDesc(prefix)
+                        .map(Member::getId);
+            }
+            default -> throw new IllegalArgumentException("Invalid role: " + role);
         };
-        String latestId = memberRepository.findFirstByIdStartsWithOrderByIdDesc(prefix)
-                .map(Member::getId)
-                .orElse(prefix + "000");
 
-        int id = Integer.parseInt(latestId.substring(2)) + 1;
-        return prefix + String.format("%03d", id);
+        return prefix + String.format("%03d", latestIdOpt.map(id -> Integer.parseInt(id.substring(2)) + 1).orElse(1));
     }
 
     private String validateSignUpRequest(AuthRequest signUpRequest) {

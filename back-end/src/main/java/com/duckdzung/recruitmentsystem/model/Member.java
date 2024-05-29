@@ -33,7 +33,7 @@ public class Member implements UserDetails {
     @Column(name = "email", length = 50, nullable = false, unique = true)
     @Pattern(regexp = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$", message = "Invalid email format")
     private String email;
-    @Column(name = "phoneNum", length = 10, unique = true)
+    @Column(name = "phoneNum", length = 10)
     @Pattern(regexp = "^(0[0-9]{2}[0-9]{3}[0-9]{4})|([0-9]{2}[0-9]{3}[0-9]{4})$", message = "Invalid phone number format")
     private String phoneNumber;
     @Column(name = "username", length = 30, nullable = false, unique = true)
