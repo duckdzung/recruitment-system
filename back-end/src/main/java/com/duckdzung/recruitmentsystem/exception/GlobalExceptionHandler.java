@@ -1,19 +1,20 @@
 package com.duckdzung.recruitmentsystem.exception;
 
 import com.duckdzung.recruitmentsystem.common.ResponseObject;
-import com.duckdzung.recruitmentsystem.common.ResponseObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.io.IOException;
 
 @ControllerAdvice
-public class GlobalExceptionHandler {
+public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
@@ -51,6 +52,24 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public @ResponseBody ResponseObject handleInternalServerErrorException(IOException  ex) {
         log.error(ex.getMessage());
+        return new ResponseObject(HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage(), null);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public @ResponseBody ResponseObject handleAccessDeniedException(AccessDeniedException ex) {
+        return new ResponseObject(HttpStatus.FORBIDDEN.value(), ex.getMessage(), null);
+    }
+
+    @ExceptionHandler(DataAccessException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public @ResponseBody ResponseObject handleDatabaseException(DataAccessException ex) {
+        return new ResponseObject(HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage(), null);
+    }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public @ResponseBody ResponseObject handleGeneralException(Exception ex) {
         return new ResponseObject(HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage(), null);
     }
 }
