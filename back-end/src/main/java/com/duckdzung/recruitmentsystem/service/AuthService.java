@@ -45,10 +45,14 @@ public class AuthService {
     }
 
     public TokenResponse login(AuthRequest signInRequest) {
-        authenticateUser(signInRequest.getEmail(), signInRequest.getPassword());
-        Member member = getUserByEmail(signInRequest.getEmail());
+        try {
+            authenticateUser(signInRequest.getEmail(), signInRequest.getPassword());
+            Member member = getUserByEmail(signInRequest.getEmail());
 
-        return createTokenResponse(member);
+            return createTokenResponse(member);
+        } catch (Exception e) {
+            throw new InvalidRequestException("Invalid email or password");
+        }
     }
 
     public TokenResponse signUp(AuthRequest signUpRequest) {
