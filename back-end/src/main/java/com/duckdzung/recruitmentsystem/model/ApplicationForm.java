@@ -27,8 +27,8 @@ public class ApplicationForm {
 
     @Id
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "member_id", nullable = false)
-    Member member;
+    @JoinColumn(name = "profile_id", nullable = false)
+    Profile profile;
 
     // Application form status
     Boolean isProcessed;

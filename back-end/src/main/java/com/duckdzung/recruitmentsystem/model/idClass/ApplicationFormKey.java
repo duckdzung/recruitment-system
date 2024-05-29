@@ -1,7 +1,7 @@
 package com.duckdzung.recruitmentsystem.model.idClass;
 
-import com.duckdzung.recruitmentsystem.model.Member;
 import com.duckdzung.recruitmentsystem.model.Nominee;
+import com.duckdzung.recruitmentsystem.model.Profile;
 import com.duckdzung.recruitmentsystem.model.RecruitmentInformation;
 
 public class ApplicationFormKey {
@@ -9,6 +9,6 @@ public class ApplicationFormKey {
     Nominee nominee;
     // Recruitment ID
     RecruitmentInformation recruitmentInformation;
-    // Member ID
-    Member member;
+    // Profile ID
+    Profile profile;
 }
