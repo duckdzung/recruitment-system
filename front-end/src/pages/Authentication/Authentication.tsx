@@ -72,12 +72,16 @@ const Authentication: React.FC = () => {
         setCredentials({ ...credentials, [name]: value });
     };
 
+    // Validate credentials
+    const isValidateCredentials = (credentials: Credentials): boolean => {
+        return credentials.email !== '' && credentials.password !== '';
+    };
+
     // Handle login form submission
     const handleLoginSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        // Validate credentials
-        if (!credentials.email || !credentials.password) {
+        if (!isValidateCredentials(credentials)) {
             toast.error('Please fill in all fields');
             return;
         }
@@ -90,8 +94,7 @@ const Authentication: React.FC = () => {
     const handleRegisterSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        // Validate credentials
-        if (!credentials.email || !credentials.password) {
+        if (!isValidateCredentials(credentials)) {
             toast.error('Please fill in all fields');
             return;
         }

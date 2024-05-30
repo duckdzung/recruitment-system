@@ -24,7 +24,7 @@ const UpdateMember: React.FC = () => {
             navigate('/');
             toast.info('You have already updated member');
         }
-    }, [role, navigate]);
+    }, []);
 
     const handleUpdateMember = async () => {
         const response: ApiResponse = await updateMember({ name, phoneNum, address, companyName, taxCode });
