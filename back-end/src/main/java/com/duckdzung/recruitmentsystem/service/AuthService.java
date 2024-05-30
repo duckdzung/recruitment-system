@@ -61,8 +61,8 @@ public class AuthService {
         if (validationError != null) {
             throw new InvalidRequestException(validationError);
         }
-        if (isEmailOrUsernameTaken(signUpRequest)) {
-            throw new DataIntegrityViolationException("Email or username is already taken");
+        if (memberRepository.existsByEmail(signUpRequest.getEmail())) {
+            throw new DataIntegrityViolationException("Email is already taken");
         }
         Member member = createUser(signUpRequest, Role.MEMBER);
 
@@ -94,6 +94,7 @@ public class AuthService {
         member.setName(signUpRequest.getName());
         member.setAddress(signUpRequest.getAddress());
         member.setPhoneNumber(truncateSpaceFromPhoneNumber(signUpRequest.getPhoneNum()));
+        member.setIsUpgraded(true);
 
         // Check if company name is provided
         if (signUpRequest.getCompanyName() != null) {
@@ -127,7 +128,7 @@ public class AuthService {
 
 
     public TokenResponse createAdmin(AuthRequest signUpRequest) {
-        if (isEmailOrPhoneOrUsernameTaken(signUpRequest)) {
+        if (isEmailOrPhoneTaken(signUpRequest)) {
             throw new DataIntegrityViolationException("Email or username or phone number is already taken");
         }
 
@@ -135,15 +136,15 @@ public class AuthService {
         return createTokenResponse(member);
     }
 
-    private boolean isEmailOrPhoneOrUsernameTaken(AuthRequest signUpRequest) {
+    private boolean isEmailOrPhoneTaken(AuthRequest signUpRequest) {
         return memberRepository.existsByEmail(signUpRequest.getEmail())
-                || memberRepository.existsByPhoneNumber(signUpRequest.getPhoneNum())
-                || memberRepository.existsByUsername(signUpRequest.getUsername());
+                || memberRepository.existsByPhoneNumber(signUpRequest.getPhoneNum());
     }
 
     private TokenResponse createTokenResponse(Member member) {
         TokenResponse response = new TokenResponse();
         var tokens = generateAndSaveTokens(member);
+        response.setRole(member.getRole());
         response.setAccessToken(tokens.get("jwt"));
         response.setRefreshToken(tokens.get("refreshToken"));
         response.setIssuedAt(jwtService.getIssuedAt(tokens.get("jwt")));
@@ -218,15 +219,9 @@ public class AuthService {
                 new ResourceNotFoundException("User not found"));
     }
 
-    private boolean isEmailOrUsernameTaken(AuthRequest signUpRequest) {
-        return memberRepository.existsByEmail(signUpRequest.getEmail())
-                || memberRepository.existsByUsername(signUpRequest.getUsername());
-    }
-
     private Member createUser(AuthRequest signUpRequest, Role role) {
         Member member = Member.builder()
                 .id(generateUserID(role))
-                .username(signUpRequest.getUsername())
                 .email(signUpRequest.getEmail())
                 .password(passwordEncoder.encode(signUpRequest.getPassword()))
                 .phoneNumber(role != Role.ADMIN ? null : truncateSpaceFromPhoneNumber(signUpRequest.getPhoneNum()))
@@ -336,10 +331,6 @@ public class AuthService {
 
         if (!InputValidator.isValidPassword(signUpRequest.getPassword())) {
             return "Password must contain at least 8 characters, including uppercase, lowercase letters and numbers, and special characters";
-        }
-
-        if (!InputValidator.isValidUsername(signUpRequest.getUsername())) {
-            return "Username must contain only letters, numbers, and underscores, and have a length of 5-30 characters";
         }
         return null;
     }

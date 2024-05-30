@@ -36,12 +36,11 @@ public class Member implements UserDetails {
     @Column(name = "phoneNum", length = 10)
     @Pattern(regexp = "^(0[0-9]{2}[0-9]{3}[0-9]{4})|([0-9]{2}[0-9]{3}[0-9]{4})$", message = "Invalid phone number format")
     private String phoneNumber;
-    @Column(name = "username", length = 30, nullable = false, unique = true)
-    @Pattern(regexp = "^[a-zA-Z0-9_]{5,30}$", message = "Username must contain only letters, numbers, and underscores, and have a length of 5-30 characters")
-    private String username;
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    private Boolean isUpgraded = false;
 
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Token> tokens;
