@@ -32,7 +32,6 @@ axiosClient.interceptors.response.use(
     },
     (error) => {
         const { response } = error;
-        console.log('check error: ', response);
         if (response) {
             const { status, data } = response;
             switch (status) {

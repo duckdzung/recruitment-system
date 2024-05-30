@@ -4,22 +4,25 @@ import PrivateRoute from './routes/PrivateRoute';
 import PublicRoute from './routes/PublicRoute';
 import Dashboard from './pages/Dashboard';
 import Home from './pages/Home/Home';
-import Login from './pages/Login/Login';
+import Authentication from './pages/Login/Authentication';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import UpdateMember from './components/UpdateMember';
 
 const App: React.FC = () => {
     return (
         <Router>
             <Routes>
                 <Route element={<PublicRoute restricted={true} />}>
-                    <Route path="/login" element={<Login />} />
+                    <Route path="/login" element={<Authentication />} />
+                    <Route path="/register" element={<Authentication />} />
                 </Route>
                 <Route element={<PublicRoute restricted={false} />}>
                     <Route path="/" element={<Home />} />
                 </Route>
                 <Route element={<PrivateRoute />}>
                     <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="/update-member" element={<UpdateMember />} />
                 </Route>
             </Routes>
             <ToastContainer />
