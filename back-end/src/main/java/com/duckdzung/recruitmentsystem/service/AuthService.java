@@ -96,7 +96,7 @@ public class AuthService {
         member.setPhoneNumber(truncateSpaceFromPhoneNumber(signUpRequest.getPhoneNum()));
 
         // Check if company name is provided
-        if (signUpRequest.getCompanyName() != null) {
+        if (signUpRequest.getCompanyName() != null && !signUpRequest.getCompanyName().isEmpty()) {
             // Update as enterprise
             member.setRole(Role.ENTERPRISE);
             updateAsEnterprise(member, signUpRequest);
