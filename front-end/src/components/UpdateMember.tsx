@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { updateMember } from '../services/memberService';
 import { toast } from 'react-toastify';
-import { ApiResponse } from '../types';
+import { ApiResponse, Role } from '../types';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { loginSuccess } from '../redux/auth/authSlice';
@@ -20,7 +20,7 @@ const UpdateMember: React.FC = () => {
     const role = useAppSelector((state) => state.auth.role);
 
     useEffect(() => {
-        if (role !== 'MEMBER') {
+        if (role !== Role.MEMBER) {
             navigate('/');
             toast.info('You have already updated member');
         }

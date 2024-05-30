@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { AuthState } from '../../types';
-import { toast } from 'react-toastify';
+import { AuthState, Role } from '../../types';
 
 const initialState: AuthState = {
     isAuthenticated: false,
@@ -14,7 +13,7 @@ const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
-        loginSuccess: (state, action: PayloadAction<{ accessToken: string; refreshToken: string; role: string }>) => {
+        loginSuccess: (state, action: PayloadAction<{ accessToken: string; refreshToken: string; role: Role }>) => {
             state.isAuthenticated = true;
             state.accessToken = action.payload.accessToken;
             state.refreshToken = action.payload.refreshToken;
@@ -34,7 +33,6 @@ const authSlice = createSlice({
             state.refreshToken = null;
             state.role = null;
             state.error = null;
-            toast.info('Logged out successfully.');
         },
     },
 });
