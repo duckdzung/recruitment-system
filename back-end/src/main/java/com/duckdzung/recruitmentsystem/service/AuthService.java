@@ -144,6 +144,7 @@ public class AuthService {
     private TokenResponse createTokenResponse(Member member) {
         TokenResponse response = new TokenResponse();
         var tokens = generateAndSaveTokens(member);
+        response.setUsername(member.getUsername());
         response.setRole(member.getRole());
         response.setAccessToken(tokens.get("jwt"));
         response.setRefreshToken(tokens.get("refreshToken"));

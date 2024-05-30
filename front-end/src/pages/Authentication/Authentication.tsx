@@ -1,8 +1,8 @@
 import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import clsx from 'clsx';
-import styles from './Login.module.scss';
+import styles from './Authentication.module.scss';
 import '../../assets/fonts/fontawesome-free-6.5.2/css/all.min.css';
-import { ApiResponse, LoginCredentials, RegisterCredentials } from '../../types';
+import { ApiResponse, Credentials } from '../../types';
 import { useAppDispatch } from '../../redux/hooks';
 import { loginThunk } from '../../redux/auth/authThunks';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -15,9 +15,8 @@ const Authentication: React.FC = () => {
     const [isRightPanelActive, setRightPanelActive] = useState<boolean>(false);
     const [isBtnScaled, setBtnScaled] = useState<boolean>(false);
 
-    // State for login and register form inputs
-    const [loginData, setLoginData] = useState<LoginCredentials>({ email: '', password: '' });
-    const [registerData, setRegisterData] = useState<RegisterCredentials>({ username: '', email: '', password: '' });
+    // State for creditials
+    const [credentials, setCredentials] = useState<Credentials>({ email: '', password: '' });
 
     // Get dispatch from redux
     const dispatch = useAppDispatch();
@@ -52,61 +51,60 @@ const Authentication: React.FC = () => {
         });
 
         // Hanlde navigate to login or register, reset data
+        setCredentials({ email: '', password: '' });
         const pathname = location.pathname;
         if (pathname === '/login') {
             navigate('/register');
-            setLoginData({ email: '', password: '' });
         } else {
             navigate('/login');
-            setRegisterData({ username: '', email: '', password: '' });
         }
     };
 
     // Handle input changes for login form
     const handleLoginInputChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        setLoginData({ ...loginData, [name]: value });
+        setCredentials({ ...credentials, [name]: value });
     };
 
     // Handle input changes for register form
     const handleRegisterInputChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        setRegisterData({ ...registerData, [name]: value });
+        setCredentials({ ...credentials, [name]: value });
     };
 
     // Handle login form submission
     const handleLoginSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        // Validate loginData
-        if (!loginData.email || !loginData.password) {
+        // Validate credentials
+        if (!credentials.email || !credentials.password) {
             toast.error('Please fill in all fields');
             return;
         }
 
         // Call api login
-        dispatch(loginThunk(loginData));
+        dispatch(loginThunk(credentials));
     };
 
     // Handle register form submission
     const handleRegisterSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        // Validate registerData
-        if (!registerData.username || !registerData.email || !registerData.password) {
+        // Validate credentials
+        if (!credentials.email || !credentials.password) {
             toast.error('Please fill in all fields');
             return;
         }
 
         // Call api register
-        const response: ApiResponse = await register(registerData);
+        const response: ApiResponse = await register(credentials);
 
         // Register sucessfully
         if (response && response.statusCode === 201) {
-            navigate('/update-member');
             toast.success(response.message);
-            const { accessToken, refreshToken } = response.data;
-            dispatch(loginSuccess({ accessToken, refreshToken }));
+            const { accessToken, refreshToken, role } = response.data;
+            dispatch(loginSuccess({ accessToken, refreshToken, role }));
+            navigate('/update-member');
         }
     };
 
@@ -127,32 +125,24 @@ const Authentication: React.FC = () => {
                         </a>
                     </div>
                     <span>or use your email for registration</span>
-                    <div className={styles.infield}>
-                        <input
-                            type="text"
-                            placeholder="Username"
-                            name="username"
-                            value={registerData.username}
-                            onChange={handleRegisterInputChange}
-                        />
-                        <label></label>
-                    </div>
+
                     <div className={styles.infield}>
                         <input
                             type="email"
                             placeholder="Email"
                             name="email"
-                            value={registerData.email}
+                            value={credentials.email}
                             onChange={handleRegisterInputChange}
                         />
                         <label></label>
                     </div>
+
                     <div className={styles.infield}>
                         <input
                             type="password"
                             placeholder="Password"
                             name="password"
-                            value={registerData.password}
+                            value={credentials.password}
                             onChange={handleRegisterInputChange}
                         />
                         <label></label>
@@ -181,7 +171,7 @@ const Authentication: React.FC = () => {
                             type="email"
                             placeholder="Email"
                             name="email"
-                            value={loginData.email}
+                            value={credentials.email}
                             onChange={handleLoginInputChange}
                         />
                         <label></label>
@@ -191,7 +181,7 @@ const Authentication: React.FC = () => {
                             type="password"
                             placeholder="Password"
                             name="password"
-                            value={loginData.password}
+                            value={credentials.password}
                             onChange={handleLoginInputChange}
                         />
                         <label></label>

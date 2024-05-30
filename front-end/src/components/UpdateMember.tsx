@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import { ApiResponse } from '../types';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import { updateMemberSuccess } from '../redux/auth/authSlice';
+import { loginSuccess } from '../redux/auth/authSlice';
 
 const UpdateMember: React.FC = () => {
     const [name, setName] = useState<string>('');
@@ -15,8 +15,16 @@ const UpdateMember: React.FC = () => {
 
     const [isCandidate, setIsCandidate] = useState<Boolean>(true);
 
-    const dispatch = useAppDispatch();
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+    const role = useAppSelector((state) => state.auth.role);
+
+    useEffect(() => {
+        if (role !== 'MEMBER') {
+            navigate('/');
+            toast.info('You have already updated member');
+        }
+    }, [role, navigate]);
 
     const handleUpdateMember = async () => {
         const response: ApiResponse = await updateMember({ name, phoneNum, address, companyName, taxCode });
@@ -24,8 +32,10 @@ const UpdateMember: React.FC = () => {
         // Update sucessfully
         if (response && response.statusCode === 200) {
             toast.success(response.message);
-            dispatch(updateMemberSuccess({ isUpdatedMember: true }));
             navigate('/');
+
+            const { accessToken, refreshToken, role } = response.data;
+            dispatch(loginSuccess({ accessToken, refreshToken, role }));
         }
     };
 
@@ -90,7 +100,7 @@ const UpdateMember: React.FC = () => {
 
             <button onClick={handleUpdateMember}>Update</button>
 
-            <Link to="/dashboard">Skip</Link>
+            <Link to="/">Skip</Link>
         </div>
     );
 };

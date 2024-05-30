@@ -4,7 +4,7 @@ import PrivateRoute from './routes/PrivateRoute';
 import PublicRoute from './routes/PublicRoute';
 import Dashboard from './pages/Dashboard';
 import Home from './pages/Home/Home';
-import Authentication from './pages/Login/Authentication';
+import Authentication from './pages/Authentication/Authentication';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import UpdateMember from './components/UpdateMember';
