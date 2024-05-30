@@ -4,8 +4,7 @@ import PrivateRoute from './routes/PrivateRoute';
 import PublicRoute from './routes/PublicRoute';
 import Dashboard from './pages/Dashboard';
 import Home from './pages/Home/Home';
-import Login from './components/Login';
-import Register from './components/Register';
+import Login from './pages/Login/Login';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -15,7 +14,6 @@ const App: React.FC = () => {
             <Routes>
                 <Route element={<PublicRoute restricted={true} />}>
                     <Route path="/login" element={<Login />} />
-                    <Route path="/register" element={<Register />} />
                 </Route>
                 <Route element={<PublicRoute restricted={false} />}>
                     <Route path="/" element={<Home />} />
