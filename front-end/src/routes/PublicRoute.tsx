@@ -8,7 +8,7 @@ interface PublicRouteProps {
 
 const PublicRoute: React.FC<PublicRouteProps> = ({ restricted }) => {
     const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
-    return isAuthenticated && restricted ? <Navigate to="/dashboard" /> : <Outlet />;
+    return isAuthenticated && restricted ? <Navigate to="/update-member" /> : <Outlet />;
 };
 
 export default PublicRoute;
