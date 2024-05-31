@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface NomineeRepository extends JpaRepository<Nominee, Integer> {
+    boolean existsByPosition(String position);
+    Nominee findByPosition(String position);
 }
