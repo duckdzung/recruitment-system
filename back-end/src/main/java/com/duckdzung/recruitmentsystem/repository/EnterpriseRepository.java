@@ -11,6 +11,7 @@ import java.util.Optional;
 public interface EnterpriseRepository extends JpaRepository<Enterprise, EnterpriseId> {
     Enterprise findByCompanyName(String companyName);
     Enterprise findByTaxCode(String taxCode);
+    Enterprise findByMemberId(String memberId);
 
     Optional<Enterprise> findFirstByIdStartsWithOrderByIdDesc(String prefix);
 }

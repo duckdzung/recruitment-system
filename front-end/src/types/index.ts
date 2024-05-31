@@ -2,7 +2,7 @@ export interface AuthState {
     isAuthenticated: boolean;
     accessToken: string | null;
     refreshToken: string | null;
-    role: string | null;
+    role: Role | null;
     error: string | null;
 }
 
@@ -33,4 +33,11 @@ export interface ApiResponse {
     statusCode: number;
     message: string;
     data: any;
+}
+
+export enum Role {
+    MEMBER = 'MEMBER',
+    CANDIDATE = 'CANDIDATE',
+    ENTERPRISE = 'ENTERPRISE',
+    ADMIN = 'ADMIN',
 }

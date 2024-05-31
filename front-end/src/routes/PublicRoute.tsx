@@ -8,6 +8,12 @@ interface PublicRouteProps {
 
 const PublicRoute: React.FC<PublicRouteProps> = ({ restricted }) => {
     const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
+
+    // Handle navigate from register to update-member
+    if (location.pathname === '/update-member' && isAuthenticated) {
+        return <Outlet />;
+    }
+
     return isAuthenticated && restricted ? <Navigate to="/" /> : <Outlet />;
 };
 

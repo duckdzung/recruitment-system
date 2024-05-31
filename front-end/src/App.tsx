@@ -9,6 +9,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import UpdateMember from './components/UpdateMember';
 import Recruitment from './pages/Recruitment/Recruitment';
+import AdminRoute from './routes/AdminRoute';
 
 const App: React.FC = () => {
     return (
@@ -19,12 +20,17 @@ const App: React.FC = () => {
                     <Route path="/register" element={<Authentication />} />
                     <Route path="/recruitment" element={<Recruitment />} />
                 </Route>
+
                 <Route element={<PublicRoute restricted={false} />}>
                     <Route path="/" element={<Home />} />
                 </Route>
+
                 <Route element={<PrivateRoute />}>
-                    <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/update-member" element={<UpdateMember />} />
+                </Route>
+
+                <Route element={<AdminRoute />}>
+                    <Route path="/dashboard" element={<Dashboard />} />
                 </Route>
             </Routes>
             <ToastContainer />
