@@ -252,6 +252,7 @@
 .recMethod {
     display: flex;
     gap: 20px;
+    cursor: pointer;
 }
 
 .method {
@@ -268,6 +269,7 @@
 
 .methodHighlight {
     background-color: #f3f3f3;
+    transition: 0.3s;
 }
 
 .nextBtn {
