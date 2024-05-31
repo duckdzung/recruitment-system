@@ -8,6 +8,7 @@ import Authentication from './pages/Authentication/Authentication';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import UpdateMember from './components/UpdateMember';
+import Recruitment from './pages/Recruitment/Recruitment';
 import AdminRoute from './routes/AdminRoute';
 
 const App: React.FC = () => {
@@ -17,6 +18,7 @@ const App: React.FC = () => {
                 <Route element={<PublicRoute restricted={true} />}>
                     <Route path="/login" element={<Authentication />} />
                     <Route path="/register" element={<Authentication />} />
+                    <Route path="/recruitment" element={<Recruitment />} />
                 </Route>
 
                 <Route element={<PublicRoute restricted={false} />}>
