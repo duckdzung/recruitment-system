@@ -40,13 +40,12 @@ public class RecruitmentDetails {
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
         RecruitmentDetails that = (RecruitmentDetails) o;
-        return getRecruitmentInformation() != null && Objects.equals(getRecruitmentInformation().getDeadline(), that.getRecruitmentInformation().getDeadline())
-                && getNominee().getPosition() != null && Objects.equals(getNominee().getPosition(), that.getNominee().getPosition());
+        return getNominee().getPosition() != null && Objects.equals(getNominee().getPosition(), that.getNominee().getPosition());
     }
 
     @Override
     public final int hashCode() {
-        return Objects.hash(getRecruitmentInformation().getDeadline(), getNominee().getPosition());
+        return Objects.hash(getNominee().getPosition());
     }
 
 

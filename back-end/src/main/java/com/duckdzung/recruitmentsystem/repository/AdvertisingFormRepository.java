@@ -7,9 +7,9 @@ import com.duckdzung.recruitmentsystem.model.idClass.AdvertisingFormKey;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Repository
 public interface AdvertisingFormRepository extends JpaRepository<AdvertisingForm, AdvertisingFormKey> {
-    boolean existsByRecruitmentInformationAndRecruitmentTimeAndAdvertisingType(RecruitmentInformation recruitmentInformation, LocalDateTime recruitmentTime, AdvertisingType advertisingType);
+    boolean existsByRecruitmentInformationAndRecruitmentTimeAndAdvertisingType(RecruitmentInformation recruitmentInformation, LocalDate recruitmentTime, AdvertisingType advertisingType);
 }
