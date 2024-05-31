@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@Transactional
 public class RecruitmentService {
     private final RecruitmentInformationRepository recruitmentInformationRepository;
     private final RecruitmentDetailsRepository recruitmentDetailsRepository;
@@ -112,8 +113,8 @@ public class RecruitmentService {
         List<RecruitmentDetails> existingRecruitmentDetails = recruitmentDetailsRepository.findByNomineeAndMemberId(nominee, enterprise.getId());
         for (RecruitmentDetails existingDetails : existingRecruitmentDetails) {
             if (existingDetails.equals(recruitmentDetails) &&
-                    advertisingFormRepository.existsByRecruitmentInformationAndRecruitmentTime(
-                            existingDetails.getRecruitmentInformation(), advertisingForm.getRecruitmentTime())) {
+                    advertisingFormRepository.existsByRecruitmentInformationAndRecruitmentTimeAndAdvertisingType(
+                            existingDetails.getRecruitmentInformation(), advertisingForm.getRecruitmentTime(), advertisingForm.getAdvertisingType())) {
                 throw new InvalidRequestException("Recruitment details already exist");
             }
         }

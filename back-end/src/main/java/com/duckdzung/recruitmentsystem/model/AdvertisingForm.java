@@ -47,11 +47,12 @@ public class AdvertisingForm {
         if (thisEffectiveClass != oEffectiveClass) return false;
         AdvertisingForm that = (AdvertisingForm) o;
         return getRecruitmentInformation() != null && Objects.equals(getRecruitmentInformation().getDeadline(), that.getRecruitmentInformation().getDeadline())
-                && getRecruitmentTime() != null && Objects.equals(getRecruitmentTime(), that.getRecruitmentTime());
+                && getRecruitmentTime() != null && Objects.equals(getRecruitmentTime(), that.getRecruitmentTime())
+                && getAdvertisingType() != null && Objects.equals(getAdvertisingType(), that.getAdvertisingType());
     }
 
     @Override
     public final int hashCode() {
-        return Objects.hash(recruitmentInformation.getDeadline(), recruitmentTime);
+        return Objects.hash(recruitmentInformation.getDeadline(), recruitmentTime, advertisingType);
     }
 }
