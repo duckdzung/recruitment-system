@@ -4,6 +4,8 @@ import com.duckdzung.recruitmentsystem.model.Nominee;
 import com.duckdzung.recruitmentsystem.repository.NomineeRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class NomineeService {
     private final NomineeRepository nomineeRepository;
@@ -19,7 +21,7 @@ public class NomineeService {
                 .build());
     }
 
-    public Iterable<Nominee> getAllNominees() {
+    public List<Nominee> getAllNominees() {
         return nomineeRepository.findAll();
     }
 
