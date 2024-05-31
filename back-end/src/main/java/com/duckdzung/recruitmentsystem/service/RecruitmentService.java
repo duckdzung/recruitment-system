@@ -10,7 +10,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -88,7 +88,7 @@ public class RecruitmentService {
     }
 
     private void validateRecruitmentForm(RecruitmentFormRequest recruitmentFormRequest) {
-        isRecruitmentTimeValid(recruitmentFormRequest.getRecruitmentDetails(), recruitmentFormRequest.getAdvertisingForm());
+        isRecruitmentTimeValid(recruitmentFormRequest.getAdvertisingForm());
         isRecruitmentDetailsValid(recruitmentFormRequest.getRecruitmentDetails());
     }
 
@@ -101,11 +101,9 @@ public class RecruitmentService {
         }
     }
 
-    private void isRecruitmentTimeValid(RecruitmentDetails recruitmentDetails, AdvertisingForm advertisingForm) {
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime recruitmentDeadline = recruitmentDetails.getRecruitmentInformation().getDeadline();
-        if (recruitmentDeadline.isBefore(now) || recruitmentDeadline.isBefore(advertisingForm.getRecruitmentTime())) {
-            throw new InvalidRequestException("Recruitment time is invalid");
+    private void isRecruitmentTimeValid(AdvertisingForm advertisingForm) {
+        if (advertisingForm.getRecruitmentTime().isBefore(LocalDate.now())) {
+            throw new InvalidRequestException("Recruitment time must be in the future");
         }
     }
 

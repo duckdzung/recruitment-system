@@ -4,14 +4,14 @@ import com.duckdzung.recruitmentsystem.model.RecruitmentInformation;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Objects;
 
 public class AdvertisingFormKey implements Serializable {
     // Recruitment ID
     RecruitmentInformation recruitmentInformation;
     // Datetime of recruitment launched
-    LocalDateTime recruitmentTime;
+    LocalDate recruitmentTime;
 
     @Override
     public final boolean equals(Object o) {

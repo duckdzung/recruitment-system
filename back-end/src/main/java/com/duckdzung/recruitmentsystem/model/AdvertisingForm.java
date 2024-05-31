@@ -10,7 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.proxy.HibernateProxy;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Objects;
 
 @Data
@@ -36,7 +36,7 @@ public class AdvertisingForm {
 
     @Id
     @Column(nullable = false)
-    LocalDateTime recruitmentTime;
+    LocalDate recruitmentTime;
 
     @Override
     public final boolean equals(Object o) {
@@ -46,13 +46,12 @@ public class AdvertisingForm {
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
         AdvertisingForm that = (AdvertisingForm) o;
-        return getRecruitmentInformation() != null && Objects.equals(getRecruitmentInformation().getDeadline(), that.getRecruitmentInformation().getDeadline())
-                && getRecruitmentTime() != null && Objects.equals(getRecruitmentTime(), that.getRecruitmentTime())
+        return  getRecruitmentTime() != null && Objects.equals(getRecruitmentTime(), that.getRecruitmentTime())
                 && getAdvertisingType() != null && Objects.equals(getAdvertisingType(), that.getAdvertisingType());
     }
 
     @Override
     public final int hashCode() {
-        return Objects.hash(recruitmentInformation.getDeadline(), recruitmentTime, advertisingType);
+        return Objects.hash(recruitmentTime, advertisingType);
     }
 }
