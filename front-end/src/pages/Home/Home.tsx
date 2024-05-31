@@ -18,6 +18,7 @@ const Home = () => {
     useEffect(() => {
         document.body.style.backgroundImage = `url(${backgroundImage})`;
         document.body.style.backgroundRepeat = 'no-repeat';
+        document.body.style.overflowX = 'hidden';
         return () => {
             document.body.style.backgroundImage = '';
         };
