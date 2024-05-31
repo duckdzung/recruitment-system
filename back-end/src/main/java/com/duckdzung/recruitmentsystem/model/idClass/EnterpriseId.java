@@ -25,4 +25,12 @@ public class EnterpriseId implements Serializable {
     public final int hashCode() {
         return Objects.hash(memberId);
     }
+
+    public String getMemberId() {
+        return memberId;
+    }
+
+    public void setMemberId(String memberId) {
+        this.memberId = memberId;
+    }
 }

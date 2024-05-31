@@ -14,7 +14,6 @@ import java.util.Date;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class TokenResponse {
-    String username;
     Role role;
     String accessToken;
     String refreshToken;
