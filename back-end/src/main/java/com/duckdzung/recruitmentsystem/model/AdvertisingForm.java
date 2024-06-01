@@ -10,7 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.proxy.HibernateProxy;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Data
@@ -36,7 +36,7 @@ public class AdvertisingForm {
 
     @Id
     @Column(nullable = false)
-    LocalDate recruitmentTime;
+    LocalDateTime recruitmentTime;
 
     @Override
     public final boolean equals(Object o) {
