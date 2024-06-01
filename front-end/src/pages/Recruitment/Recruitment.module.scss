@@ -110,7 +110,7 @@
 }
 
 .container {
-    input {
+    input, select {
         width: 100%;
         padding: 12px 15px;
         background-color: #f3f3f3;
@@ -133,7 +133,7 @@
 }
 
 .container {
-    input:focus {
+    input:focus, select:hover {
         ~ label {
             width: 100%;
         }
