@@ -21,6 +21,7 @@ public class RecruitmentInformation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int recruitId;
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     TimePeriodType timePeriod;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "member_id", nullable = false)
