@@ -1,3 +1,4 @@
+// Interface
 export interface AuthState {
     isAuthenticated: boolean;
     accessToken: string | null;
@@ -55,11 +56,14 @@ export interface AdvertisingForm {
     advertisingType: RecruitmentForm;
     recruitmentTime: string;
 }
+
+// Enum
 export enum Role {
     MEMBER = 'MEMBER',
     CANDIDATE = 'CANDIDATE',
     ENTERPRISE = 'ENTERPRISE',
-    ADMIN = 'ADMIN',
+    STAFF = 'STAFF',
+    PRESIDENT = 'PRESIDENT',
 }
 
 export enum PaymentMethod {
