@@ -33,7 +33,6 @@ axiosClient.interceptors.response.use(
         const { response } = error;
         if (response) {
             const { status, data } = response;
-            console.log(response);
             switch (status) {
                 case 400:
                     toast.error(data.message || 'Bad Request');
