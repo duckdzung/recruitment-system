@@ -1,6 +1,5 @@
 import axios from 'axios';
 import store from '../redux/store';
-import { logout } from '../redux/auth/authSlice';
 import { toast } from 'react-toastify';
 
 const axiosClient = axios.create({
@@ -34,12 +33,12 @@ axiosClient.interceptors.response.use(
         const { response } = error;
         if (response) {
             const { status, data } = response;
+            console.log(response);
             switch (status) {
                 case 400:
                     toast.error(data.message || 'Bad Request');
                     break;
                 case 401:
-                    store.dispatch(logout());
                     toast.error(data.message || 'Unauthorized');
                     break;
                 case 403:
