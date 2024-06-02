@@ -12,7 +12,7 @@ type TablePaginationConfig = Exclude<GetProp<TableProps, 'pagination'>, boolean>
 
 // CSS for component
 const headingStyle: React.CSSProperties = {
-    margin: 'auto',
+    margin: '40px auto',
     fontFamily: 'Nunito',
     fontSize: '50px',
     fontWeight: 800,
@@ -27,7 +27,7 @@ interface DataType {
     phoneNumber: string;
     email: string;
     validate: boolean;
-    profiled: boolean; // Assuming you have this field in your data
+    profiled: boolean;
 }
 
 interface TableParams {
@@ -151,7 +151,7 @@ const CandidateListing: React.FC = () => {
             <Row>
                 <Col span={4} offset={20}>
                     <Search
-                        placeholder="Search name, email, ..."
+                        placeholder="Type here ... "
                         allowClear
                         onSearch={onSearch}
                         size="large"
