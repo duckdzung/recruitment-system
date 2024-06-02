@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -44,6 +45,21 @@ public class SecurityConfig {
                 .authorizeHttpRequests(request ->
                         request.requestMatchers("**/auth/**").permitAll()
                                 .requestMatchers("**/members/**").hasAuthority("MEMBER")
+                                .requestMatchers(
+                                        HttpMethod.POST,
+                                        "**/recruitments/**").hasAuthority("ENTERPRISE")
+                                .requestMatchers(
+                                        HttpMethod.PUT,
+                                        "**/recruitments/**").hasAuthority("ENTERPRISE")
+                                .requestMatchers(
+                                        HttpMethod.DELETE,
+                                        "**/recruitments/**").hasAuthority("ENTERPRISE")
+                                .requestMatchers(
+                                        HttpMethod.GET,
+                                        "**/recruitments/**").permitAll()
+                                .requestMatchers(
+                                        HttpMethod.GET,
+                                        "**/nominees/**").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
