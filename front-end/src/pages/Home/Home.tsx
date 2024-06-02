@@ -40,12 +40,46 @@ const Home = () => {
                             </div>
                         </div>
                         <div className={clsx(styles.rightTop, styles.displayFlex)}>
-                            <a href="">
-                                <div className={clsx(styles.account, styles.rightTop, styles.displayFlex)}>
-                                    <i className="fa-solid fa-user"></i>
-                                    <p>Account</p>
+                            <div className={clsx(styles.account, styles.rightTop, styles.displayFlex)}>
+                                <i className="fa-solid fa-user"></i>
+                                <span>Account</span>
+                                <div className={styles.dropdownList}>
+                                    <div>
+                                        <i className="fa-solid fa-user"></i>
+                                        <span>Username</span>
+                                    </div>
+                                    <hr />
+                                    <ul>
+                                        <li>
+                                            <a href="#" className={styles.dropdownItem}>
+                                                <i className="fa-regular fa-address-card"></i>
+                                                <span>Profile</span>
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <a href="#" className={styles.dropdownItem}>
+                                                <i className="fa-regular fa-folder-closed"></i>
+                                                <span>System Management</span>
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <a href="#" className={styles.dropdownItem}>
+                                                <i className="fa-solid fa-gears"></i>
+                                                <span>Settings</span>
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <a href="#" className={styles.dropdownItem}>
+                                                <i className="fa-solid fa-arrow-right-from-bracket"></i>
+                                                <span>Logout</span>
+                                            </a>
+                                        </li>
+                                    </ul>
                                 </div>
-                            </a>
+                            </div>
 
                             <form action="" className={styles.searchBox}>
                                 <input
