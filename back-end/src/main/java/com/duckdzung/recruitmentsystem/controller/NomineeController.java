@@ -4,13 +4,11 @@ import com.duckdzung.recruitmentsystem.common.ResponseObject;
 import com.duckdzung.recruitmentsystem.model.Nominee;
 import com.duckdzung.recruitmentsystem.service.NomineeService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin
 @RestController
-@RequestMapping("/nominees")
+@RequestMapping("/api/nominees")
 public class NomineeController {
     private final NomineeService nomineeService;
 
@@ -20,7 +18,11 @@ public class NomineeController {
 
     @GetMapping
     public ResponseEntity<ResponseObject> getAllNominees() {
-        return ResponseEntity.ok(ResponseObject.builder().statusCode(200).data(nomineeService.getAllNominees()).build());
+        return ResponseEntity.ok(ResponseObject.builder()
+                .statusCode(200)
+                .message("Nominees retrieved successfully")
+                .data(nomineeService.getAllNominees())
+                .build());
     }
 
     @GetMapping("/{id}")
@@ -29,7 +31,11 @@ public class NomineeController {
         if (nominee == null) {
             return ResponseEntity.ok(ResponseObject.builder().statusCode(404).message("Nominee not found").build());
         }
-        return ResponseEntity.ok(ResponseObject.builder().statusCode(200).data(nominee).build());
+        return ResponseEntity.ok(ResponseObject.builder()
+                .statusCode(200)
+                .message("Nominee retrieved successfully")
+                .data(nominee)
+                .build());
     }
 
 }

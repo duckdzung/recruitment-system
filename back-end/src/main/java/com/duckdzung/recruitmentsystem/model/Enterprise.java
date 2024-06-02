@@ -1,6 +1,7 @@
 package com.duckdzung.recruitmentsystem.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,9 +15,11 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Enterprise {
 
     @Id
+    @Column(name = "id", length = 5, nullable = false)
     private String id;
 
     @OneToOne(fetch = FetchType.LAZY, optional = false)

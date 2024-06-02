@@ -15,6 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 public class Candidate {
     @Id
+    @Column(name = "id", length = 5, nullable = false)
     private String id;
 
     @OneToOne(fetch = FetchType.LAZY, optional = false)

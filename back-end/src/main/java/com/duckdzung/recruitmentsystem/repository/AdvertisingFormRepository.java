@@ -12,4 +12,5 @@ import java.time.LocalDateTime;
 @Repository
 public interface AdvertisingFormRepository extends JpaRepository<AdvertisingForm, AdvertisingFormKey> {
     boolean existsByRecruitmentInformationAndRecruitmentTimeAndAdvertisingType(RecruitmentInformation recruitmentInformation, LocalDateTime recruitmentTime, AdvertisingType advertisingType);
+    AdvertisingForm findByRecruitmentInformation(RecruitmentInformation recruitmentInformation);
 }

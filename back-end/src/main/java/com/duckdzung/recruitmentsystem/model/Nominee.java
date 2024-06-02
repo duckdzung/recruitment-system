@@ -1,5 +1,7 @@
 package com.duckdzung.recruitmentsystem.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,6 +14,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "nominee")
+@JsonSerialize
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Nominee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -63,8 +63,32 @@ public class RecruitmentService {
                 .build();
     }
 
-    public RecruitmentInformation getRecruitmentInformationById(int id) {
-        return recruitmentInformationRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Recruitment information not found"));
+    public List<RecruitmentFormResponse> getAllRecruitments() {
+        return recruitmentDetailsRepository.findAll().stream()
+                .map(recruitmentDetails -> RecruitmentFormResponse.builder()
+                        .recruitmentDetails(recruitmentDetails)
+                        .advertisingForm(advertisingFormRepository.findByRecruitmentInformation(recruitmentDetails.getRecruitmentInformation()))
+                        .build())
+                .toList();
+    }
+
+    @Transactional
+    public RecruitmentFormResponse getRecruitmentInformationById(int id) {
+        RecruitmentInformation recruitmentInformation = recruitmentInformationRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Recruitment information not found"));
+        RecruitmentDetails recruitmentDetails = recruitmentDetailsRepository.findByRecruitmentInformation(recruitmentInformation);
+        if (recruitmentDetails == null) {
+            throw new ResourceNotFoundException("Recruitment details not found");
+        }
+        AdvertisingForm advertisingForm = advertisingFormRepository.findByRecruitmentInformation(recruitmentInformation);
+        if (advertisingForm == null) {
+            throw new ResourceNotFoundException("Advertising form not found");
+        }
+        return RecruitmentFormResponse.builder()
+                .recruitmentDetails(recruitmentDetails)
+                .advertisingForm(advertisingForm)
+                .build();
+
     }
 
     public void deleteRecruitmentInformation(int id) {

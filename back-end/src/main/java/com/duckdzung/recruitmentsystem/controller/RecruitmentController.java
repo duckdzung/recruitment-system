@@ -30,4 +30,25 @@ public class RecruitmentController {
         );
     }
 
+    @GetMapping
+    public ResponseEntity<ResponseObject> getAllRecruitments() {
+        return ResponseEntity.ok(
+                ResponseObject.builder()
+                        .statusCode(200)
+                        .message("Recruitment forms retrieved successfully")
+                        .data(recruitmentService.getAllRecruitments())
+                        .build()
+        );
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ResponseObject> getRecruitmentById(@PathVariable int id) {
+        return ResponseEntity.ok(
+                ResponseObject.builder()
+                        .statusCode(200)
+                        .message("Recruitment form retrieved successfully")
+                        .data(recruitmentService.getRecruitmentInformationById(id))
+                        .build()
+        );
+    }
 }
