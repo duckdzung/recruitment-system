@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Button, Input, Row, Col } from 'antd';
+import { Table, Input, Row, Col } from 'antd';
 import type { GetProp, TableProps } from 'antd';
 import qs from 'qs';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import type { SearchProps } from 'antd/es/input/Search';
-import { PaymentMethod } from '../types';
+import { PaymentMethod } from '../../types';
 
 const { Search } = Input;
 
