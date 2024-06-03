@@ -1,0 +1,102 @@
+// CSS for Al
+.displayFlex {
+    display: flex;
+}
+
+.centered {
+    justify-content: center;
+    align-items: center;
+}
+// CSS for Al
+
+/* CSS for footer */
+.footer {
+    display: grid;
+    grid-template-rows: 2fr 1fr;
+    font-family: 'Inter', sans-serif;
+
+    a {
+        text-decoration: none;
+    }
+}
+
+.footerTop {
+    background-color: #0aadeb;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 50px;
+    border-radius: 5px;
+    color: white;
+
+    > .footerTopLeft {
+        > a {
+            font-size: 50px;
+            color: black;
+            background-color: white;
+            height: 90px;
+            width: 90px;
+            border-radius: 50%;
+
+            &:hover {
+                color: #0aadeb;
+            }
+        }
+    }
+}
+
+.footerTopLeft {
+    gap: 20px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.footerTopRight {
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 14px;
+    border: 2px solid white;
+    height: 50px;
+    width: 200px;
+    border-radius: 10px;
+    color: white;
+
+    &:hover {
+        font-size: 16px;
+        height: 60px;
+        width: 210px;
+        transition: all 0.25s ease-in-out;
+    }
+}
+
+.footerBottom {
+    justify-content: space-around;
+    font-size: 16px;
+    margin-top: 20px;
+}
+
+.footerBottom {
+    > a {
+        color: black;
+        font-weight: bold;
+        &:hover {
+            color: #0aadeb;
+        }
+    }
+
+    > p {
+        color: black;
+    }
+}
+
+/* CSS for footer */
+
+/* CSS for backtop */
+.backtop {
+    font-size: 50px;
+    color: rgba(10, 173, 235, 0.4);
+    position: fixed;
+    right: 20px;
+    bottom: 40px;
+    cursor: pointer;
+}
+/* CSS for backtop */
