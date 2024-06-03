@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Layout, Menu } from 'antd';
-import { Link, useLocation } from 'react-router-dom';
-import CandidateListing from './CandidateListing';
+import { Link, Outlet, useLocation } from 'react-router-dom';
 import logo from '../../assets/images/logo.png';
 
 const { Header, Content, Footer } = Layout;
@@ -97,7 +96,7 @@ const AdminPage: React.FC = () => {
                 </Menu>
             </Header>
             <Content style={{ padding: '0 100px' }}>
-                <CandidateListing />
+                <Outlet />
             </Content>
             <Footer style={{ textAlign: 'center' }}>Copyright © 2021 Emphires All Rights Reserved</Footer>
         </Layout>

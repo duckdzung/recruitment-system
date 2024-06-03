@@ -13,6 +13,8 @@ import UpdateMember from './components/UpdateMember';
 
 import { Role } from './types';
 import AdminPage from './components/admin/AdminPage';
+import CandidateListing from './components/admin/CandidateListing';
+import PaymentDetails from './components/admin/PaymentDetails';
 
 const App: React.FC = () => {
     return (
@@ -38,7 +40,10 @@ const App: React.FC = () => {
                 </Route>
 
                 <Route element={<ProtectedRoute allowRoutes={[Role.STAFF, Role.PRESIDENT]} />}>
-                    <Route path="/admin/account" element={<AdminPage />} />
+                    <Route path="/admin" element={<AdminPage />}>
+                        <Route path="candidate-listing" element={<CandidateListing />} />
+                        <Route path="payment-details" element={<PaymentDetails />} />
+                    </Route>
                 </Route>
             </Routes>
             <ToastContainer />
