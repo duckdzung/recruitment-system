@@ -175,14 +175,13 @@ public class AuthService {
         return response;
     }
 
-    public void logout(AuthRequest logoutRequest) {
+    public void logout(String accessToken) {
         try {
-            String email = jwtService.extractEmail(logoutRequest.getAccessToken());
+            String email = jwtService.extractEmail(accessToken);
             Member member = getUserByEmail(email);
 
-            if (jwtService.isTokenValid(logoutRequest.getAccessToken(), member)) {
+            if (jwtService.isTokenValid(accessToken, member)) {
                 revokeAllUserTokens(member);
-
             } else {
                 throw new InvalidRequestException("Invalid token");
             }

@@ -47,8 +47,8 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<ResponseObject> logout(@RequestBody AuthRequest logoutRequest) {
-        authService.logout(logoutRequest);
+    public ResponseEntity<ResponseObject> logout(@RequestHeader("Authorization") String authorization) {
+        authService.logout(authorization.replace("Bearer ", ""));
         return new ResponseEntity<>(ResponseObject.builder()
                 .statusCode(200)
                 .message("Logout successfully")
