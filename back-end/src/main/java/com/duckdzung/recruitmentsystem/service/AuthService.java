@@ -12,6 +12,7 @@ import com.duckdzung.recruitmentsystem.repository.EnterpriseRepository;
 import com.duckdzung.recruitmentsystem.repository.TokenRepository;
 import com.duckdzung.recruitmentsystem.repository.MemberRepository;
 import com.duckdzung.recruitmentsystem.util.InputValidator;
+import jakarta.transaction.Transactional;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -70,7 +71,7 @@ public class AuthService {
         return createTokenResponse(member);
     }
 
-    public TokenResponse updateMember(String memberId, AuthRequest signUpRequest) {
+    public String updateMember(String memberId, AuthRequest signUpRequest) {
         String validationError = InputValidator.isValidPhoneNumber(truncateSpaceFromPhoneNumber(signUpRequest.getPhoneNum())) ? null : "Invalid phone number format";
         if (validationError != null) {
             throw new InvalidRequestException(validationError);
@@ -85,8 +86,10 @@ public class AuthService {
         updateMemberDetails(member, signUpRequest);
 
         memberRepository.save(member);
-
-        return createTokenResponse(member);
+        if(member.getRole() == Role.ENTERPRISE){
+            return "Send request to admin for approval";
+        }
+        return "Candidate account upgraded successfully";
     }
 
     private void updateMemberDetails(Member member, AuthRequest signUpRequest) {
@@ -94,7 +97,6 @@ public class AuthService {
         member.setName(signUpRequest.getName());
         member.setAddress(signUpRequest.getAddress());
         member.setPhoneNumber(truncateSpaceFromPhoneNumber(signUpRequest.getPhoneNum()));
-        member.setIsUpgraded(true);
 
         // Check if company name is provided
         if (signUpRequest.getCompanyName() != null && !signUpRequest.getCompanyName().isEmpty()) {
@@ -126,13 +128,52 @@ public class AuthService {
         candidateRepository.save(candidate);
     }
 
+    public void approveMemberUpgrade(String memberId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new ResourceNotFoundException("Member not found"));
 
-    public TokenResponse createAdmin(AuthRequest signUpRequest) {
+        if(member.getIsValidated()){
+            throw new InvalidRequestException("Member has already been approved");
+        }
+
+        member.setIsValidated(true);
+        revokeAllUserTokens(member);
+        memberRepository.save(member);
+
+    }
+
+    @Transactional
+    public void rejectMemberUpgrade(String memberId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new ResourceNotFoundException("Member not found"));
+
+        if(member.getIsValidated()){
+            throw new InvalidRequestException("Member has already been approved");
+        }
+
+        member.setIsValidated(false);
+        member.setRole(Role.MEMBER);
+        member.setName(null);
+        member.setAddress(null);
+        member.setPhoneNumber(null);
+
+        memberRepository.save(member);
+        enterpriseRepository.deleteByMemberId(memberId);
+    }
+
+    public TokenResponse createStaff(AuthRequest signUpRequest) {
         if (isEmailOrPhoneTaken(signUpRequest)) {
             throw new DataIntegrityViolationException("Email or username or phone number is already taken");
         }
 
-        Member member = createUser(signUpRequest, Role.ADMIN);
+        Member member = createUser(signUpRequest, Role.STAFF);
+        return createTokenResponse(member);
+    }
+
+    public TokenResponse createPresident(AuthRequest signUpRequest) {
+        if (isEmailOrPhoneTaken(signUpRequest)) {
+            throw new DataIntegrityViolationException("Email or username or phone number is already taken");
+        }
+
+        Member member = createUser(signUpRequest, Role.PRESIDENT);
         return createTokenResponse(member);
     }
 
@@ -145,6 +186,7 @@ public class AuthService {
         TokenResponse response = new TokenResponse();
         var tokens = generateAndSaveTokens(member);
         response.setRole(member.getRole());
+        response.setEmail(member.getUsername());
         response.setAccessToken(tokens.get("jwt"));
         response.setRefreshToken(tokens.get("refreshToken"));
         response.setIssuedAt(jwtService.getIssuedAt(tokens.get("jwt")));
@@ -223,9 +265,9 @@ public class AuthService {
                 .id(generateUserID(role))
                 .email(signUpRequest.getEmail())
                 .password(passwordEncoder.encode(signUpRequest.getPassword()))
-                .phoneNumber(role != Role.ADMIN ? null : truncateSpaceFromPhoneNumber(signUpRequest.getPhoneNum()))
-                .name(role != Role.ADMIN ? null : signUpRequest.getName())
-                .address(role != Role.ADMIN ? null : signUpRequest.getAddress())
+                .phoneNumber(role != Role.PRESIDENT && role != Role.STAFF ? null : truncateSpaceFromPhoneNumber(signUpRequest.getPhoneNum()))
+                .name(role != Role.PRESIDENT && role != Role.STAFF ? null : signUpRequest.getName())
+                .address(role != Role.PRESIDENT && role != Role.STAFF ? null : signUpRequest.getAddress())
                 .role(role)
                 .build();
         memberRepository.save(member);
@@ -307,8 +349,13 @@ public class AuthService {
                 yield enterpriseRepository.findFirstByIdStartsWithOrderByIdDesc(prefix)
                         .map(Enterprise::getId);
             }
-            case ADMIN -> {
-                prefix = "AD";
+            case PRESIDENT -> {
+                prefix = "PR";
+                yield memberRepository.findFirstByIdStartsWithOrderByIdDesc(prefix)
+                        .map(Member::getId);
+            }
+            case STAFF -> {
+                prefix = "ST";
                 yield memberRepository.findFirstByIdStartsWithOrderByIdDesc(prefix)
                         .map(Member::getId);
             }

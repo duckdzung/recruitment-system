@@ -15,6 +15,7 @@ import java.util.Date;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class TokenResponse {
     Role role;
+    String email;
     String accessToken;
     String refreshToken;
     Date issuedAt;

@@ -1,5 +1,5 @@
 package com.duckdzung.recruitmentsystem.model.enums;
 
 public enum Role {
-    ENTERPRISE, ADMIN, CANDIDATE, MEMBER
+    ENTERPRISE, STAFF, CANDIDATE, MEMBER, PRESIDENT
 }

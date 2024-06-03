@@ -40,7 +40,8 @@ public class Member implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    private Boolean isUpgraded = false;
+    @Builder.Default
+    private Boolean isValidated = false;
 
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Token> tokens;

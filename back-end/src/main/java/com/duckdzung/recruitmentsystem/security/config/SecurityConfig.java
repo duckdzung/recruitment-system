@@ -44,7 +44,6 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(request ->
                         request.requestMatchers("**/auth/**").permitAll()
-                                .requestMatchers("**/members/**").hasAuthority("MEMBER")
                                 .requestMatchers(
                                         HttpMethod.POST,
                                         "**/recruitments/**").hasAuthority("ENTERPRISE")
@@ -60,6 +59,12 @@ public class SecurityConfig {
                                 .requestMatchers(
                                         HttpMethod.GET,
                                         "**/nominees/**").permitAll()
+                                .requestMatchers(
+                                        HttpMethod.PUT,
+                                        "**/members/").hasAnyAuthority("STAFF","PRESIDENT")
+                                .requestMatchers(
+                                        HttpMethod.POST,
+                                        "**/members").hasAuthority("MEMBER")
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

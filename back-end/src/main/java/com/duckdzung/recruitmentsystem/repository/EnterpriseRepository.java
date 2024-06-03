@@ -12,6 +12,6 @@ public interface EnterpriseRepository extends JpaRepository<Enterprise, Enterpri
     Enterprise findByCompanyName(String companyName);
     Enterprise findByTaxCode(String taxCode);
     Enterprise findByMemberId(String memberId);
-
+    void deleteByMemberId(String memberId);
     Optional<Enterprise> findFirstByIdStartsWithOrderByIdDesc(String prefix);
 }
