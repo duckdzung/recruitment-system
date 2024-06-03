@@ -46,7 +46,7 @@ const App: React.FC = () => {
                     </Route>
                 </Route>
             </Routes>
-            <ToastContainer />
+            <ToastContainer position="top-center" />
         </Router>
     );
 };

@@ -75,7 +75,7 @@
         display: flex;
         flex-direction: column;
         gap: 20px;
-        width: 180px;
+        width: 150px;
         list-style: none;
         margin: 0;
         padding: 0;
@@ -114,6 +114,7 @@
     }
 
     &:hover * {
+        cursor: pointer;
         color: #0aadeb;
     }
 }
