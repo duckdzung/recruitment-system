@@ -18,13 +18,33 @@ public class MemberController {
     @Autowired
     private JwtService jwtService;
 
-    @PutMapping
+    @PostMapping
     public ResponseEntity<ResponseObject> update(@RequestHeader("Authorization") String authorization, @RequestBody AuthRequest updateRequest) {
         String id = jwtService.extractUserIdFromToken(authorization);
+        String updateResult = authService.updateMember(id, updateRequest);
         return new ResponseEntity<>(ResponseObject.builder()
                 .statusCode(200)
-                .message("Member updated successfully")
-                .data(authService.updateMember(id, updateRequest))
+                .message(updateResult)
+                .build(), HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}/approve")
+    public ResponseEntity<ResponseObject> approve(@PathVariable String id) {
+        authService.approveMemberUpgrade(id);
+        return new ResponseEntity<>(ResponseObject.builder()
+                .statusCode(200)
+                .message("Enterprise approved successfully")
+                .data(null)
+                .build(), HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}/reject")
+    public ResponseEntity<ResponseObject> reject(@PathVariable String id) {
+        authService.rejectMemberUpgrade(id);
+        return new ResponseEntity<>(ResponseObject.builder()
+                .statusCode(200)
+                .message("Enterprise rejected successfully")
+                .data(null)
                 .build(), HttpStatus.OK);
     }
 }

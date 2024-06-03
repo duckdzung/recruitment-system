@@ -63,12 +63,21 @@ public class AuthController {
         return ResponseEntity.ok().body(isValid);
     }
 
-    @PostMapping("/admin-register")
-    public ResponseEntity<ResponseObject> adminSignUp(@RequestBody AuthRequest signUpRequest) {
+    @PostMapping("/president-register")
+    public ResponseEntity<ResponseObject> presidentSignUp(@RequestBody AuthRequest signUpRequest) {
         return new ResponseEntity<>(ResponseObject.builder()
                 .statusCode(201)
                 .message("Admin registered successfully")
-                .data(authService.createAdmin(signUpRequest))
+                .data(authService.createPresident(signUpRequest))
+                .build(), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/staff-register")
+    public ResponseEntity<ResponseObject> staffSignUp(@RequestBody AuthRequest signUpRequest) {
+        return new ResponseEntity<>(ResponseObject.builder()
+                .statusCode(201)
+                .message("Staff registered successfully")
+                .data(authService.createStaff(signUpRequest))
                 .build(), HttpStatus.CREATED);
     }
 
