@@ -9,7 +9,7 @@ import ProtectedRoute from './routes/ProtectedRoute';
 import Home from './pages/Home/Home';
 import Authentication from './pages/Authentication/Authentication';
 import Recruitment from './pages/Recruitment/Recruitment';
-import UpdateMember from './components/UpdateMember';
+import UpdateMember from './pages/UpdateMember/UpdateMenber';
 
 import { Role } from './types';
 import AdminPage from './components/admin/AdminPage';
@@ -28,11 +28,12 @@ const App: React.FC = () => {
 
                 <Route element={<PublicRoute restricted={false} />}>
                     <Route path="/" element={<Home />} />
+                    <Route path="/update-member" element={<UpdateMember />} />
                 </Route>
 
                 {/* Protected routes */}
                 <Route element={<ProtectedRoute allowRoutes={[Role.MEMBER]} />}>
-                    <Route path="/update-member" element={<UpdateMember />} />
+                    {/* <Route path="/update-member" element={<UpdateMember />} /> */}
                 </Route>
 
                 <Route element={<ProtectedRoute allowRoutes={[Role.ENTERPRISE]} />}>
