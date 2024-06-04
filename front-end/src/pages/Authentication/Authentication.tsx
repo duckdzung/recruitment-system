@@ -34,6 +34,7 @@ const Authentication: React.FC = () => {
         document.body.style.background = '#f6f5f7';
         document.body.style.display = 'grid';
         document.body.style.placeContent = 'center';
+        document.body.style.overflow = 'hidden';
         return () => {
             document.body.style.height = '';
             document.body.style.background = '';
@@ -112,112 +113,114 @@ const Authentication: React.FC = () => {
     };
 
     return (
-        <div className={clsx(styles.container, { [styles.rightPanelActive]: isRightPanelActive })} id="container">
-            <div className={clsx(styles.formContainer, styles.signUpContainer)}>
-                <form onSubmit={handleRegisterSubmit}>
-                    <h1>Create Account</h1>
-                    <div className={styles.socialContainer}>
-                        <a href="#" className={styles.social}>
-                            <i className="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="#" className={styles.social}>
-                            <i className="fab fa-google-plus-g"></i>
-                        </a>
-                        <a href="#" className={styles.social}>
-                            <i className="fab fa-linkedin-in"></i>
-                        </a>
-                    </div>
-                    <span>or use your email for registration</span>
+        <>
+            <div className={clsx(styles.container, { [styles.rightPanelActive]: isRightPanelActive })} id="container">
+                <div className={clsx(styles.formContainer, styles.signUpContainer)}>
+                    <form onSubmit={handleRegisterSubmit}>
+                        <h1>Create Account</h1>
+                        <div className={styles.socialContainer}>
+                            <a href="#" className={styles.social}>
+                                <i className="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="#" className={styles.social}>
+                                <i className="fab fa-google-plus-g"></i>
+                            </a>
+                            <a href="#" className={styles.social}>
+                                <i className="fab fa-linkedin-in"></i>
+                            </a>
+                        </div>
+                        <span>or use your email for registration</span>
 
-                    <div className={styles.infield}>
-                        <input
-                            type="email"
-                            placeholder="Email"
-                            name="email"
-                            value={credentials.email}
-                            onChange={handleRegisterInputChange}
-                        />
-                        <label></label>
-                    </div>
+                        <div className={styles.infield}>
+                            <input
+                                type="email"
+                                placeholder="Email"
+                                name="email"
+                                value={credentials.email}
+                                onChange={handleRegisterInputChange}
+                            />
+                            <label></label>
+                        </div>
 
-                    <div className={styles.infield}>
-                        <input
-                            type="password"
-                            placeholder="Password"
-                            name="password"
-                            value={credentials.password}
-                            onChange={handleRegisterInputChange}
-                        />
-                        <label></label>
-                    </div>
-                    <button type="submit">Sign Up</button>
-                </form>
-            </div>
-
-            <div className={clsx(styles.formContainer, styles.signInContainer)}>
-                <form onSubmit={handleLoginSubmit}>
-                    <h1>Sign in</h1>
-                    <div className={styles.socialContainer}>
-                        <a href="#" className={styles.social}>
-                            <i className="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="#" className={styles.social}>
-                            <i className="fab fa-google-plus-g"></i>
-                        </a>
-                        <a href="#" className={styles.social}>
-                            <i className="fab fa-linkedin-in"></i>
-                        </a>
-                    </div>
-                    <span>or use your account</span>
-                    <div className={styles.infield}>
-                        <input
-                            type="email"
-                            placeholder="Email"
-                            name="email"
-                            value={credentials.email}
-                            onChange={handleLoginInputChange}
-                        />
-                        <label></label>
-                    </div>
-                    <div className={styles.infield}>
-                        <input
-                            type="password"
-                            placeholder="Password"
-                            name="password"
-                            value={credentials.password}
-                            onChange={handleLoginInputChange}
-                        />
-                        <label></label>
-                    </div>
-                    <a href="#" className={styles.forgot}>
-                        Forgot your password?
-                    </a>
-                    <button type="submit">Sign In</button>
-                </form>
-            </div>
-
-            <div className={styles.overlayContainer} id="overlayCon">
-                <div className={styles.overlay}>
-                    <div className={clsx(styles.overlayPanel, styles.overlayLeft)}>
-                        <h1>Welcome to ABC Company!</h1>
-                        <p>To keep connected with us please login with your personal info</p>
-                        <i id={styles.signInBtn} className="fa-solid fa-user-shield"></i>
-                        <button onClick={handleOverlayButtonClick}>Sign In</button>
-                    </div>
-                    <div className={clsx(styles.overlayPanel, styles.overlayRight)}>
-                        <h1>Hello, Friend!</h1>
-                        <p>Enter your personal details and start journey with us</p>
-                        <i id={styles.signUpBtn} className="fa-solid fa-user-plus"></i>
-                        <button onClick={handleOverlayButtonClick}>Sign Up</button>
-                    </div>
+                        <div className={styles.infield}>
+                            <input
+                                type="password"
+                                placeholder="Password"
+                                name="password"
+                                value={credentials.password}
+                                onChange={handleRegisterInputChange}
+                            />
+                            <label></label>
+                        </div>
+                        <button type="submit">Sign Up</button>
+                    </form>
                 </div>
-                <button
-                    id={styles.overlayBtn}
-                    className={clsx({ [styles.btnScaled]: isBtnScaled })}
-                    onClick={handleOverlayButtonClick}
-                ></button>
+
+                <div className={clsx(styles.formContainer, styles.signInContainer)}>
+                    <form onSubmit={handleLoginSubmit}>
+                        <h1>Sign in</h1>
+                        <div className={styles.socialContainer}>
+                            <a href="#" className={styles.social}>
+                                <i className="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="#" className={styles.social}>
+                                <i className="fab fa-google-plus-g"></i>
+                            </a>
+                            <a href="#" className={styles.social}>
+                                <i className="fab fa-linkedin-in"></i>
+                            </a>
+                        </div>
+                        <span>or use your account</span>
+                        <div className={styles.infield}>
+                            <input
+                                type="email"
+                                placeholder="Email"
+                                name="email"
+                                value={credentials.email}
+                                onChange={handleLoginInputChange}
+                            />
+                            <label></label>
+                        </div>
+                        <div className={styles.infield}>
+                            <input
+                                type="password"
+                                placeholder="Password"
+                                name="password"
+                                value={credentials.password}
+                                onChange={handleLoginInputChange}
+                            />
+                            <label></label>
+                        </div>
+                        <a href="#" className={styles.forgot}>
+                            Forgot your password?
+                        </a>
+                        <button type="submit">Sign In</button>
+                    </form>
+                </div>
+
+                <div className={styles.overlayContainer} id="overlayCon">
+                    <div className={styles.overlay}>
+                        <div className={clsx(styles.overlayPanel, styles.overlayLeft)}>
+                            <h1>Welcome to ABC Company!</h1>
+                            <p>To keep connected with us please login with your personal info</p>
+                            <i id={styles.signInBtn} className="fa-solid fa-user-shield"></i>
+                            <button onClick={handleOverlayButtonClick}>Sign In</button>
+                        </div>
+                        <div className={clsx(styles.overlayPanel, styles.overlayRight)}>
+                            <h1>Hello, Friend!</h1>
+                            <p>Enter your personal details and start journey with us</p>
+                            <i id={styles.signUpBtn} className="fa-solid fa-user-plus"></i>
+                            <button onClick={handleOverlayButtonClick}>Sign Up</button>
+                        </div>
+                    </div>
+                    <button
+                        id={styles.overlayBtn}
+                        className={clsx({ [styles.btnScaled]: isBtnScaled })}
+                        onClick={handleOverlayButtonClick}
+                    ></button>
+                </div>
             </div>
-        </div>
+        </>
     );
 };
 
