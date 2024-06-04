@@ -15,6 +15,15 @@ const Authentication: React.FC = () => {
     const [isRightPanelActive, setRightPanelActive] = useState<boolean>(false);
     const [isBtnScaled, setBtnScaled] = useState<boolean>(false);
 
+    // State for passworld eye
+    const eyeClose01 = document.getElementById('_eyeClose01_1r1cf_1');
+    const eyeOpen01 = document.getElementById('_eyeOpen01_1r1cf_1');
+    const passwordInput01 = document.getElementById('passwordInput01');
+
+    const eyeClose02 = document.getElementById('_eyeClose02_1r1cf_1');
+    const eyeOpen02 = document.getElementById('_eyeOpen02_1r1cf_1');
+    const passwordInput02 = document.getElementById('passwordInput02');
+
     // State for creditials
     const [credentials, setCredentials] = useState<Credentials>({ email: '', password: '' });
 
@@ -22,6 +31,43 @@ const Authentication: React.FC = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const location = useLocation();
+
+    // Hanlde for change passworld eye
+    const handleEyeCloseClick = () => {
+        if (!passwordInput01 || !eyeClose01 || !eyeOpen01) {
+            alert('Failed to find necessary elements for password visibility.');
+            return; // Handle potential errors gracefully
+        }
+
+        if (passwordInput01) {
+            passwordInput01.setAttribute('type', 'text');
+            eyeClose01.style.display = 'none';
+            eyeOpen01.style.display = 'block';
+        }
+
+        if (passwordInput02 && eyeClose02 && eyeOpen02) {
+            passwordInput02.setAttribute('type', 'text');
+            eyeClose02.style.display = 'none';
+            eyeOpen02.style.display = 'block';
+        }
+    };
+
+    const handleEyeOpenClick = () => {
+        if (!passwordInput01 || !eyeClose01 || !eyeOpen01) {
+            alert('Failed to find necessary elements for password visibility.');
+            return; // Handle potential errors gracefully
+        }
+        if (passwordInput01) {
+            passwordInput01?.setAttribute('type', 'password');
+            eyeClose01.style.display = 'block';
+            eyeOpen01.style.display = 'none';
+        }
+        if (passwordInput02 && eyeClose02 && eyeOpen02) {
+            passwordInput02.setAttribute('type', 'password');
+            eyeClose02.style.display = 'block';
+            eyeOpen02.style.display = 'none';
+        }
+    };
 
     // Hanlde css UI
     useEffect(() => {
@@ -132,6 +178,7 @@ const Authentication: React.FC = () => {
                         <span>or use your email for registration</span>
 
                         <div className={styles.infield}>
+                            <i className="fa-solid fa-envelope"></i>
                             <input
                                 type="email"
                                 placeholder="Email"
@@ -143,13 +190,21 @@ const Authentication: React.FC = () => {
                         </div>
 
                         <div className={styles.infield}>
+                            <i className="fa-solid fa-lock"></i>
                             <input
+                                id="passwordInput01"
                                 type="password"
                                 placeholder="Password"
                                 name="password"
                                 value={credentials.password}
                                 onChange={handleRegisterInputChange}
                             />
+                            <i id={styles.eyeOpen01} onClick={handleEyeOpenClick} className="fa-solid fa-eye"></i>
+                            <i
+                                id={styles.eyeClose01}
+                                onClick={handleEyeCloseClick}
+                                className="fa-solid fa-eye-slash"
+                            ></i>
                             <label></label>
                         </div>
                         <button type="submit">Sign Up</button>
@@ -172,6 +227,7 @@ const Authentication: React.FC = () => {
                         </div>
                         <span>or use your account</span>
                         <div className={styles.infield}>
+                            <i className="fa-solid fa-envelope"></i>
                             <input
                                 type="email"
                                 placeholder="Email"
@@ -182,13 +238,21 @@ const Authentication: React.FC = () => {
                             <label></label>
                         </div>
                         <div className={styles.infield}>
+                            <i className="fa-solid fa-lock"></i>
                             <input
+                                id="passwordInput02"
                                 type="password"
                                 placeholder="Password"
                                 name="password"
                                 value={credentials.password}
                                 onChange={handleLoginInputChange}
                             />
+                            <i id={styles.eyeOpen02} onClick={handleEyeOpenClick} className="fa-solid fa-eye"></i>
+                            <i
+                                id={styles.eyeClose02}
+                                onClick={handleEyeCloseClick}
+                                className="fa-solid fa-eye-slash"
+                            ></i>
                             <label></label>
                         </div>
                         <a href="#" className={styles.forgot}>
@@ -220,6 +284,38 @@ const Authentication: React.FC = () => {
                     ></button>
                 </div>
             </div>
+            <ul className={styles.backgroundSection}>
+                <li>
+                    <a href="/">
+                        <i className="fa-solid fa-house-user"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="/">
+                        <i className="fa-solid fa-house-user"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="/">
+                        <i className="fa-solid fa-house-user"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="/">
+                        <i className="fa-solid fa-house-user"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="/">
+                        <i className="fa-solid fa-house-user"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="/">
+                        <i className="fa-solid fa-house-user"></i>
+                    </a>
+                </li>
+            </ul>
         </>
     );
 };

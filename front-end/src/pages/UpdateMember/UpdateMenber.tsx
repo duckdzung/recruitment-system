@@ -4,9 +4,11 @@ import '../../assets/fonts/fontawesome-free-6.5.2/css/all.min.css';
 import React, { useState, useEffect } from 'react';
 
 const UpdateMember: React.FC = () => {
+    // State for animation UI
     const [isRightPanelActive, setRightPanelActive] = useState(false);
     const [isBtnScaled, setBtnScaled] = useState(false);
-    // ------------------------------------------------------------------ //
+
+    // Handle for css
     useEffect(() => {
         document.body.style.height = '100vh';
         document.body.style.background = '#f6f5f7';
@@ -24,8 +26,7 @@ const UpdateMember: React.FC = () => {
         };
     }, []);
 
-    // ------------------------------------------------------------------ //
-
+    // Handle for Overlay Button click
     const handleOverlayButtonClick = () => {
         setRightPanelActive(!isRightPanelActive);
         setBtnScaled(false);
