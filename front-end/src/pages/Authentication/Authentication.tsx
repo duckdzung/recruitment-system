@@ -86,6 +86,7 @@ const Authentication: React.FC = () => {
             document.body.style.background = '';
             document.body.style.display = '';
             document.body.style.placeContent = '';
+            document.body.style.overflow = '';
         };
     }, []);
 

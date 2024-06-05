@@ -80,11 +80,13 @@ const Recruitment: React.FC = () => {
         document.body.style.background = '#f6f5f7';
         document.body.style.display = 'grid';
         document.body.style.placeContent = 'center';
+        document.body.style.overflow = 'hidden';
         return () => {
             document.body.style.height = '';
             document.body.style.background = '';
             document.body.style.display = '';
             document.body.style.placeContent = '';
+            document.body.style.overflow = '';
         };
     }, []);
 
@@ -190,142 +192,180 @@ const Recruitment: React.FC = () => {
     };
 
     return (
-        <div className={clsx(styles.container, { [styles.rightPanelActive]: isRightPanelActive })} id="container">
-            <div className={clsx(styles.formContainer, styles.signUpContainer)}>
-                <form onSubmit={handleSubmit}>
-                    <h1>Recruitment Form</h1>
-                    <span>Share your thoughts with the world from today</span>
-                    <div className={styles.infield}>
-                        <textarea
-                            cols={30}
-                            rows={5}
-                            placeholder="Job Describe"
-                            name="JobDescribe"
-                            value={jobDescribe}
-                            onChange={(e) => setJobDescribe(e.target.value)}
-                        />
-                    </div>
-                    <div className={styles.infield}>
-                        <textarea
-                            cols={30}
-                            rows={5}
-                            placeholder="Requested Information"
-                            name="RequestedInformation"
-                            value={requestedInformation}
-                            onChange={(e) => setRequestedInformation(e.target.value)}
-                        />
-                    </div>
-                    <button type="submit">Submit</button>
-                </form>
-            </div>
-
-            <div className={clsx(styles.formContainer, styles.signInContainer)}>
-                <form>
-                    <h1>Recruitment Form</h1>
-                    <span>Share your thoughts with the world from today</span>
-                    <div className={styles.infield}>
-                        <input
-                            type="text"
-                            placeholder="Job Position"
-                            name="JobPosition"
-                            value={jobPosition}
-                            onChange={(e) => setJobPosition(e.target.value)}
-                        />
-                        <label></label>
-                    </div>
-                    <div className={styles.infield}>
-                        <input
-                            type="number"
-                            placeholder="Quantity"
-                            name="Quantity"
-                            value={quantity || ''}
-                            min={1}
-                            onChange={(e) => setQuantity(Number(e.target.value))}
-                        />
-                        <label></label>
-                    </div>
-                    <div className={styles.infield}>
-                        <select
-                            name="timePeriod"
-                            className={styles.datePicker}
-                            value={timePeriod || ''}
-                            onChange={handleSetTimePeriod}
-                        >
-                            <option value="" disabled>
-                                Select Time Period
-                            </option>
-                            <option value={TimePeriodType.ONE_WEEK}>1 week</option>
-                            <option value={TimePeriodType.TWO_WEEKS}>2 weeks</option>
-                            <option value={TimePeriodType.ONE_MONTH}>1 month</option>
-                            <option value={TimePeriodType.TWO_MONTHS}>2 months</option>
-                        </select>
-                        <label></label>
-                    </div>
-                    <div className={styles.infield}>
-                        <input
-                            className={styles.datePicker}
-                            type="datetime-local"
-                            placeholder="Recruitment Time"
-                            name="RecruitmentTime"
-                            value={recruitmentTime}
-                            onChange={(e) => setRecruitmentTime(e.target.value)}
-                        />
-
-                        <label></label>
-                    </div>
-                </form>
-            </div>
-
-            <div className={styles.overlayContainer} id="overlayCon">
-                <div className={styles.overlay}>
-                    <div className={clsx(styles.overlayPanel, styles.overlayLeft)}>
-                        <h1>Welcome to ABC Company!</h1>
-                        <p>Choose type of recruitment form</p>
-                        <div className={styles.recMethod}>
-                            {[newSpaper, adBanner, onlWebsite].map((icon, index) => (
-                                <div
-                                    key={index}
-                                    className={clsx(styles.method, {
-                                        [styles.methodHighlight]: highlightedIcon === index,
-                                    })}
-                                    onClick={() => handleIconClick(index)}
-                                >
-                                    <img src={icon} alt={`${icon} recruitment method`} />
-                                </div>
-                            ))}
+        <>
+            <div className={clsx(styles.container, { [styles.rightPanelActive]: isRightPanelActive })} id="container">
+                <div className={clsx(styles.formContainer, styles.signUpContainer)}>
+                    <form onSubmit={handleSubmit}>
+                        <h1>Recruitment Form</h1>
+                        <span>Share your thoughts with the world from today</span>
+                        <div className={styles.infield}>
+                            <textarea
+                                cols={30}
+                                rows={5}
+                                placeholder="Job Describe"
+                                name="JobDescribe"
+                                value={jobDescribe}
+                                onChange={(e) => setJobDescribe(e.target.value)}
+                            />
                         </div>
-                        <button className={styles.previousBtn} onClick={handleOverlayButtonClick}>
-                            Previous
-                        </button>
-                    </div>
-                    <div className={clsx(styles.overlayPanel, styles.overlayRight)}>
-                        <h1>Hello, Friend!</h1>
-                        <p>Choose type of recruitment form</p>
-                        <div className={styles.recMethod}>
-                            {[newSpaper, adBanner, onlWebsite].map((icon, index) => (
-                                <div
-                                    key={index}
-                                    className={clsx(styles.method, {
-                                        [styles.methodHighlight]: highlightedIcon === index,
-                                    })}
-                                    onClick={() => handleIconClick(index)}
-                                >
-                                    <img src={icon} alt={`${icon} recruitment method`} />
-                                </div>
-                            ))}
+                        <div className={styles.infield}>
+                            <textarea
+                                cols={30}
+                                rows={5}
+                                placeholder="Requested Information"
+                                name="RequestedInformation"
+                                value={requestedInformation}
+                                onChange={(e) => setRequestedInformation(e.target.value)}
+                            />
                         </div>
-                        <button className={styles.nextBtn} onClick={handleOverlayButtonClick}>
-                            Next
-                        </button>
-                    </div>
+                        <button type="submit">Submit</button>
+                    </form>
                 </div>
-                <button
-                    id={styles.overlayBtn}
-                    className={clsx({ [styles.btnScaled]: isBtnScaled })}
-                    onClick={handleOverlayButtonClick}
-                ></button>
+
+                <div className={clsx(styles.formContainer, styles.signInContainer)}>
+                    <form>
+                        <h1>Recruitment Form</h1>
+                        <span>Share your thoughts with the world from today</span>
+                        <div className={styles.infield}>
+                            <i className="fa-solid fa-circle-user"></i>
+                            <input
+                                type="text"
+                                placeholder="Job Position"
+                                name="JobPosition"
+                                value={jobPosition}
+                                onChange={(e) => setJobPosition(e.target.value)}
+                            />
+                            <label></label>
+                        </div>
+                        <div className={styles.infield}>
+                            <i className="fa-solid fa-user-plus"></i>
+                            <input
+                                type="number"
+                                placeholder="Quantity"
+                                name="Quantity"
+                                value={quantity || ''}
+                                min={1}
+                                onChange={(e) => setQuantity(Number(e.target.value))}
+                            />
+                            <label></label>
+                        </div>
+                        <div className={styles.infield}>
+                            <i className="fa-solid fa-calendar-day"></i>
+                            <select
+                                name="timePeriod"
+                                className={styles.datePicker}
+                                value={timePeriod || ''}
+                                onChange={handleSetTimePeriod}
+                            >
+                                <option value="" disabled>
+                                    Select Time Period
+                                </option>
+                                <option value={TimePeriodType.ONE_WEEK}>1 week</option>
+                                <option value={TimePeriodType.TWO_WEEKS}>2 weeks</option>
+                                <option value={TimePeriodType.ONE_MONTH}>1 month</option>
+                                <option value={TimePeriodType.TWO_MONTHS}>2 months</option>
+                            </select>
+                            <label></label>
+                        </div>
+                        <div className={styles.infield}>
+                            <i className="fa-solid fa-calendar-check"></i>
+                            <input
+                                className={styles.datePicker}
+                                type="datetime-local"
+                                placeholder="Recruitment Time"
+                                name="RecruitmentTime"
+                                value={recruitmentTime}
+                                onChange={(e) => setRecruitmentTime(e.target.value)}
+                            />
+
+                            <label></label>
+                        </div>
+                    </form>
+                </div>
+
+                <div className={styles.overlayContainer} id="overlayCon">
+                    <div className={styles.overlay}>
+                        <div className={clsx(styles.overlayPanel, styles.overlayLeft)}>
+                            <h1>Welcome to ABC Company!</h1>
+                            <p>Choose type of recruitment form</p>
+                            <div className={styles.recMethod}>
+                                {[newSpaper, adBanner, onlWebsite].map((icon, index) => (
+                                    <div
+                                        key={index}
+                                        className={clsx(styles.method, {
+                                            [styles.methodHighlight]: highlightedIcon === index,
+                                        })}
+                                        onClick={() => handleIconClick(index)}
+                                    >
+                                        <img src={icon} alt={`${icon} recruitment method`} />
+                                    </div>
+                                ))}
+                            </div>
+                            <button className={styles.previousBtn} onClick={handleOverlayButtonClick}>
+                                Previous
+                            </button>
+                        </div>
+                        <div className={clsx(styles.overlayPanel, styles.overlayRight)}>
+                            <h1>Hello, Friend!</h1>
+                            <p>Choose type of recruitment form</p>
+                            <div className={styles.recMethod}>
+                                {[newSpaper, adBanner, onlWebsite].map((icon, index) => (
+                                    <div
+                                        key={index}
+                                        className={clsx(styles.method, {
+                                            [styles.methodHighlight]: highlightedIcon === index,
+                                        })}
+                                        onClick={() => handleIconClick(index)}
+                                    >
+                                        <img src={icon} alt={`${icon} recruitment method`} />
+                                    </div>
+                                ))}
+                            </div>
+                            <button className={styles.nextBtn} onClick={handleOverlayButtonClick}>
+                                Next
+                            </button>
+                        </div>
+                    </div>
+                    <button
+                        id={styles.overlayBtn}
+                        className={clsx({ [styles.btnScaled]: isBtnScaled })}
+                        onClick={handleOverlayButtonClick}
+                    ></button>
+                </div>
             </div>
-        </div>
+            <ul className={styles.backgroundSection}>
+                <li>
+                    <a href="/">
+                        <i className="fa-solid fa-house-user"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="/">
+                        <i className="fa-solid fa-house-user"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="/">
+                        <i className="fa-solid fa-house-user"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="/">
+                        <i className="fa-solid fa-house-user"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="/">
+                        <i className="fa-solid fa-house-user"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="/">
+                        <i className="fa-solid fa-house-user"></i>
+                    </a>
+                </li>
+            </ul>
+        </>
     );
 };
 

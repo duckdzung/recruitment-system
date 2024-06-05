@@ -233,7 +233,6 @@
         color: white;
     }
 }
-
 /* CSS for Banner02 */
 
 /* CSS for Banner03 */
@@ -306,98 +305,4 @@
         text-decoration: underline;
     }
 }
-
 /* CSS for Banner03 */
-
-/* CSS for footer */
-
-.footer {
-    display: grid;
-    grid-template-rows: 1fr 1fr;
-}
-
-.footerTop {
-    display: flex;
-    background-color: #0aadeb;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0px 50px;
-    border-radius: 5px;
-}
-
-.footerTopLeft {
-    gap: 20px;
-    font-size: 20px;
-    font-weight: bold;
-}
-
-.footerTop {
-    > .footerTopLeft {
-        > a {
-            font-size: 50px;
-            color: black;
-            background-color: white;
-            height: 90px;
-            width: 90px;
-            border-radius: 50%;
-        }
-    }
-}
-
-.footerTop {
-    > .footerTopLeft {
-        > a:hover {
-            color: #0aadeb;
-        }
-    }
-}
-
-.footerTopRight {
-    text-transform: uppercase;
-    font-weight: bold;
-    font-size: 14px;
-    border: 2px solid white;
-    height: 50px;
-    width: 200px;
-    border-radius: 10px;
-}
-
-.footerTopRight {
-    &:hover {
-        font-size: 16px;
-        height: 60px;
-        width: 210px;
-        transition: all 0.25s ease-in-out;
-    }
-}
-
-.footerBottom {
-    justify-content: space-around;
-    font-size: 16px;
-}
-
-.footerBottom {
-    > a,
-    p {
-        color: black;
-    }
-}
-
-.footerBottom {
-    > a:hover {
-        color: #0aadeb;
-    }
-}
-
-/* CSS for footer */
-
-/* CSS for backtop */
-.backtop {
-    font-size: 50px;
-    color: rgba(10, 173, 235, 0.4);
-    position: fixed;
-    right: 20px;
-    bottom: 40px;
-    cursor: pointer;
-}
-/* CSS for backtop */
