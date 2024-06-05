@@ -14,6 +14,7 @@ import banner0402 from '../../assets/images/banner0402.png';
 import banner0403 from '../../assets/images/banner0403.png';
 
 import Header from '../../components/Header/Header';
+import Footer from '../../components/Footer/Footer';
 
 const Home = () => {
     useEffect(() => {
@@ -194,33 +195,7 @@ const Home = () => {
                     </div>
                 </div>
 
-                <footer className={styles.footer}>
-                    <div className={clsx(styles.footerTop, styles.displayFlex)}>
-                        <div className={clsx(styles.displayFlex, styles.centered, styles.footerTopLeft)}>
-                            <a className={clsx(styles.displayFlex, styles.centered)} href="">
-                                <i className="fa-regular fa-calendar-check"></i>
-                            </a>
-                            <p>Call adviser for Emphires HR outsourcing service business</p>
-                        </div>
-
-                        <a href="">
-                            <div className={clsx(styles.displayFlex, styles.centered, styles.footerTopRight)}>
-                                <p>Book a consultants</p>
-                            </div>
-                        </a>
-                    </div>
-
-                    <div className={clsx(styles.displayFlex, styles.centered, styles.footerBottom)}>
-                        <p>Copyright © 2021 Emphires All Rights Reserved</p>
-                        <a href="">Privacy & Policy</a>
-                        <a href="">Conditions</a>
-                        <a href="">Refund Policy</a>
-                    </div>
-                </footer>
-
-                <div id="backtop" className={styles.backtop}>
-                    <i className="fa-solid fa-circle-chevron-up"></i>
-                </div>
+                <Footer />
             </div>
         </>
     );

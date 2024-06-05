@@ -28,12 +28,11 @@ const App: React.FC = () => {
 
                 <Route element={<PublicRoute restricted={false} />}>
                     <Route path="/" element={<Home />} />
-                    <Route path="/update-member" element={<UpdateMember />} />
                 </Route>
 
                 {/* Protected routes */}
                 <Route element={<ProtectedRoute allowRoutes={[Role.MEMBER]} />}>
-                    {/* <Route path="/update-member" element={<UpdateMember />} /> */}
+                    <Route path="/update-member" element={<UpdateMember />} />
                 </Route>
 
                 <Route element={<ProtectedRoute allowRoutes={[Role.ENTERPRISE]} />}>

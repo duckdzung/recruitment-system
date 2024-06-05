@@ -79,7 +79,7 @@ const Header = () => {
                                     <ul>
                                         <li>
                                             <Link to="/login" className={styles.dropdownItem}>
-                                                <i className="fa-solid fa-arrow-right-from-bracket"></i>
+                                                <i className="fa-solid fa-arrow-right-to-bracket"></i>
                                                 <span>Login</span>
                                             </Link>
                                         </li>
