@@ -3,7 +3,6 @@ import styles from './Home.module.scss';
 import '../../assets/fonts/fontawesome-free-6.5.2/css/all.min.css';
 import clsx from 'clsx';
 
-import backgroundImage from '../../assets/images/background.png';
 import epm from '../../assets/images/expert-management.png';
 import banner0201 from '../../assets/images/banner0201.png';
 import banner0202 from '../../assets/images/banner0202.png';
@@ -18,113 +17,124 @@ import Footer from '../../components/Footer/Footer';
 
 const Home = () => {
     useEffect(() => {
-        document.body.style.backgroundImage = `url(${backgroundImage})`;
-        document.body.style.backgroundRepeat = 'no-repeat';
         document.body.style.overflowX = 'hidden';
+        document.body.style.margin = '0';
         return () => {
-            document.body.style.backgroundImage = '';
+            document.body.style.overflowX = '';
+            document.body.style.margin = '';
         };
     }, []);
 
     return (
         <>
             <div className={styles.home}>
-                <Header />
+                <div className={styles.group}>
+                    <Header />
 
-                <div className={styles.firstBanner}>
-                    <div className={clsx(styles.displayFlex, styles.centered)}>
-                        <div style={{ marginLeft: '225px' }}>
-                            <p className={clsx(styles.nonePaddingMargin, styles.headText)}>Hr is about People</p>
-                            <h1 className={clsx(styles.nonePaddingMargin, styles.bodyText)}>
-                                Human
-                                <span style={{ color: '#0AADEB' }}>Resource</span> <br />
-                                Solution Partner
-                            </h1>
+                    <div className={styles.firstBanner}>
+                        <div className={styles.firstBannerCol01}>
+                            <div className={styles.firstBannerCol01Block}>
+                                <p className={clsx(styles.nonePaddingMargin, styles.headText)}>Hr is about People</p>
+                                <h1 className={clsx(styles.nonePaddingMargin, styles.bodyText)}>
+                                    Human
+                                    <span style={{ color: '#0AADEB' }}> Resource</span> <br />
+                                    Solution Partner
+                                </h1>
 
-                            <div className={clsx(styles.firstBannerCol01Row02, styles.displayFlex)}>
-                                <a href="">
-                                    <div className={clsx(styles.contactButton, styles.displayFlex)}>
-                                        <p className={styles.nonePaddingMargin}>Contact Us</p>
-                                    </div>
-                                </a>
-                                <div className={clsx(styles.displayFlex, styles.centered)}>
-                                    <a href="" className={clsx(styles.displayFlex, styles.centered, styles.playButton)}>
-                                        <i className="fa-solid fa-circle-play play-button"></i>
+                                <div className={clsx(styles.firstBannerCol01Row02, styles.displayFlex)}>
+                                    <a href="">
+                                        <div className={clsx(styles.contactButton, styles.displayFlex)}>
+                                            <p className={styles.nonePaddingMargin}>Contact Us</p>
+                                        </div>
                                     </a>
-                                    <div
-                                        className={clsx(styles.displayFlex, styles.centered, styles.contactButtonTitle)}
-                                    >
-                                        <p>How We Work</p>
+                                    <div className={clsx(styles.displayFlex, styles.centered)}>
+                                        <a
+                                            href=""
+                                            className={clsx(styles.displayFlex, styles.centered, styles.playButton)}
+                                        >
+                                            <i className="fa-solid fa-circle-play play-button"></i>
+                                        </a>
+                                        <div
+                                            className={clsx(
+                                                styles.displayFlex,
+                                                styles.centered,
+                                                styles.contactButtonTitle,
+                                            )}
+                                        >
+                                            <p>How We Work</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div className={clsx(styles.displayFlex, styles.firstBannerPicture)}>
-                        <img src={epm} alt="expert management" />
+                        <div className={clsx(styles.displayFlex, styles.firstBannerCol02)}>
+                            <img src={epm} alt="expert management" />
+                        </div>
                     </div>
                 </div>
 
                 <div className={styles.secondBanner}>
-                    <div className={styles.secondBannerItem}>
-                        <div className={clsx(styles.displayFlex, styles.bannerNumber, styles.centered)}>
-                            <img src={banner0201} alt="Second banner item 01." />
-                            <p>01</p>
-                        </div>
-                        <div style={{ margin: '0px 10px', marginBottom: '10px' }}>
-                            <p className={styles.headContent}>Compensation Consulting</p>
-                            <p className={styles.bodyContent}>
-                                We provide broad menu employment services for a companies.
-                            </p>
-                        </div>
-                        <a href="">
-                            <div className={clsx(styles.rectangle, styles.displayFlex, styles.centered)}>
-                                <i className="fa-solid fa-arrow-right-long"></i>
+                    <div className={styles.secondBannerBlock}>
+                        <div draggable="true" className={styles.secondBannerItem}>
+                            <div className={clsx(styles.bannerNumber, styles.displayFlex, styles.centered)}>
+                                <img src={banner0201} alt="Second banner item 01." />
+                                <p>01</p>
                             </div>
-                        </a>
-                    </div>
+                            <div style={{ margin: '0px 10px', marginBottom: '10px' }}>
+                                <p className={styles.headContent}>Compensation Consulting</p>
+                                <p className={styles.bodyContent}>
+                                    We provide broad menu employment services for a companies.
+                                </p>
+                            </div>
+                            <a href="">
+                                <div className={clsx(styles.rectangle, styles.displayFlex, styles.centered)}>
+                                    <i className="fa-solid fa-arrow-right-long"></i>
+                                </div>
+                            </a>
+                        </div>
 
-                    <div className={styles.secondBannerItem}>
-                        <div className={clsx(styles.displayFlex, styles.bannerNumber, styles.centered)}>
-                            <img src={banner0202} alt="Second banner item 02." />
-                            <p>02</p>
-                        </div>
-                        <div style={{ margin: '0px 10px', marginBottom: '10px' }}>
-                            <p className={styles.headContent}>Leadership Training</p>
-                            <p className={styles.bodyContent}>
-                                We provide broad menu employment services for a companies.
-                            </p>
-                        </div>
-                        <a href="">
-                            <div className={clsx(styles.rectangle, styles.displayFlex, styles.centered)}>
-                                <i className="fa-solid fa-arrow-right-long"></i>
+                        <div draggable="true" className={styles.secondBannerItem}>
+                            <div className={clsx(styles.displayFlex, styles.bannerNumber, styles.centered)}>
+                                <img src={banner0202} alt="Second banner item 02." />
+                                <p>02</p>
                             </div>
-                        </a>
-                    </div>
+                            <div style={{ margin: '0px 10px', marginBottom: '10px' }}>
+                                <p className={styles.headContent}>Leadership Training</p>
+                                <p className={styles.bodyContent}>
+                                    We provide broad menu employment services for a companies.
+                                </p>
+                            </div>
+                            <a href="">
+                                <div className={clsx(styles.rectangle, styles.displayFlex, styles.centered)}>
+                                    <i className="fa-solid fa-arrow-right-long"></i>
+                                </div>
+                            </a>
+                        </div>
 
-                    <div className={styles.secondBannerItem}>
-                        <div className={clsx(styles.displayFlex, styles.bannerNumber, styles.centered)}>
-                            <img src={banner0203} alt="Second banner item 03." />
-                            <p>03</p>
-                        </div>
-                        <div style={{ margin: '0px 10px', marginBottom: '10px' }}>
-                            <p className={styles.headContent}>Talent Acquisition</p>
-                            <p className={styles.bodyContent}>
-                                We provide broad menu employment services for a companies.
-                            </p>
-                        </div>
-                        <a href="">
-                            <div className={clsx(styles.rectangle, styles.displayFlex, styles.centered)}>
-                                <i className="fa-solid fa-arrow-right-long"></i>
+                        <div draggable="true" className={styles.secondBannerItem}>
+                            <div className={clsx(styles.displayFlex, styles.bannerNumber, styles.centered)}>
+                                <img src={banner0203} alt="Second banner item 03." />
+                                <p>03</p>
                             </div>
-                        </a>
+                            <div style={{ margin: '0px 10px', marginBottom: '10px' }}>
+                                <p className={styles.headContent}>Talent Acquisition</p>
+                                <p className={styles.bodyContent}>
+                                    We provide broad menu employment services for a companies.
+                                </p>
+                            </div>
+                            <a href="">
+                                <div className={clsx(styles.rectangle, styles.displayFlex, styles.centered)}>
+                                    <i className="fa-solid fa-arrow-right-long"></i>
+                                </div>
+                            </a>
+                        </div>
                     </div>
 
                     <div className={styles.secondBannerBackground}>
                         <img src={banner03} alt="third-banner" />
-                        <div className={clsx(styles.displayFlex, styles.centered, styles.backgroundText)}>
-                            <div className={clsx(styles.displayFlex, styles.centered, styles.leftText)}>
+                        <div className={clsx(styles.backgroundText, styles.displayFlex, styles.centered)}>
+                            <div className={clsx(styles.leftText, styles.displayFlex, styles.centered)}>
                                 <i className="fa-solid fa-quote-right"></i>
                                 <div>
                                     <p>
@@ -157,7 +167,7 @@ const Home = () => {
                         </p>
                     </div>
 
-                    <div className={clsx(styles.displayFlex, styles.centered, styles.thirdBannerBottom)}>
+                    <div className={clsx(styles.thirdBannerBottom, styles.displayFlex, styles.centered)}>
                         <div className={styles.thirdBannerBottomLeft}>
                             <img src={banner0401} alt="The 4st Banner." />
                         </div>
