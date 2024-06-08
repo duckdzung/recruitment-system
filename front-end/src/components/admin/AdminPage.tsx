@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Layout, Menu } from 'antd';
 import { Link, Outlet, useLocation } from 'react-router-dom';
-import logo from '../../assets/images/logo.png';
+import logo from '../../assets/images/logo.svg';
 
 const { Header, Content, Footer } = Layout;
 
