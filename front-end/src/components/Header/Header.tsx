@@ -130,6 +130,10 @@ const Header = () => {
                                         </li>
                                         <li className={styles.locationListItem}>
                                             <i className="fa-solid fa-location-dot"></i>
+                                            <span>Kiên Giang</span>
+                                        </li>
+                                        <li className={styles.locationListItem}>
+                                            <i className="fa-solid fa-location-dot"></i>
                                             <span>An Giang</span>
                                         </li>
                                         <li className={styles.locationListItem}>
@@ -159,12 +163,12 @@ const Header = () => {
                         <img src={logo} alt="logo" />
                     </a>
                     <div className={clsx(styles.menuItem, styles.displayFlex)}>
-                        <a href="">Home</a>
+                        <a href="/">Home</a>
                         <a href="">Pages</a>
                         <a href="">Services</a>
                         <a href="">Projects</a>
                         <a href="">Blog</a>
-                        <a href="">Contact Us</a>
+                        <a href="/contact">Contact Us</a>
                     </div>
                 </div>
 
