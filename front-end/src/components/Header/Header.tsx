@@ -159,7 +159,7 @@ const Header = () => {
 
             <div className={styles.headerBottom}>
                 <div className={clsx(styles.leftBottom, styles.displayFlex)}>
-                    <a href="">
+                    <a href="/">
                         <img src={logo} alt="logo" />
                     </a>
                     <div className={clsx(styles.menuItem, styles.displayFlex)}>
