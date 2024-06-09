@@ -42,7 +42,7 @@ const Home = () => {
                                 </h1>
 
                                 <div className={clsx(styles.firstBannerCol01Row02, styles.displayFlex)}>
-                                    <a href="">
+                                    <a href="/contact">
                                         <div className={clsx(styles.contactButton, styles.displayFlex)}>
                                             <p className={styles.nonePaddingMargin}>Contact Us</p>
                                         </div>

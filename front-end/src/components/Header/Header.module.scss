@@ -169,6 +169,7 @@
     height: 100%;
     background-color: rgba(0, 0, 0, 0.9);
     z-index: 1;
+    animation: growth 0.3s ease-in, fadeIn 0.5s ease-in;
 
     > i {
         position: fixed;
@@ -177,6 +178,26 @@
         font-size: 30px;
         top: 0;
         right: 0;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes growth {
+    from {
+        height: 0%;
+        transform: scale(0);
+    }
+    to {
+        height: 100%;
+        transform: scale(1);
     }
 }
 
