@@ -1,0 +1,242 @@
+.contactUs {
+    display: grid;
+    grid-template-rows: 550px 300px 650px 400px 250px;
+    font-family: 'Nunito', sans-serif;
+}
+
+.group {
+    display: grid;
+    grid-template-rows: 200px 350px;
+    overflow: hidden;
+    background-image: url('../../assets/images/contactUsBackground.jpeg');
+    background-repeat: no-repeat;
+    background-size: 115%;
+    position: relative;
+
+    > i {
+        position: absolute;
+        color: white;
+        animation: love 1s infinite alternate ease-in-out;
+    }
+}
+
+@keyframes love {
+    0% {
+        top: 20%;
+        left: 65%;
+        font-size: 50px;
+    }
+
+    100% {
+        top: 5%;
+        left: 60%;
+        font-size: 90px;
+    }
+}
+
+.firstBanner {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    margin-left: 330px;
+
+    > span {
+        color: white;
+        font-size: 40px;
+        font-weight: 800;
+    }
+
+    > p {
+        color: white;
+        font-size: 16px;
+    }
+}
+
+.secondBanner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+}
+
+.secondBannerItem {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    border: 1px solid rgb(214, 214, 214);
+    border-radius: 5px;
+    padding: 20px;
+    height: 90px;
+    width: 340px;
+    box-shadow: 0px 0px 50px rgba(175, 173, 173, 0.467);
+
+    &:hover {
+        transform: scale(1.1);
+        transition: all 0.3s ease-in-out;
+    }
+
+    > i {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #0aadeb;
+        color: white;
+        font-size: 40px;
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+
+        &:hover {
+            transform: scale(1.2);
+            transition: all 0.3s ease-in-out;
+        }
+    }
+}
+
+.secondBannerItemText {
+    > span {
+        font-weight: bold;
+        font-size: 20px;
+    }
+
+    > p {
+        font-size: 14px;
+        margin: 5px 0px;
+    }
+}
+
+.thirdBanner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.feedbackForm {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+    width: 70%;
+    border: 1px solid rgb(208, 208, 208);
+    box-shadow: 0px 0px 50px rgba(175, 173, 173, 0.467);
+    border-radius: 5px;
+    padding: 90px;
+}
+
+.leftForm {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    > span {
+        font-family: 'Mulish', sans-serif;
+        letter-spacing: 0.1cap;
+        color: #b0b6bf;
+        font-weight: 700;
+        font-size: 16px;
+    }
+
+    > p {
+        font-weight: 800;
+        font-size: 42px;
+        margin: 0;
+    }
+}
+
+.leftFormIcon {
+    display: flex;
+    gap: 15px;
+    font-size: 25px;
+    color: white;
+
+    > i {
+        padding: 20px;
+        background-color: #0aadeb;
+        border-radius: 5px;
+
+        &:hover {
+            transform: scale(1.2);
+            transition: all 0.3s ease-in-out;
+        }
+    }
+}
+
+.rightForm {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    > textarea {
+        border-radius: 5px;
+        height: 150px;
+        border: 1px solid rgb(208, 208, 208);
+        resize: none;
+        scrollbar-width: none;
+        padding: 10px;
+        font-family: 'Nunito', sans-serif;
+
+        &:focus {
+            outline: none;
+        }
+
+        &::placeholder {
+            color: #b0b6bf;
+        }
+    }
+
+    > button {
+        width: 200px;
+        height: 50px;
+        border-radius: 5px;
+        border: none;
+        cursor: pointer;
+        font-family: 'Nunito', sans-serif;
+        letter-spacing: 0.1cap;
+        font-size: 16px;
+        font-weight: 900;
+        color: white;
+        background-color: #0aadeb;
+        text-transform: uppercase;
+
+        &:hover {
+            transform: scale(1.1);
+            transition: all 0.3s ease-in-out;
+        }
+    }
+}
+
+.rightFormInput {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+
+    > input {
+        height: 50px;
+        padding: 0px 10px;
+        border-radius: 5px;
+        border: 1px solid rgb(208, 208, 208);
+
+        &:focus {
+            outline: none;
+        }
+
+        &::placeholder {
+            color: #b0b6bf;
+        }
+    }
+}
+
+.address {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    > iframe {
+        width: 100%;
+        height: 70%;
+        border-top: 5px solid white;
+        border-bottom: 5px solid white;
+        box-shadow: 0px 0px 50px rgba(175, 173, 173, 0.467);
+    }
+}
