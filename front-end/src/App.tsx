@@ -17,6 +17,9 @@ import { Role } from './types';
 import AdminPage from './components/admin/AdminPage';
 import CandidateListing from './components/admin/CandidateListing';
 import PaymentDetails from './components/admin/PaymentDetails';
+import PrivacyPolicy from './components/Legals/PrivacyPolicy';
+import TermsAndConditions from './components/Legals/TermsAndConditions';
+import RefundPolicy from './components/Legals/RefundPolicy';
 
 const App: React.FC = () => {
     return (
@@ -31,7 +34,11 @@ const App: React.FC = () => {
                 <Route element={<PublicRoute restricted={false} />}>
                     <Route path="/" element={<Home />} />
                     <Route path="/contact" element={<ContactUs />} />
-                    <Route path="/legal" element={<Legal />} />
+                    <Route path="/legal" element={<Legal />}>
+                        <Route path="privacy-policy" element={<PrivacyPolicy />} />
+                        <Route path="terms-and-conditions" element={<TermsAndConditions />} />
+                        <Route path="refund-policy" element={<RefundPolicy />} />
+                    </Route>
                 </Route>
 
                 {/* Protected routes */}
