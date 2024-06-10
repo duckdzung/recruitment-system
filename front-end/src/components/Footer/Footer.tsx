@@ -22,9 +22,9 @@ const Footer = () => {
 
                 <div className={clsx(styles.footerBottom, styles.displayFlex, styles.centered)}>
                     <p>Copyright © 2021 Emphires All Rights Reserved</p>
-                    <a href="">Privacy & Policy</a>
-                    <a href="">Conditions</a>
-                    <a href="">Refund Policy</a>
+                    <a href="/legal">Privacy & Policy</a>
+                    <a href="/legal">Conditions</a>
+                    <a href="/legal">Refund Policy</a>
                 </div>
             </footer>
 
