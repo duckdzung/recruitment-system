@@ -1,0 +1,75 @@
+.contactUs {
+    display: grid;
+    grid-template-rows: 550px auto 250px;
+    font-family: 'Nunito', sans-serif;
+}
+
+.group {
+    display: grid;
+    grid-template-rows: 200px 350px;
+    overflow: hidden;
+    background-image: url('../../assets/images/contactUsBackground.jpeg');
+    background-repeat: no-repeat;
+    background-size: 115%;
+    position: relative;
+
+    > i {
+        position: absolute;
+        color: white;
+        animation: love 1s infinite alternate ease-in-out;
+    }
+}
+
+@keyframes love {
+    0% {
+        top: 20%;
+        left: 65%;
+        font-size: 50px;
+    }
+
+    100% {
+        top: 10%;
+        left: 60%;
+        font-size: 70px;
+    }
+}
+
+.firstBanner {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    justify-content: flex-start;
+    margin-left: 330px;
+}
+
+.goal {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    color: white;
+    font-weight: bold;
+    padding: 15px;
+    border: 1px solid rgb(193, 193, 193);
+    border-radius: 5px;
+    cursor: pointer;
+    transform: skew(-15deg) scale(var(--scaleValue, 1));
+    transition: all 0.3s ease-in-out;
+
+    > i {
+        font-size: 30px;
+    }
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: var(--progress-width, 0%);
+        height: 100%;
+        background-color: #0aabeb4d;
+        transition: width 0.3s ease-in-out;
+        z-index: -1;
+    }
+}

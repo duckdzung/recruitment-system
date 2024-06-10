@@ -8,6 +8,7 @@ import ProtectedRoute from './routes/ProtectedRoute';
 
 import Home from './pages/Home/Home';
 import ContactUs from './pages/ContactUs/ContactUs';
+import Legal from './pages/Legal/Legal';
 import Authentication from './pages/Authentication/Authentication';
 import Recruitment from './pages/Recruitment/Recruitment';
 import UpdateMember from './pages/UpdateMember/UpdateMenber';
@@ -30,6 +31,7 @@ const App: React.FC = () => {
                 <Route element={<PublicRoute restricted={false} />}>
                     <Route path="/" element={<Home />} />
                     <Route path="/contact" element={<ContactUs />} />
+                    <Route path="/legal" element={<Legal />} />
                 </Route>
 
                 {/* Protected routes */}
