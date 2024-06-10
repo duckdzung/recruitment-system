@@ -60,12 +60,14 @@ const Header = () => {
                                 </div>
                                 <hr />
                                 <ul>
-                                    <li>
-                                        <Link to="/update-member" className={styles.dropdownItem}>
-                                            <i className="fa-solid fa-circle-up"></i>
-                                            <span>Update member</span>
-                                        </Link>
-                                    </li>
+                                    {role === Role.MEMBER && (
+                                        <li>
+                                            <Link to="/update-member" className={styles.dropdownItem}>
+                                                <i className="fa-solid fa-circle-up"></i>
+                                                <span>Update member</span>
+                                            </Link>
+                                        </li>
+                                    )}
 
                                     <li>
                                         <Link to="/profile" className={styles.dropdownItem}>
@@ -74,7 +76,7 @@ const Header = () => {
                                         </Link>
                                     </li>
 
-                                    {(role === 'PRESIDENT' || role === 'STAFF') && (
+                                    {(role === Role.ENTERPRISE || role === Role.STAFF) && (
                                         <li>
                                             <Link to="/system-management" className={styles.dropdownItem}>
                                                 <i className="fa-regular fa-folder-closed"></i>
