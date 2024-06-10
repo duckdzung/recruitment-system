@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
 
 const Header = () => {
     const dispatch = useAppDispatch();
-    const { isAuthenticated, role } = useSelector((state: RootState) => state.auth);
+    const { isAuthenticated, role, username } = useSelector((state: RootState) => state.auth);
 
     const handleLogout = (): void => {
         dispatch(logoutThunk());
@@ -56,7 +56,7 @@ const Header = () => {
                             <div className={styles.dropdownList}>
                                 <div>
                                     <i className="fa-solid fa-user"></i>
-                                    <span>Username</span>
+                                    <span>{username}</span>
                                 </div>
                                 <hr />
                                 <ul>
