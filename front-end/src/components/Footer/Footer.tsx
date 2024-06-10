@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import styles from './Footer.module.scss';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
     return (
@@ -22,9 +23,9 @@ const Footer = () => {
 
                 <div className={clsx(styles.footerBottom, styles.displayFlex, styles.centered)}>
                     <p>Copyright © 2021 Emphires All Rights Reserved</p>
-                    <a href="/legal">Privacy & Policy</a>
-                    <a href="/legal">Conditions</a>
-                    <a href="/legal">Refund Policy</a>
+                    <Link to="/legal/privacy-policy">Privacy & Policy</Link>
+                    <Link to="/legal/terms-and-conditions">Conditions</Link>
+                    <Link to="/legal/refund-policy">Refund Policy</Link>
                 </div>
             </footer>
 

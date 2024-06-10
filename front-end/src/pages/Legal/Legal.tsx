@@ -1,28 +1,52 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { MouseEventHandler } from 'react';
+import { animateScroll as scroll } from 'react-scroll';
 
 import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
-import PrivacyPolicy from '../../components/Legals/PrivacyPolicy';
-import TermsAndConditions from '../../components/Legals/TermsAndConditions';
-import RefundPolicy from '../../components/Legals/RefundPolicy';
 
 import styles from './Legal.module.scss';
+import { Outlet, useNavigate } from 'react-router-dom';
 
 const Legal = () => {
+    const navigate = useNavigate();
+
     useEffect(() => {
         document.body.style.overflowX = 'hidden';
         document.body.style.margin = '0';
+
+        // Scroll to top when component render first time
+        scroll.scrollToTop({
+            duration: 500,
+            smooth: true,
+        });
+
+        // Handle active button when component render first time
+        const pathname = location.pathname;
+        switch (pathname) {
+            case '/legal/privacy-policy':
+                goal01Ref.current?.style.setProperty('--progress-width', '100%');
+                goal01Ref.current?.style.setProperty('--scaleValue', '1.1');
+                break;
+
+            case '/legal/terms-and-conditions':
+                goal02Ref.current?.style.setProperty('--progress-width', '100%');
+                goal02Ref.current?.style.setProperty('--scaleValue', '1.1');
+                break;
+
+            case '/legal/refund-policy':
+                goal03Ref.current?.style.setProperty('--progress-width', '100%');
+                goal03Ref.current?.style.setProperty('--scaleValue', '1.1');
+                break;
+
+            default:
+                break;
+        }
         return () => {
             document.body.style.overflowX = '';
             document.body.style.margin = '';
         };
     }, []);
-
-    // State for show text
-    const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
-    const [showTermsAndConditions, setshowTermsAndConditions] = useState(false);
-    const [showRefundPolicy, setshowRefundPolicy] = useState(false);
 
     // Handle for goal click
     const goal01Ref = useRef<HTMLDivElement>(null);
@@ -44,21 +68,11 @@ const Legal = () => {
         });
 
         if (clickedGoalId === 'goal01') {
-            setShowPrivacyPolicy(true);
-        } else {
-            setShowPrivacyPolicy(false);
-        }
-
-        if (clickedGoalId === 'goal02') {
-            setshowTermsAndConditions(true);
-        } else {
-            setshowTermsAndConditions(false);
-        }
-
-        if (clickedGoalId === 'goal03') {
-            setshowRefundPolicy(true);
-        } else {
-            setshowRefundPolicy(false);
+            navigate('/legal/privacy-policy');
+        } else if (clickedGoalId === 'goal02') {
+            navigate('/legal/terms-and-conditions');
+        } else if (clickedGoalId === 'goal03') {
+            navigate('/legal/refund-policy');
         }
     };
 
@@ -82,9 +96,7 @@ const Legal = () => {
                 </div>
                 <i className="fa-regular fa-face-kiss-wink-heart"></i>
             </div>
-            {showPrivacyPolicy && <PrivacyPolicy />}
-            {showTermsAndConditions && <TermsAndConditions />}
-            {showRefundPolicy && <RefundPolicy />}
+            <Outlet />
             <Footer />
         </div>
     );
