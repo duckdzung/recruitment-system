@@ -10,31 +10,43 @@ import { Outlet, useNavigate } from 'react-router-dom';
 
 const Legal = () => {
     const navigate = useNavigate();
+    const pathname = location.pathname;
 
     useEffect(() => {
         document.body.style.overflowX = 'hidden';
         document.body.style.margin = '0';
 
-        // Scroll to top when component render first time
+        // Scroll to top when component render
         scroll.scrollToTop({
             duration: 500,
             smooth: true,
         });
 
-        // Handle active button when component render first time
-        const pathname = location.pathname;
+        // Handle active button when component render
         switch (pathname) {
             case '/legal/privacy-policy':
                 goal01Ref.current?.style.setProperty('--progress-width', '100%');
                 goal01Ref.current?.style.setProperty('--scaleValue', '1.1');
+                goal02Ref.current?.style.setProperty('--progress-width', '0%');
+                goal02Ref.current?.style.setProperty('--scaleValue', '1');
+                goal03Ref.current?.style.setProperty('--progress-width', '0%');
+                goal03Ref.current?.style.setProperty('--scaleValue', '1');
                 break;
 
             case '/legal/terms-and-conditions':
+                goal01Ref.current?.style.setProperty('--progress-width', '0%');
+                goal01Ref.current?.style.setProperty('--scaleValue', '1');
                 goal02Ref.current?.style.setProperty('--progress-width', '100%');
                 goal02Ref.current?.style.setProperty('--scaleValue', '1.1');
+                goal03Ref.current?.style.setProperty('--progress-width', '0%');
+                goal03Ref.current?.style.setProperty('--scaleValue', '1');
                 break;
 
             case '/legal/refund-policy':
+                goal01Ref.current?.style.setProperty('--progress-width', '0%');
+                goal01Ref.current?.style.setProperty('--scaleValue', '1');
+                goal02Ref.current?.style.setProperty('--progress-width', '0%');
+                goal02Ref.current?.style.setProperty('--scaleValue', '1.');
                 goal03Ref.current?.style.setProperty('--progress-width', '100%');
                 goal03Ref.current?.style.setProperty('--scaleValue', '1.1');
                 break;
@@ -46,7 +58,7 @@ const Legal = () => {
             document.body.style.overflowX = '';
             document.body.style.margin = '';
         };
-    }, []);
+    }, [pathname]);
 
     // Handle for goal click
     const goal01Ref = useRef<HTMLDivElement>(null);
