@@ -61,26 +61,33 @@ const Header = () => {
                                 <hr />
                                 <ul>
                                     <li>
-                                        <a href="#" className={styles.dropdownItem}>
-                                            <i className="fa-regular fa-address-card"></i>
-                                            <span>Profile</span>
-                                        </a>
+                                        <Link to="/update-member" className={styles.dropdownItem}>
+                                            <i className="fa-solid fa-circle-up"></i>
+                                            <span>Update member</span>
+                                        </Link>
                                     </li>
 
-                                    {(role === Role.PRESIDENT || role === Role.STAFF) && (
+                                    <li>
+                                        <Link to="/profile" className={styles.dropdownItem}>
+                                            <i className="fa-regular fa-address-card"></i>
+                                            <span>Profile</span>
+                                        </Link>
+                                    </li>
+
+                                    {(role === 'PRESIDENT' || role === 'STAFF') && (
                                         <li>
-                                            <a href="#" className={styles.dropdownItem}>
+                                            <Link to="/system-management" className={styles.dropdownItem}>
                                                 <i className="fa-regular fa-folder-closed"></i>
                                                 <span>System Management</span>
-                                            </a>
+                                            </Link>
                                         </li>
                                     )}
 
                                     <li>
-                                        <a href="#" className={styles.dropdownItem}>
+                                        <Link to="/settings" className={styles.dropdownItem}>
                                             <i className="fa-solid fa-gears"></i>
                                             <span>Settings</span>
-                                        </a>
+                                        </Link>
                                     </li>
 
                                     <li>
