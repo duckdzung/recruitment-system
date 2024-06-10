@@ -60,27 +60,36 @@ const Header = () => {
                                 </div>
                                 <hr />
                                 <ul>
-                                    <li>
-                                        <a href="#" className={styles.dropdownItem}>
-                                            <i className="fa-regular fa-address-card"></i>
-                                            <span>Profile</span>
-                                        </a>
-                                    </li>
-
-                                    {(role === Role.PRESIDENT || role === Role.STAFF) && (
+                                    {role === Role.MEMBER && (
                                         <li>
-                                            <a href="#" className={styles.dropdownItem}>
-                                                <i className="fa-regular fa-folder-closed"></i>
-                                                <span>System Management</span>
-                                            </a>
+                                            <Link to="/update-member" className={styles.dropdownItem}>
+                                                <i className="fa-solid fa-circle-up"></i>
+                                                <span>Update member</span>
+                                            </Link>
                                         </li>
                                     )}
 
                                     <li>
-                                        <a href="#" className={styles.dropdownItem}>
+                                        <Link to="/profile" className={styles.dropdownItem}>
+                                            <i className="fa-regular fa-address-card"></i>
+                                            <span>Profile</span>
+                                        </Link>
+                                    </li>
+
+                                    {(role === Role.ENTERPRISE || role === Role.STAFF) && (
+                                        <li>
+                                            <Link to="/system-management" className={styles.dropdownItem}>
+                                                <i className="fa-regular fa-folder-closed"></i>
+                                                <span>System Management</span>
+                                            </Link>
+                                        </li>
+                                    )}
+
+                                    <li>
+                                        <Link to="/settings" className={styles.dropdownItem}>
                                             <i className="fa-solid fa-gears"></i>
                                             <span>Settings</span>
-                                        </a>
+                                        </Link>
                                     </li>
 
                                     <li>

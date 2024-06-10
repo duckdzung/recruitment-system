@@ -1,12 +1,29 @@
 import clsx from 'clsx';
 import styles from './UpdateMember.module.scss';
 import '../../assets/fonts/fontawesome-free-6.5.2/css/all.min.css';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, FormEvent } from 'react';
+import { ApiResponse, MemberDetails } from '../../types';
+import { updateMember } from '../../services/memberService';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+
+const defaultMemberDetails = {
+    name: '',
+    phoneNum: '',
+    address: '',
+    companyName: '',
+    taxCode: '',
+};
 
 const UpdateMember: React.FC = () => {
     // State for animation UI
     const [isRightPanelActive, setRightPanelActive] = useState(false);
     const [isBtnScaled, setBtnScaled] = useState(false);
+
+    // State for form data
+    const [memberDetails, setMemberDetails] = useState<MemberDetails>(defaultMemberDetails);
+
+    const navigate = useNavigate();
 
     // Handle for css
     useEffect(() => {
@@ -33,64 +50,140 @@ const UpdateMember: React.FC = () => {
         window.requestAnimationFrame(() => {
             setBtnScaled(true);
         });
+
+        // Reset state
+        setMemberDetails(defaultMemberDetails);
+    };
+
+    // Handle input change for memberDetails
+    const handleMemberDetailsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setMemberDetails({
+            ...memberDetails,
+            [name]: value,
+        });
+    };
+
+    // Process form update member
+    const handleUpdateMemberSubmit = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        const response: ApiResponse = await updateMember(memberDetails);
+
+        // Update sucessfully
+        if (response && response.statusCode === 200) {
+            toast.success(response.message);
+            navigate('/');
+        }
     };
 
     return (
         <>
             <div className={clsx(styles.container, { [styles.rightPanelActive]: isRightPanelActive })} id="container">
                 <div className={clsx(styles.formContainer, styles.signUpContainer)}>
-                    <form action="#">
+                    <form onSubmit={handleUpdateMemberSubmit}>
                         <h1>Enterprise Role</h1>
                         <span>Continue with your role</span>
                         <div className={styles.infield}>
                             <i className="fa-solid fa-building"></i>
-                            <input type="text" placeholder="Company Name" name="CompanyName" />
+                            <input
+                                type="text"
+                                placeholder="Company Name"
+                                name="companyName"
+                                value={memberDetails.companyName}
+                                onChange={handleMemberDetailsChange}
+                            />
                             <label></label>
                         </div>
+
                         <div className={styles.infield}>
                             <i className="fa-solid fa-file-code"></i>
-                            <input type="text" placeholder="Tax Code" name="TaxCode" />
+                            <input
+                                type="text"
+                                placeholder="Tax Code"
+                                name="taxCode"
+                                value={memberDetails.taxCode}
+                                onChange={handleMemberDetailsChange}
+                            />
                             <label></label>
                         </div>
+
                         <div className={styles.infield}>
                             <i className="fa-solid fa-users"></i>
-                            <input type="text" placeholder="Company representative" name="CompanyRepresentative" />
+                            <input
+                                type="text"
+                                placeholder="Company representative"
+                                name="name"
+                                value={memberDetails.name}
+                                onChange={handleMemberDetailsChange}
+                            />
                             <label></label>
                         </div>
+
                         <div className={styles.infield}>
                             <i className="fa-solid fa-location-dot"></i>
-                            <input type="text" placeholder="Address" name="Address" />
+                            <input
+                                type="text"
+                                placeholder="Address"
+                                name="address"
+                                value={memberDetails.address}
+                                onChange={handleMemberDetailsChange}
+                            />
                             <label></label>
                         </div>
                         <div className={styles.infield}>
                             <i className="fa-solid fa-message"></i>
-                            <input type="text" placeholder="Contact" name="Contact" />
+                            <input
+                                type="text"
+                                placeholder="Phone number"
+                                name="phoneNum"
+                                value={memberDetails.phoneNum}
+                                onChange={handleMemberDetailsChange}
+                            />
                             <label></label>
                         </div>
-                        <button>Sign Up</button>
+                        <button type="submit">Sign Up</button>
                     </form>
                 </div>
 
                 <div className={clsx(styles.formContainer, styles.signInContainer)}>
-                    <form action="#">
+                    <form onSubmit={handleUpdateMemberSubmit}>
                         <h1>Candidate Role</h1>
                         <span>Continue with your role</span>
                         <div className={styles.infield}>
                             <i className="fa-solid fa-user"></i>
-                            <input type="text" placeholder="Full Name" name="FullName" />
+                            <input
+                                type="text"
+                                placeholder="Full Name"
+                                name="name"
+                                value={memberDetails.name}
+                                onChange={handleMemberDetailsChange}
+                            />
                             <label></label>
                         </div>
                         <div className={styles.infield}>
                             <i className="fa-solid fa-location-dot"></i>
-                            <input type="text" placeholder="Address" name="Address" />
+                            <input
+                                type="text"
+                                placeholder="Address"
+                                name="address"
+                                value={memberDetails.address}
+                                onChange={handleMemberDetailsChange}
+                            />
                             <label></label>
                         </div>
                         <div className={styles.infield}>
                             <i className="fa-solid fa-message"></i>
-                            <input type="text" placeholder="Contact" name="Contact" />
+                            <input
+                                type="text"
+                                placeholder="Phone number"
+                                name="phoneNum"
+                                value={memberDetails.phoneNum}
+                                onChange={handleMemberDetailsChange}
+                            />
                             <label></label>
                         </div>
-                        <button>Sign Up</button>
+                        <button type="submit">Sign Up</button>
                     </form>
                 </div>
 
