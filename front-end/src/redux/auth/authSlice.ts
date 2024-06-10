@@ -14,7 +14,11 @@ const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
-        loginSuccess: (state, action: PayloadAction<{ accessToken: string; refreshToken: string; role: Role }>) => {
+        loginSuccess: (
+            state,
+            action: PayloadAction<{ accessToken: string; refreshToken: string; role: Role; email: string }>,
+        ) => {
+            state.username = action.payload.email.split('@')[0];
             state.isAuthenticated = true;
             state.accessToken = action.payload.accessToken;
             state.refreshToken = action.payload.refreshToken;
