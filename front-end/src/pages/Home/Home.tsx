@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import styles from './Home.module.scss';
 import '../../assets/fonts/fontawesome-free-6.5.2/css/all.min.css';
 import clsx from 'clsx';
@@ -87,11 +88,11 @@ const Home = () => {
                                     We provide broad menu employment services for a companies.
                                 </p>
                             </div>
-                            <a href="">
+                            <Link to="/services/compensation-consulting">
                                 <div className={clsx(styles.rectangle, styles.displayFlex, styles.centered)}>
                                     <i className="fa-solid fa-arrow-right-long"></i>
                                 </div>
-                            </a>
+                            </Link>
                         </div>
 
                         <div draggable="true" className={styles.secondBannerItem}>
@@ -105,11 +106,11 @@ const Home = () => {
                                     We provide broad menu employment services for a companies.
                                 </p>
                             </div>
-                            <a href="">
+                            <Link to="/services/leadership-training">
                                 <div className={clsx(styles.rectangle, styles.displayFlex, styles.centered)}>
                                     <i className="fa-solid fa-arrow-right-long"></i>
                                 </div>
-                            </a>
+                            </Link>
                         </div>
 
                         <div draggable="true" className={styles.secondBannerItem}>
@@ -123,11 +124,11 @@ const Home = () => {
                                     We provide broad menu employment services for a companies.
                                 </p>
                             </div>
-                            <a href="">
+                            <Link to="/services/talent-acquisition">
                                 <div className={clsx(styles.rectangle, styles.displayFlex, styles.centered)}>
                                     <i className="fa-solid fa-arrow-right-long"></i>
                                 </div>
-                            </a>
+                            </Link>
                         </div>
                     </div>
 
