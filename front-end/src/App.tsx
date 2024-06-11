@@ -20,13 +20,10 @@ import PaymentDetails from './components/Admin/PaymentDetails';
 import PrivacyPolicy from './components/Legals/PrivacyPolicy';
 import TermsAndConditions from './components/Legals/TermsAndConditions';
 import RefundPolicy from './components/Legals/RefundPolicy';
-<<<<<<< Updated upstream
 import OrganizationalStructures from './pages/OrganizationalStructures/OrganizationalStructures';
-=======
 import EnterpiseListing from './components/Admin/EnterpriseListing';
 import JobAdvertisement from './components/Admin/JobAdvertisement';
 import CurriculumVitae from './components/Admin/CurriculumVitae';
->>>>>>> Stashed changes
 
 const App: React.FC = () => {
     return (

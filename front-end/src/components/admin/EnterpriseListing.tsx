@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Button, Input, Row, Col } from 'antd';
+import { Table, Input, Row, Col, Button } from 'antd';
 import type { GetProp, TableProps } from 'antd';
 import qs from 'qs';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
@@ -39,10 +39,10 @@ interface TableParams {
 
 const columns: ColumnsType<DataType> = [
     {
-        title: 'Name',
+        title: 'Enterprise',
         dataIndex: 'name',
         sorter: true,
-        width: '15%',
+        width: '10%',
     },
     {
         title: 'Address',
@@ -58,6 +58,16 @@ const columns: ColumnsType<DataType> = [
         title: 'Email',
         dataIndex: 'email',
         width: '15%',
+    },
+    {
+        title: 'Tax code',
+        dataIndex: 'taxCode',
+        width: '10%',
+    },
+    {
+        title: 'Expiration',
+        dataIndex: 'dateOfExpiration',
+        width: '10%',
     },
     {
         title: 'Validate',
@@ -95,7 +105,7 @@ const getRandomuserParams = (params: TableParams) => ({
     ...params,
 });
 
-const CandidateListing: React.FC = () => {
+const EnterpiseListing: React.FC = () => {
     const [data, setData] = useState<DataType[]>([]);
     const [loading, setLoading] = useState(false);
     const [tableParams, setTableParams] = useState<TableParams>({
@@ -146,7 +156,7 @@ const CandidateListing: React.FC = () => {
     return (
         <>
             <Row>
-                <h3 style={headingStyle}>CANDIDATE LISTING</h3>
+                <h3 style={headingStyle}>ENTERPRISE LISTING</h3>
             </Row>
             <Row>
                 <Col span={4} offset={20}>
@@ -175,4 +185,4 @@ const CandidateListing: React.FC = () => {
     );
 };
 
-export default CandidateListing;
+export default EnterpiseListing;
