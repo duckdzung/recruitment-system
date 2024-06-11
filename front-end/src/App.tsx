@@ -20,6 +20,7 @@ import PaymentDetails from './components/admin/PaymentDetails';
 import PrivacyPolicy from './components/Legals/PrivacyPolicy';
 import TermsAndConditions from './components/Legals/TermsAndConditions';
 import RefundPolicy from './components/Legals/RefundPolicy';
+import OrganizationalStructures from './pages/OrganizationalStructures/OrganizationalStructures';
 
 const App: React.FC = () => {
     return (
@@ -34,6 +35,7 @@ const App: React.FC = () => {
                 <Route element={<PublicRoute restricted={false} />}>
                     <Route path="/" element={<Home />} />
                     <Route path="/contact" element={<ContactUs />} />
+                    <Route path="/how-we-work" element={<OrganizationalStructures />} />
                     <Route path="/legal" element={<Legal />}>
                         <Route path="privacy-policy" element={<PrivacyPolicy />} />
                         <Route path="terms-and-conditions" element={<TermsAndConditions />} />

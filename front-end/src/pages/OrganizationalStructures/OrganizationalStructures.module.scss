@@ -1,0 +1,54 @@
+.contactUs {
+    display: grid;
+    grid-template-rows: 550px auto 250px;
+    font-family: 'Nunito', sans-serif;
+}
+
+.group {
+    display: grid;
+    grid-template-rows: 200px 350px;
+    overflow: hidden;
+    background-image: url('../../assets/images/contactUsBackground.jpeg');
+    background-repeat: no-repeat;
+    background-size: 115%;
+    position: relative;
+
+    > i {
+        position: absolute;
+        color: white;
+        animation: love 1s infinite alternate ease-in-out;
+    }
+}
+
+@keyframes love {
+    0% {
+        top: 20%;
+        left: 65%;
+        font-size: 50px;
+    }
+
+    100% {
+        top: 10%;
+        left: 60%;
+        font-size: 70px;
+    }
+}
+
+.firstBanner {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    margin-left: 330px;
+
+    > span {
+        color: white;
+        font-size: 40px;
+        font-weight: 800;
+    }
+
+    > p {
+        color: white;
+        font-size: 16px;
+    }
+}
