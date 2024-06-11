@@ -49,7 +49,7 @@ const Home = () => {
                                     </a>
                                     <div className={clsx(styles.displayFlex, styles.centered)}>
                                         <a
-                                            href=""
+                                            href="/how-we-work"
                                             className={clsx(styles.displayFlex, styles.centered, styles.playButton)}
                                         >
                                             <i className="fa-solid fa-circle-play play-button"></i>
@@ -199,7 +199,7 @@ const Home = () => {
                             </div>
 
                             <p>
-                                Get intrigued about our service pricing? <a href="">Learn More</a>
+                                Get intrigued about our service pricing? <a href="/how-we-work">Learn More</a>
                             </p>
                         </div>
                     </div>
