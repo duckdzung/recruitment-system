@@ -46,7 +46,7 @@ const Legal = () => {
                 goal01Ref.current?.style.setProperty('--progress-width', '0%');
                 goal01Ref.current?.style.setProperty('--scaleValue', '1');
                 goal02Ref.current?.style.setProperty('--progress-width', '0%');
-                goal02Ref.current?.style.setProperty('--scaleValue', '1.');
+                goal02Ref.current?.style.setProperty('--scaleValue', '1');
                 goal03Ref.current?.style.setProperty('--progress-width', '100%');
                 goal03Ref.current?.style.setProperty('--scaleValue', '1.1');
                 break;
