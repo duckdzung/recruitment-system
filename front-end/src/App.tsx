@@ -9,6 +9,7 @@ import ProtectedRoute from './routes/ProtectedRoute';
 import Home from './pages/Home/Home';
 import ContactUs from './pages/ContactUs/ContactUs';
 import Legal from './pages/Legal/Legal';
+import Services from './pages/Services/Services';
 import Authentication from './pages/Authentication/Authentication';
 import Recruitment from './pages/Recruitment/Recruitment';
 import UpdateMember from './pages/UpdateMember/UpdateMenber';
@@ -20,6 +21,9 @@ import PaymentDetails from './components/Admin/PaymentDetails';
 import PrivacyPolicy from './components/Legals/PrivacyPolicy';
 import TermsAndConditions from './components/Legals/TermsAndConditions';
 import RefundPolicy from './components/Legals/RefundPolicy';
+import CompensationConsulting from './components/Legals/CompensationConsulting';
+import LeadershipTraining from './components/Legals/LeadershipTraining';
+import TalentAcquisition from './components/Legals/TalentAcquisition';
 import OrganizationalStructures from './pages/OrganizationalStructures/OrganizationalStructures';
 import EnterpiseListing from './components/Admin/EnterpriseListing';
 import JobAdvertisement from './components/Admin/JobAdvertisement';
@@ -43,6 +47,11 @@ const App: React.FC = () => {
                         <Route path="privacy-policy" element={<PrivacyPolicy />} />
                         <Route path="terms-and-conditions" element={<TermsAndConditions />} />
                         <Route path="refund-policy" element={<RefundPolicy />} />
+                    </Route>
+                    <Route path="/services" element={<Services />}>
+                        <Route path="compensation-consulting" element={<CompensationConsulting />} />
+                        <Route path="leadership-training" element={<LeadershipTraining />} />
+                        <Route path="talent-acquisition" element={<TalentAcquisition />} />
                     </Route>
                 </Route>
 
