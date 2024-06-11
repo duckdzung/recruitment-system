@@ -14,13 +14,16 @@ import Recruitment from './pages/Recruitment/Recruitment';
 import UpdateMember from './pages/UpdateMember/UpdateMenber';
 
 import { Role } from './types';
-import AdminPage from './components/admin/AdminPage';
-import CandidateListing from './components/admin/CandidateListing';
-import PaymentDetails from './components/admin/PaymentDetails';
+import AdminPage from './components/Admin/AdminPage';
+import CandidateListing from './components/Admin/CandidateListing';
+import PaymentDetails from './components/Admin/PaymentDetails';
 import PrivacyPolicy from './components/Legals/PrivacyPolicy';
 import TermsAndConditions from './components/Legals/TermsAndConditions';
 import RefundPolicy from './components/Legals/RefundPolicy';
 import OrganizationalStructures from './pages/OrganizationalStructures/OrganizationalStructures';
+import EnterpiseListing from './components/Admin/EnterpriseListing';
+import JobAdvertisement from './components/Admin/JobAdvertisement';
+import CurriculumVitae from './components/Admin/CurriculumVitae';
 
 const App: React.FC = () => {
     return (
@@ -54,8 +57,11 @@ const App: React.FC = () => {
 
                 <Route element={<ProtectedRoute allowRoutes={[Role.STAFF, Role.PRESIDENT]} />}>
                     <Route path="/admin" element={<AdminPage />}>
+                        <Route path="enterpise-listing" element={<EnterpiseListing />} />
                         <Route path="candidate-listing" element={<CandidateListing />} />
                         <Route path="payment-details" element={<PaymentDetails />} />
+                        <Route path="job-advertisements" element={<JobAdvertisement />} />
+                        <Route path="curriculum-vitae" element={<CurriculumVitae />} />
                     </Route>
                 </Route>
             </Routes>

@@ -19,12 +19,12 @@ const items = [
     {
         key: 'enterprise',
         label: 'ENTERPRISE',
-        route: '/admin/enterprise',
+        route: '/admin/enterpise-listing',
     },
     {
         key: 'candidate',
         label: 'CANDIDATE',
-        route: '/admin/candidate',
+        route: '/admin/candidate-listing',
     },
     {
         key: 'renewal',
@@ -41,7 +41,7 @@ const headerStyle: React.CSSProperties = {
     width: '100%',
     display: 'flex',
     alignItems: 'center',
-    backgroundColor: '#1890ff',
+    backgroundColor: '#0AADEB',
     color: '#fff',
     fontFamily: 'Inter',
     fontSize: '17px',
@@ -53,7 +53,7 @@ const headerStyle: React.CSSProperties = {
 const menuStyle: React.CSSProperties = {
     flex: 1,
     minWidth: 0,
-    backgroundColor: '#1890ff',
+    backgroundColor: '#0AADEB',
     color: '#fff',
     fontFamily: 'Inter',
     fontSize: '20px',

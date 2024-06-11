@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Button, Input, Row, Col } from 'antd';
+import { Table, Button, Input, Row, Col, Tag } from 'antd';
 import type { GetProp, TableProps } from 'antd';
 import qs from 'qs';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
@@ -39,36 +39,36 @@ interface TableParams {
 
 const columns: ColumnsType<DataType> = [
     {
-        title: 'Name',
-        dataIndex: 'name',
+        title: 'ID',
+        dataIndex: 'id',
         sorter: true,
-        width: '15%',
-    },
-    {
-        title: 'Address',
-        dataIndex: 'address',
-        width: '20%',
-    },
-    {
-        title: 'Phone number',
-        dataIndex: 'phoneNumber',
-        width: '15%',
-    },
-    {
-        title: 'Email',
-        dataIndex: 'email',
-        width: '15%',
+        width: '5%',
     },
     {
         title: 'Validate',
-        dataIndex: 'validate',
+        dataIndex: 'Validate',
         width: '5%',
-        align: 'center',
-        render: (validate: boolean) => <input type="checkbox" checked={validate} style={{ transform: 'scale(1.5)' }} />,
+        render: () => <Tag color="green">Validated</Tag>,
     },
     {
-        title: 'Profiled',
-        dataIndex: 'profiled',
+        title: 'Date Receipt',
+        dataIndex: 'dateReceipt',
+        width: '5%',
+    },
+    {
+        title: 'Date Processed',
+        dataIndex: 'dateProcessed',
+        width: '5%',
+    },
+    {
+        title: 'Status',
+        dataIndex: 'status',
+        width: '5%',
+        render: () => <Tag color="green">DONE</Tag>,
+    },
+    {
+        title: 'Details',
+        dataIndex: 'details',
         width: '5%',
         render: () => (
             <Button type="primary" ghost size="middle">
@@ -95,7 +95,7 @@ const getRandomuserParams = (params: TableParams) => ({
     ...params,
 });
 
-const CandidateListing: React.FC = () => {
+const CurriculumVitae: React.FC = () => {
     const [data, setData] = useState<DataType[]>([]);
     const [loading, setLoading] = useState(false);
     const [tableParams, setTableParams] = useState<TableParams>({
@@ -146,7 +146,7 @@ const CandidateListing: React.FC = () => {
     return (
         <>
             <Row>
-                <h3 style={headingStyle}>CANDIDATE LISTING</h3>
+                <h3 style={headingStyle}>CURRICULUM VITAE</h3>
             </Row>
             <Row>
                 <Col span={4} offset={20}>
@@ -175,4 +175,4 @@ const CandidateListing: React.FC = () => {
     );
 };
 
-export default CandidateListing;
+export default CurriculumVitae;
