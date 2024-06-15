@@ -1,0 +1,339 @@
+.container {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    z-index: 1;
+    animation: growth 0.4s ease-in-out;
+}
+
+@keyframes growth {
+    from {
+        transform: scale(0);
+    }
+    to {
+        transform: scale(1);
+    }
+}
+
+.paymentForm {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 0.75fr;
+    padding: 100px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+    box-shadow: 25px 25px 55px rgba(0, 0, 0, 0.3);
+    font-family: 'Nunito', sans-serif;
+    letter-spacing: 0.1cap;
+    box-sizing: border-box;
+}
+
+.card {
+    position: absolute;
+    left: -15%;
+    top: 19%;
+    height: 300px;
+    width: 500px;
+    border-radius: 20px;
+    color: white;
+    z-index: 1;
+    transition: all 0.3s ease-in-out;
+
+    &:hover {
+        transform: scale(1.1);
+    }
+}
+.cardBackground {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    background-image: url('../../assets/images/map.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: -1;
+
+    > div {
+        width: 100%;
+        height: 100%;
+        border-radius: 20px;
+        background: linear-gradient(
+            90deg,
+            rgba(10, 123, 235, 1) 0%,
+            rgba(10, 173, 235, 1) 20%,
+            rgba(10, 173, 235, 0.8957634079022234) 100%
+        );
+    }
+}
+
+.front {
+    position: relative;
+    display: grid;
+    grid-template-rows: 1fr 1.5fr 1fr;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    border-radius: 20px;
+    backface-visibility: hidden;
+    transform: perspective(1000px) rotateY(0deg);
+    transition: transform 0.4s ease-out;
+    box-shadow: 25px 25px 30px rgba(0, 0, 0, 0.2);
+}
+
+.image {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 20px;
+
+    > img {
+        height: 60px;
+    }
+}
+
+.cardNumber {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    letter-spacing: 0.3cap;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.cardInfo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-transform: uppercase;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.cardInfoSection01 {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    > * {
+        letter-spacing: 0.3cap;
+    }
+
+    > span {
+        color: rgba(255, 255, 255, 0.733);
+    }
+}
+
+.expiration {
+    display: flex;
+    gap: 5px;
+}
+
+.back {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 540px;
+    height: 340px;
+    border-radius: 20px;
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    backface-visibility: hidden;
+    transform: perspective(1000px) rotateY(180deg);
+    transition: transform 0.4s ease-out;
+    background: linear-gradient(
+        90deg,
+        rgba(10, 123, 235, 1) 0%,
+        rgba(10, 173, 235, 1) 20%,
+        rgba(10, 173, 235, 0.8957634079022234) 100%
+    );
+    box-shadow: 25px 25px 30px rgba(0, 0, 0, 0.2);
+}
+
+.stripe {
+    background: #000;
+    width: 100%;
+    height: 80px;
+    margin-top: 50px;
+}
+
+.cardInfoSection02 {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-end;
+    padding: 0px 20px;
+    gap: 20px;
+
+    > img {
+        height: 30px;
+        width: fit-content;
+    }
+}
+
+.cvvBox {
+    height: 50px;
+    width: 100%;
+    color: #333;
+    background: #fff;
+    border-radius: 5px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: 10px;
+    letter-spacing: 0.3cap;
+}
+
+.details {
+    grid-column-start: 2;
+    display: grid;
+    grid-template-rows: 1.5fr 0.5fr 0.5fr 0.5fr;
+    gap: 20px;
+
+    input {
+        height: 50px;
+        padding: 0px 10px;
+        border: none;
+        border-bottom: 1px solid rgb(208, 208, 208);
+
+        &:-webkit-autofill,
+        &:-webkit-autofill:hover,
+        &:-webkit-autofill:focus,
+        &:-webkit-autofill:active {
+            -webkit-box-shadow: 0 0 0px 1000px transparent inset !important;
+            -webkit-text-fill-color: inherit !important;
+            transition: background-color 5000s ease-in-out 0s !important;
+        }
+
+        &:focus {
+            outline: none;
+            border: none;
+
+            ~ label {
+                width: 100%;
+            }
+        }
+
+        &::placeholder {
+            color: #b0b6bf;
+        }
+    }
+
+    select {
+        height: 50px;
+        width: 80px;
+        text-align: center;
+        border: none;
+        border-bottom: 1px solid rgb(208, 208, 208);
+        color: #b0b6bf;
+
+        &:focus {
+            outline: none;
+            border: none;
+
+            ~ label {
+                width: 100%;
+            }
+        }
+    }
+}
+
+.inputBox {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+    > label {
+        background-color: #0aadeb;
+        height: 1px;
+        width: 0%;
+        transition: all 0.3s ease-in-out;
+    }
+}
+
+.detailsSection01 {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.detailsSection02 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.detailsSection03 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dateInput {
+    width: fit-content;
+}
+
+.cvvInput {
+    width: 47%;
+}
+
+.detailsSection04 {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    > input {
+        width: 150px;
+        height: 30px;
+        border-radius: 20px;
+        border: none;
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: bold;
+        color: white;
+        background-color: #0aadeb;
+        transition: all 0.3s ease-in-out;
+
+        &:hover {
+            transform: scale(1.1);
+            box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.2);
+        }
+    }
+}
+
+.exits {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #0aadeb;
+    border-bottom-left-radius: 100%;
+    border-top-right-radius: 5px;
+    cursor: pointer;
+
+    > i {
+        font-size: 30px;
+        color: white;
+        margin-left: 20px;
+        margin-bottom: 15px;
+        transition: all 0.3s ease-in-out;
+
+        &:hover {
+            transform: scale(1.5);
+        }
+    }
+}
+
+.displayNone {
+    display: none;
+}
