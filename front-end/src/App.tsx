@@ -13,6 +13,7 @@ import Services from './pages/Services/Services';
 import Authentication from './pages/Authentication/Authentication';
 import Recruitment from './pages/Recruitment/Recruitment';
 import UpdateMember from './pages/UpdateMember/UpdateMenber';
+import Payment from './components/Payment/Payment';
 
 import { Role } from './types';
 import AdminPage from './components/admin/AdminPage';
@@ -40,6 +41,7 @@ const App: React.FC = () => {
                     <Route path="/" element={<Home />} />
                     <Route path="/contact" element={<ContactUs />} />
                     <Route path="/how-we-work" element={<OrganizationalStructures />} />
+                    <Route path="/payment" element={<Payment />} />
                     <Route path="/legal" element={<Legal />}>
                         <Route path="privacy-policy" element={<PrivacyPolicy />} />
                         <Route path="terms-and-conditions" element={<TermsAndConditions />} />
