@@ -7,15 +7,17 @@
     align-items: center;
     background-color: transparent;
     z-index: 1;
+    --growth-from: 0;
+    --growth-to: 1;
     animation: growth 0.4s ease-in-out;
 }
 
 @keyframes growth {
     from {
-        transform: scale(0);
+        transform: scale(var(--growth-from));
     }
     to {
-        transform: scale(1);
+        transform: scale(var(--growth-to));
     }
 }
 
