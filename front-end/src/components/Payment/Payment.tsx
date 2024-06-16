@@ -68,10 +68,9 @@ const Payment = () => {
 
     // Handle exits button
     const handlExitsBtnClick = () => {
-        const exitsBtn = document.getElementById('exitsBtn');
         const paymentPage = document.getElementById('paymentPage');
 
-        if (exitsBtn && paymentPage) {
+        if (paymentPage) {
             paymentPage.classList.add(styles.displayNone);
         }
     };
@@ -203,4 +202,5 @@ const Payment = () => {
         </div>
     );
 };
+
 export default Payment;
