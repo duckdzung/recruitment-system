@@ -40,11 +40,10 @@ public class AuthController {
 
     @PostMapping("/refresh-token")
     public ResponseEntity<ResponseObject> refreshToken(@RequestBody RefreshTokenRequest refreshToken) {
-        System.out.println(refreshToken.getRefreshToken());
         return new ResponseEntity<>(ResponseObject.builder()
                 .statusCode(200)
                 .message("Token refreshed successfully")
-                .data(authService.refreshToken(refreshToken.getRefreshToken().replace("Bearer ", "")))
+                .data(authService.refreshToken(refreshToken.getRefreshToken()))
                 .build(), HttpStatus.OK);
     }
 

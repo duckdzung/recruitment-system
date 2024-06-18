@@ -194,27 +194,22 @@ public class AuthService {
         return response;
     }
 
+    @Transactional
     public TokenResponse refreshToken(String refreshToken) {
-        TokenResponse response = new TokenResponse();
         try {
             String email = jwtService.extractEmail(refreshToken);
             Member member = getUserByEmail(email);
             if (tokenRepository.findRefreshTokenByToken(refreshToken).isPresent() && jwtService.isTokenValid(refreshToken, member)) {
-                var accessToken = jwtService.generateToken(member);
 
                 // Revoke all user's access tokens
                 revokeAllUserAccessTokens(member);
-                saveUserToken(member, accessToken, TokenType.ACCESS_TOKEN);
-                response.setAccessToken(accessToken);
-                response.setIssuedAt(jwtService.getIssuedAt(accessToken));
-                response.setExpirationTime(jwtService.getExpiration(accessToken));
+                return createTokenResponse(member);
             } else {
                 throw new InvalidRequestException("Invalid refresh token");
             }
         } catch (Exception e) {
             throw new InternalServerErrorException("Internal server error");
         }
-        return response;
     }
 
     public void logout(String accessToken) {
