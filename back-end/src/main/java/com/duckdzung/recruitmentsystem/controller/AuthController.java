@@ -1,5 +1,6 @@
 package com.duckdzung.recruitmentsystem.controller;
 
+import com.duckdzung.recruitmentsystem.common.RefreshTokenRequest;
 import com.duckdzung.recruitmentsystem.common.ResponseObject;
 import com.duckdzung.recruitmentsystem.common.AuthRequest;
 import com.duckdzung.recruitmentsystem.repository.TokenRepository;
@@ -38,11 +39,12 @@ public class AuthController {
     }
 
     @PostMapping("/refresh-token")
-    public ResponseEntity<ResponseObject> refreshToken(@RequestHeader("Authorization") String authorization) {
+    public ResponseEntity<ResponseObject> refreshToken(@RequestBody RefreshTokenRequest refreshToken) {
+        System.out.println(refreshToken.getRefreshToken());
         return new ResponseEntity<>(ResponseObject.builder()
                 .statusCode(200)
                 .message("Token refreshed successfully")
-                .data(authService.refreshToken(authorization.replace("Bearer ", "")))
+                .data(authService.refreshToken(refreshToken.getRefreshToken().replace("Bearer ", "")))
                 .build(), HttpStatus.OK);
     }
 
