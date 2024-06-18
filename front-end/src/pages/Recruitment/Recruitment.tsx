@@ -1,4 +1,5 @@
 import React, { useCallback, useState, useEffect } from 'react';
+import { ValidationError } from 'yup';
 import clsx from 'clsx';
 import styles from './Recruitment.module.scss';
 import '../../assets/fonts/fontawesome-free-6.5.2/css/all.min.css';
@@ -163,8 +164,12 @@ const Recruitment: React.FC = () => {
                 toast.success(response.message);
                 navigate('/');
             }
-        } catch (error: any) {
-            toast.error(error.errors ? error.errors[0] : 'Please type correct data');
+        } catch (error) {
+            if (error instanceof ValidationError) {
+                toast.error(error.errors[0]);
+            } else {
+                toast.error('Please type correct data');
+            }
         }
     };
 
