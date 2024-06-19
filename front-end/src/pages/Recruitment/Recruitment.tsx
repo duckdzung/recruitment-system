@@ -1,4 +1,5 @@
 import React, { useCallback, useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { ValidationError } from 'yup';
 import clsx from 'clsx';
 import styles from './Recruitment.module.scss';
@@ -340,34 +341,34 @@ const Recruitment: React.FC = () => {
             </div>
             <ul className={styles.backgroundSection}>
                 <li>
-                    <a href="/">
+                    <Link to="/">
                         <i className="fa-solid fa-house-user"></i>
-                    </a>
+                    </Link>
                 </li>
                 <li>
-                    <a href="/">
+                    <Link to="/">
                         <i className="fa-solid fa-house-user"></i>
-                    </a>
+                    </Link>
                 </li>
                 <li>
-                    <a href="/">
+                    <Link to="/">
                         <i className="fa-solid fa-house-user"></i>
-                    </a>
+                    </Link>
                 </li>
                 <li>
-                    <a href="/">
+                    <Link to="/">
                         <i className="fa-solid fa-house-user"></i>
-                    </a>
+                    </Link>
                 </li>
                 <li>
-                    <a href="/">
+                    <Link to="/">
                         <i className="fa-solid fa-house-user"></i>
-                    </a>
+                    </Link>
                 </li>
                 <li>
-                    <a href="/">
+                    <Link to="/">
                         <i className="fa-solid fa-house-user"></i>
-                    </a>
+                    </Link>
                 </li>
             </ul>
         </>

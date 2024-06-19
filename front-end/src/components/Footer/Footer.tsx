@@ -8,17 +8,17 @@ const Footer = () => {
             <footer className={styles.footer}>
                 <div className={clsx(styles.footerTop, styles.displayFlex)}>
                     <div className={clsx(styles.footerTopLeft, styles.displayFlex, styles.centered)}>
-                        <a className={clsx(styles.displayFlex, styles.centered)} href="">
+                        <Link className={clsx(styles.displayFlex, styles.centered)} to="#">
                             <i className="fa-regular fa-calendar-check"></i>
-                        </a>
+                        </Link>
                         <p>Call adviser for Emphires HR outsourcing service business</p>
                     </div>
 
-                    <a href="">
+                    <Link to="#">
                         <div className={clsx(styles.footerTopRight, styles.displayFlex, styles.centered)}>
                             <p>Book a consultants</p>
                         </div>
-                    </a>
+                    </Link>
                 </div>
 
                 <div className={clsx(styles.footerBottom, styles.displayFlex, styles.centered)}>
