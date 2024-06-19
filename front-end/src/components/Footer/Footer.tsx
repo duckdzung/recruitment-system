@@ -1,8 +1,30 @@
 import clsx from 'clsx';
 import styles from './Footer.module.scss';
 import { Link } from 'react-router-dom';
+import { animateScroll as scroll } from 'react-scroll';
+import { useState, useEffect } from 'react';
 
 const Footer = () => {
+    // Hanlde for backtop
+    const [isVisible, setIsVisible] = useState(false);
+
+    useEffect(() => {
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                setIsVisible(true);
+            } else {
+                setIsVisible(false);
+            }
+        });
+    }, []);
+
+    const scrollToTop = () => {
+        scroll.scrollToTop({
+            duration: 1000,
+            smooth: true,
+        });
+    };
+
     return (
         <>
             <footer className={styles.footer}>
@@ -29,9 +51,11 @@ const Footer = () => {
                 </div>
             </footer>
 
-            <div id="backtop" className={styles.backtop}>
-                <i className="fa-solid fa-circle-chevron-up"></i>
-            </div>
+            {isVisible && (
+                <div onClick={scrollToTop} className={styles.backtop}>
+                    <i className="fa-solid fa-circle-chevron-up"></i>
+                </div>
+            )}
         </>
     );
 };

@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { animateScroll as scroll } from 'react-scroll';
 
 import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
@@ -10,6 +11,13 @@ const ContactUs = () => {
     useEffect(() => {
         document.body.style.overflowX = 'hidden';
         document.body.style.margin = '0';
+
+        // Scroll to top when component render
+        scroll.scrollToTop({
+            duration: 1000,
+            smooth: true,
+        });
+
         return () => {
             document.body.style.overflowX = '';
             document.body.style.margin = '';

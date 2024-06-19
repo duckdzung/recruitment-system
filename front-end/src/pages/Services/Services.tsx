@@ -18,7 +18,7 @@ const Services = () => {
 
         // Scroll to top when component render
         scroll.scrollToTop({
-            duration: 500,
+            duration: 1000,
             smooth: true,
         });
 

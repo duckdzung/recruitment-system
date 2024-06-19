@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import styles from './Home.module.scss';
 import '../../assets/fonts/fontawesome-free-6.5.2/css/all.min.css';
 import clsx from 'clsx';
+import { animateScroll as scroll } from 'react-scroll';
 
 import epm from '../../assets/images/expert-management.png';
 import banner0201 from '../../assets/images/banner0201.png';
@@ -20,6 +21,13 @@ const Home = () => {
     useEffect(() => {
         document.body.style.overflowX = 'hidden';
         document.body.style.margin = '0';
+
+        // Scroll to top when component render
+        scroll.scrollToTop({
+            duration: 1000,
+            smooth: true,
+        });
+
         return () => {
             document.body.style.overflowX = '';
             document.body.style.margin = '';
