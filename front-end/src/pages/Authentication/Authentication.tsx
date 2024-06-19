@@ -1,4 +1,5 @@
 import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
+import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 import styles from './Authentication.module.scss';
 import '../../assets/fonts/fontawesome-free-6.5.2/css/all.min.css';
@@ -88,7 +89,7 @@ const Authentication: React.FC = () => {
             document.body.style.placeContent = '';
             document.body.style.overflow = '';
         };
-    }, []);
+    }, [location.pathname]);
 
     // Hanlde animation UI
     const handleOverlayButtonClick = () => {
@@ -166,15 +167,15 @@ const Authentication: React.FC = () => {
                     <form onSubmit={handleRegisterSubmit}>
                         <h1>Create Account</h1>
                         <div className={styles.socialContainer}>
-                            <a href="#" className={styles.social}>
+                            <Link to="#" className={styles.social}>
                                 <i className="fab fa-facebook-f"></i>
-                            </a>
-                            <a href="#" className={styles.social}>
+                            </Link>
+                            <Link to="#" className={styles.social}>
                                 <i className="fab fa-google-plus-g"></i>
-                            </a>
-                            <a href="#" className={styles.social}>
+                            </Link>
+                            <Link to="#" className={styles.social}>
                                 <i className="fab fa-linkedin-in"></i>
-                            </a>
+                            </Link>
                         </div>
                         <span>or use your email for registration</span>
 
@@ -216,15 +217,15 @@ const Authentication: React.FC = () => {
                     <form onSubmit={handleLoginSubmit}>
                         <h1>Sign in</h1>
                         <div className={styles.socialContainer}>
-                            <a href="#" className={styles.social}>
+                            <Link to="#" className={styles.social}>
                                 <i className="fab fa-facebook-f"></i>
-                            </a>
-                            <a href="#" className={styles.social}>
+                            </Link>
+                            <Link to="#" className={styles.social}>
                                 <i className="fab fa-google-plus-g"></i>
-                            </a>
-                            <a href="#" className={styles.social}>
+                            </Link>
+                            <Link to="#" className={styles.social}>
                                 <i className="fab fa-linkedin-in"></i>
-                            </a>
+                            </Link>
                         </div>
                         <span>or use your account</span>
                         <div className={styles.infield}>
@@ -256,9 +257,9 @@ const Authentication: React.FC = () => {
                             ></i>
                             <label></label>
                         </div>
-                        <a href="#" className={styles.forgot}>
+                        <Link to="#" className={styles.forgot}>
                             Forgot your password?
-                        </a>
+                        </Link>
                         <button type="submit">Sign In</button>
                     </form>
                 </div>
@@ -287,34 +288,34 @@ const Authentication: React.FC = () => {
             </div>
             <ul className={styles.backgroundSection}>
                 <li>
-                    <a href="/">
+                    <Link to="/">
                         <i className="fa-solid fa-house-user"></i>
-                    </a>
+                    </Link>
                 </li>
                 <li>
-                    <a href="/">
+                    <Link to="/">
                         <i className="fa-solid fa-house-user"></i>
-                    </a>
+                    </Link>
                 </li>
                 <li>
-                    <a href="/">
+                    <Link to="/">
                         <i className="fa-solid fa-house-user"></i>
-                    </a>
+                    </Link>
                 </li>
                 <li>
-                    <a href="/">
+                    <Link to="/">
                         <i className="fa-solid fa-house-user"></i>
-                    </a>
+                    </Link>
                 </li>
                 <li>
-                    <a href="/">
+                    <Link to="/">
                         <i className="fa-solid fa-house-user"></i>
-                    </a>
+                    </Link>
                 </li>
                 <li>
-                    <a href="/">
+                    <Link to="/">
                         <i className="fa-solid fa-house-user"></i>
-                    </a>
+                    </Link>
                 </li>
             </ul>
         </>

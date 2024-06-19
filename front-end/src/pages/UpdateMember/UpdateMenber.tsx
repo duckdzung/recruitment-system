@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+import { Link } from 'react-router-dom';
 import styles from './UpdateMember.module.scss';
 import '../../assets/fonts/fontawesome-free-6.5.2/css/all.min.css';
 import React, { useState, useEffect, FormEvent } from 'react';
@@ -211,34 +212,34 @@ const UpdateMember: React.FC = () => {
             </div>
             <ul className={styles.backgroundSection}>
                 <li>
-                    <a href="/">
+                    <Link to="/">
                         <i className="fa-solid fa-house-user"></i>
-                    </a>
+                    </Link>
                 </li>
                 <li>
-                    <a href="/">
+                    <Link to="/">
                         <i className="fa-solid fa-house-user"></i>
-                    </a>
+                    </Link>
                 </li>
                 <li>
-                    <a href="/">
+                    <Link to="/">
                         <i className="fa-solid fa-house-user"></i>
-                    </a>
+                    </Link>
                 </li>
                 <li>
-                    <a href="/">
+                    <Link to="/">
                         <i className="fa-solid fa-house-user"></i>
-                    </a>
+                    </Link>
                 </li>
                 <li>
-                    <a href="/">
+                    <Link to="/">
                         <i className="fa-solid fa-house-user"></i>
-                    </a>
+                    </Link>
                 </li>
                 <li>
-                    <a href="/">
+                    <Link to="/">
                         <i className="fa-solid fa-house-user"></i>
-                    </a>
+                    </Link>
                 </li>
             </ul>
         </>

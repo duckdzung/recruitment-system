@@ -43,18 +43,18 @@ const Home = () => {
                                 </h1>
 
                                 <div className={clsx(styles.firstBannerCol01Row02, styles.displayFlex)}>
-                                    <a href="/contact">
+                                    <Link to="/contact">
                                         <div className={clsx(styles.contactButton, styles.displayFlex)}>
                                             <p className={styles.nonePaddingMargin}>Contact Us</p>
                                         </div>
-                                    </a>
+                                    </Link>
                                     <div className={clsx(styles.displayFlex, styles.centered)}>
-                                        <a
-                                            href="/how-we-work"
+                                        <Link
+                                            to="/how-we-work"
                                             className={clsx(styles.displayFlex, styles.centered, styles.playButton)}
                                         >
                                             <i className="fa-solid fa-circle-play play-button"></i>
-                                        </a>
+                                        </Link>
                                         <div
                                             className={clsx(
                                                 styles.displayFlex,
@@ -200,7 +200,7 @@ const Home = () => {
                             </div>
 
                             <p>
-                                Get intrigued about our service pricing? <a href="/how-we-work">Learn More</a>
+                                Get intrigued about our service pricing? <Link to="/how-we-work">Learn More</Link>
                             </p>
                         </div>
                     </div>

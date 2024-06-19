@@ -172,19 +172,19 @@ const Header = () => {
                         <img src={logo} alt="logo" />
                     </Link>
                     <div className={clsx(styles.menuItem, styles.displayFlex)}>
-                        <a href="/">Home</a>
-                        <a href="">Pages</a>
-                        <a href="">Services</a>
-                        <a href="">Projects</a>
-                        <a href="">Blog</a>
-                        <a href="/contact">Contact Us</a>
+                        <Link to="/">Home</Link>
+                        <Link to="#">Pages</Link>
+                        <Link to="#">Services</Link>
+                        <Link to="#">Projects</Link>
+                        <Link to="#">Blog</Link>
+                        <Link to="/contact">Contact Us</Link>
                     </div>
                 </div>
 
                 <div className={clsx(styles.rightBottom, styles.displayFlex)}>
-                    <a href="" className={clsx(styles.chatButton, styles.displayFlex, styles.centered)}>
+                    <Link to="#" className={clsx(styles.chatButton, styles.displayFlex, styles.centered)}>
                         <i className="fa-brands fa-rocketchat"></i>
-                    </a>
+                    </Link>
                     <div>
                         <p style={{ fontWeight: 'bold' }}>Have any Question?</p>
                         <p>+0 123 456 789</p>
