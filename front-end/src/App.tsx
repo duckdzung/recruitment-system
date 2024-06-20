@@ -27,6 +27,7 @@ import TalentAcquisition from './components/Legals/TalentAcquisition';
 import OrganizationalStructures from './pages/OrganizationalStructures/OrganizationalStructures';
 
 import FindWork from './pages/FindWork/FindWork';
+import WorkDetails from './pages/WorkDetails/WorkDetails';
 
 const App: React.FC = () => {
     return (
@@ -41,6 +42,7 @@ const App: React.FC = () => {
                 <Route element={<PublicRoute restricted={false} />}>
                     <Route path="/" element={<Home />} />
                     <Route path="/job-list" element={<FindWork />} />
+                    <Route path="/job-details" element={<WorkDetails />} />
                     <Route path="/contact" element={<ContactUs />} />
                     <Route path="/how-we-work" element={<OrganizationalStructures />} />
                     <Route path="/legal" element={<Legal />}>

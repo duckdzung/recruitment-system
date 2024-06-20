@@ -216,7 +216,7 @@ const Home = () => {
                 </div>
 
                 <div className={styles.jobBanner}>
-                    <JobList />
+                    <JobList length={3} />
                 </div>
 
                 <Footer />

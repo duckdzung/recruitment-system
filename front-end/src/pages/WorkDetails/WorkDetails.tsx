@@ -4,10 +4,18 @@ import { animateScroll as scroll } from 'react-scroll';
 import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
 
-import styles from './FindWork.module.scss';
-import JobList from '../../components/JobList/JobList';
+import styles from './WorkDetails.module.scss';
+import JobDetails from '../../components/JobDetails/JobDetails';
 
-const FindWork = () => {
+const jobDetail = {
+    title: 'Rent Google Play Console Account',
+    salary: '120,000',
+    location: 'TP. Ho Chi Minh',
+    experience: 'No Experience',
+    requires: 'Job Requires',
+};
+
+const WorkDetails = () => {
     useEffect(() => {
         document.body.style.overflowX = 'hidden';
         document.body.style.margin = '0';
@@ -17,7 +25,7 @@ const FindWork = () => {
             duration: 1000,
             smooth: true,
         });
-    });
+    }, []);
 
     return (
         <div className={styles.contactUs}>
@@ -29,9 +37,10 @@ const FindWork = () => {
                 </div>
                 <i className="fa-regular fa-face-kiss-wink-heart"></i>
             </div>
-            <JobList length={6} />
+            <JobDetails {...jobDetail} />
             <Footer />
         </div>
     );
 };
-export default FindWork;
+
+export default WorkDetails;

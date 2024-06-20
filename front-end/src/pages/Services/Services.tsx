@@ -94,15 +94,15 @@ const Services = () => {
                 <Header />
                 <div className={styles.firstBanner}>
                     <div ref={goal01Ref} id="goal01" className={styles.goal} onClick={handleGoalClick}>
-                        <i className="fa-solid fa-building-shield"></i>
+                        <i className="fa-regular fa-credit-card"></i>
                         <span>Compensation Consulting</span>
                     </div>
                     <div ref={goal02Ref} id="goal02" className={styles.goal} onClick={handleGoalClick}>
-                        <i className="fa-solid fa-file-lines"></i>
+                        <i className="fa-solid fa-users"></i>
                         <span>Leadership Training</span>
                     </div>
                     <div ref={goal03Ref} id="goal03" className={styles.goal} onClick={handleGoalClick}>
-                        <i className="fa-solid fa-money-bill-transfer"></i>
+                        <i className="fa-solid fa-user-check"></i>
                         <span>Talent Acquisition</span>
                     </div>
                 </div>
