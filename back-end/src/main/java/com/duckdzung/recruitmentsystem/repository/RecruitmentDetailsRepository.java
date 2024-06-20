@@ -4,6 +4,8 @@ import com.duckdzung.recruitmentsystem.model.Nominee;
 import com.duckdzung.recruitmentsystem.model.RecruitmentDetails;
 import com.duckdzung.recruitmentsystem.model.RecruitmentInformation;
 import com.duckdzung.recruitmentsystem.model.idClass.RecruitmentDetailsKey;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -17,4 +19,5 @@ public interface RecruitmentDetailsRepository extends JpaRepository<RecruitmentD
 
     RecruitmentDetails findByRecruitmentInformation(RecruitmentInformation recruitmentInformation);
 
+    Page<RecruitmentDetails> findByNominee_Position(String position, Pageable pageable);
 }
