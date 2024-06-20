@@ -92,6 +92,20 @@ public class RecruitmentController {
         );
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<ResponseObject> getRecruitmentsByNomineeAndAddress(@RequestParam String position, @RequestParam String address, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size) {
+        Page<RecruitmentFormResponse> recruitmentForms = recruitmentService.getRecruitmentsByNomineeAndAddress(position, address, PageRequest.of(page, size));
+        PagedModel<EntityModel<RecruitmentFormResponse>> pagedModel = pagedResourcesAssembler.toModel(recruitmentForms);
+
+        return ResponseEntity.ok(
+                ResponseObject.builder()
+                        .statusCode(200)
+                        .message("Recruitment forms retrieved successfully")
+                        .data(pagedModel)
+                        .build()
+        );
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<ResponseObject> deleteRecruitment(@PathVariable int id) {
         recruitmentService.deleteRecruitmentInformation(id);
