@@ -2,19 +2,62 @@ import axios from 'axios';
 import store from '../redux/store';
 import { toast } from 'react-toastify';
 
+import { loginSuccess } from '../redux/auth/authSlice';
+import { ApiResponse } from '../types';
+
+const baseURL = import.meta.env.VITE_RECRUITMENT_SYSTEM_API_URL;
+
 const axiosClient = axios.create({
-    baseURL: 'http://localhost:8080/api',
+    baseURL: baseURL,
     headers: {
         'Content-Type': 'application/json',
     },
 });
 
-axiosClient.interceptors.request.use(
-    (config) => {
-        const state = store.getState();
-        const { accessToken } = state.auth;
+const updateAccessToken = async (refreshToken: string): Promise<ApiResponse> => {
+    const response = await axios.post<ApiResponse>(`${baseURL}/auth/refresh-token`, { refreshToken });
+    return response.data;
+};
 
-        if (accessToken) {
+axiosClient.interceptors.request.use(
+    async (config) => {
+        const state = store.getState();
+        const { accessToken, refreshToken, expirationTime } = state.auth;
+
+        const currentDate = new Date().toISOString();
+        const isExpired = currentDate > expirationTime && expirationTime !== '';
+
+        if (isExpired) {
+            try {
+                const response = await updateAccessToken(refreshToken);
+
+                const {
+                    accessToken: newAccessToken,
+                    refreshToken: newRefreshToken,
+                    expirationTime: newExpirationTime,
+                    role,
+                    email,
+                } = response.data;
+
+                // Update the state with the new tokens and expiration time
+                store.dispatch(
+                    loginSuccess({
+                        accessToken: newAccessToken,
+                        refreshToken: newRefreshToken,
+                        expirationTime: newExpirationTime,
+                        role,
+                        email,
+                    }),
+                );
+
+                // Set the new access token to the config
+                config.headers.Authorization = `Bearer ${newAccessToken}`;
+            } catch (error) {
+                console.error('Error refreshing token: ', error);
+                toast.error('Error refreshing token');
+                return Promise.reject(error);
+            }
+        } else if (accessToken) {
             config.headers.Authorization = `Bearer ${accessToken}`;
         }
 

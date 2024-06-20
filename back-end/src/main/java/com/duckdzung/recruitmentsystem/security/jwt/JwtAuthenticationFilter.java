@@ -30,7 +30,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String authorizationHeader = request.getHeader("Authorization");
         final String JWT_TOKEN_PREFIX;
         final String username;
-        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ") || request.getRequestURI().equals("/api/auth/refresh-token")) {
             filterChain.doFilter(request, response);
             return;
         }
