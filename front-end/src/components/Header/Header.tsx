@@ -173,7 +173,7 @@ const Header = () => {
                     </Link>
                     <div className={clsx(styles.menuItem, styles.displayFlex)}>
                         <Link to="/">Home</Link>
-                        <Link to="#">Pages</Link>
+                        <Link to="/job-list">Find Work</Link>
                         <Link to="#">Services</Link>
                         <Link to="#">Projects</Link>
                         <Link to="#">Blog</Link>
