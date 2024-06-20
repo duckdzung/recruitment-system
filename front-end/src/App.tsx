@@ -13,7 +13,6 @@ import Services from './pages/Services/Services';
 import Authentication from './pages/Authentication/Authentication';
 import Recruitment from './pages/Recruitment/Recruitment';
 import UpdateMember from './pages/UpdateMember/UpdateMenber';
-import Payment from './components/Payment/Payment';
 
 import { Role } from './types';
 import AdminPage from './components/admin/AdminPage';
@@ -27,6 +26,8 @@ import LeadershipTraining from './components/Legals/LeadershipTraining';
 import TalentAcquisition from './components/Legals/TalentAcquisition';
 import OrganizationalStructures from './pages/OrganizationalStructures/OrganizationalStructures';
 
+import FindWork from './pages/FindWork/FindWork';
+
 const App: React.FC = () => {
     return (
         <Router>
@@ -39,9 +40,9 @@ const App: React.FC = () => {
 
                 <Route element={<PublicRoute restricted={false} />}>
                     <Route path="/" element={<Home />} />
+                    <Route path="/job-list" element={<FindWork />} />
                     <Route path="/contact" element={<ContactUs />} />
                     <Route path="/how-we-work" element={<OrganizationalStructures />} />
-                    <Route path="/payment" element={<Payment />} />
                     <Route path="/legal" element={<Legal />}>
                         <Route path="privacy-policy" element={<PrivacyPolicy />} />
                         <Route path="terms-and-conditions" element={<TermsAndConditions />} />

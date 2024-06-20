@@ -16,6 +16,7 @@ import banner0403 from '../../assets/images/banner0403.png';
 
 import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
+import JobList from '../../components/JobList/JobList';
 
 const Home = () => {
     useEffect(() => {
@@ -212,6 +213,10 @@ const Home = () => {
                             </p>
                         </div>
                     </div>
+                </div>
+
+                <div className={styles.jobBanner}>
+                    <JobList />
                 </div>
 
                 <Footer />
