@@ -154,8 +154,8 @@ const Authentication: React.FC = () => {
         // Register sucessfully
         if (response && response.statusCode === 201) {
             toast.success(response.message);
-            const { accessToken, refreshToken, role, email } = response.data;
-            dispatch(loginSuccess({ accessToken, refreshToken, role, email }));
+            const { accessToken, refreshToken, expirationTime, role, email } = response.data;
+            dispatch(loginSuccess({ accessToken, refreshToken, expirationTime, role, email }));
             navigate('/update-member');
         }
     };

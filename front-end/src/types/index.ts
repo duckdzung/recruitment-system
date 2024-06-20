@@ -1,11 +1,12 @@
 // Interface
 export interface AuthState {
-    username: string | null;
+    username: string;
     isAuthenticated: boolean;
-    accessToken: string | null;
-    refreshToken: string | null;
+    accessToken: string;
+    refreshToken: string;
+    expirationTime: string;
     role: Role | null;
-    error: string | null;
+    error: string;
 }
 
 export interface Credentials {
