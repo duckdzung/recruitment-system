@@ -1,0 +1,112 @@
+.container {
+    display: grid;
+    grid-template-rows: auto auto auto;
+    gap: 50px;
+    padding: 50px;
+    font-family: 'Nunito', sans-serif;
+    letter-spacing: 0.1cap;
+}
+
+.head {
+    text-align: center;
+    font-weight: 900;
+}
+
+.banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.bannerImage {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.bannerImageLeft {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    color: white;
+    width: 50px;
+    height: 50px;
+    background-color: #0aadeb;
+    border-radius: 50%;
+}
+
+.bannerImageRight {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 5px;
+
+    > p {
+        margin: 0;
+        color: rgba(0, 0, 0, 0.7);
+        font-weight: bold;
+    }
+
+    > span {
+        color: rgba(0, 0, 0, 0.5);
+    }
+}
+
+.button {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+}
+
+.btnImage {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    height: 50px;
+    border-radius: 10px;
+    border: 2px solid #0aabeb;
+    cursor: pointer;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 0;
+        background-color: #0aabeb;
+        border-radius: 5px;
+        transition: all 0.3s ease-in-out;
+        z-index: -1;
+    }
+
+    &:hover {
+        > i,
+        span {
+            transition: all 0.3s ease-in-out;
+            color: white;
+        }
+
+        &::before {
+            height: 100%;
+        }
+    }
+
+    > i {
+        font-size: 22px;
+        color: #0aabeb;
+    }
+
+    > span {
+        cursor: pointer;
+        background-color: transparent;
+        border: none;
+        text-transform: uppercase;
+        font-weight: bold;
+        color: #0aabeb;
+    }
+}

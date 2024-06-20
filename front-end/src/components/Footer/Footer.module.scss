@@ -26,27 +26,27 @@
     align-items: center;
     padding: 0px 50px;
     color: white;
-
-    > .footerTopLeft {
-        > a {
-            font-size: 50px;
-            color: black;
-            background-color: white;
-            height: 90px;
-            width: 90px;
-            border-radius: 50%;
-
-            &:hover {
-                color: #0aadeb;
-            }
-        }
-    }
 }
 
 .footerTopLeft {
     gap: 20px;
     font-size: 20px;
     font-weight: bold;
+}
+
+.icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90px;
+    width: 90px;
+    background-color: white;
+    border-radius: 50%;
+
+    > i {
+        font-size: 50px;
+        color: #0aabeb;
+    }
 }
 
 .footerTopRight {

@@ -1,6 +1,10 @@
 import styles from './JobList.module.scss';
 import JobItem from '../JobItem/JobItem';
 
+interface Props {
+    length: number;
+}
+
 const jobItem = {
     imgUrl: '../public/demo.png',
     name: 'New York Stock Exchange',
@@ -11,17 +15,15 @@ const jobItem = {
     quantity: 100,
 };
 
-const jobItems = Array.from({ length: 3 }, () => jobItem);
+const JobList = ({ length }: Props) => {
+    const jobItems = Array.from({ length }, () => ({ ...jobItem }));
 
-const JobList = () => {
     return (
-        <>
-            <div className={styles.container}>
-                {jobItems.map((item, index) => (
-                    <JobItem key={index} {...item} />
-                ))}
-            </div>
-        </>
+        <div className={styles.container}>
+            {jobItems.map((item, index) => (
+                <JobItem key={index} {...item} />
+            ))}
+        </div>
     );
 };
 

@@ -30,15 +30,15 @@ const Footer = () => {
             <footer className={styles.footer}>
                 <div className={clsx(styles.footerTop, styles.displayFlex)}>
                     <div className={clsx(styles.footerTopLeft, styles.displayFlex, styles.centered)}>
-                        <Link className={clsx(styles.displayFlex, styles.centered)} to="#">
-                            <i className="fa-regular fa-calendar-check"></i>
-                        </Link>
-                        <p>Call adviser for Emphires HR outsourcing service business</p>
+                        <div className={styles.icon}>
+                            <i className="fa-solid fa-briefcase"></i>
+                        </div>
+                        <p>Let's go, show us your talent and unleash your potential with ABC Company !</p>
                     </div>
 
-                    <Link to="#">
+                    <Link to="/job-list">
                         <div className={clsx(styles.footerTopRight, styles.displayFlex, styles.centered)}>
-                            <p>Book a consultants</p>
+                            <p>Secure a job position</p>
                         </div>
                     </Link>
                 </div>
