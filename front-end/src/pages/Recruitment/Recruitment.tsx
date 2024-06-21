@@ -52,16 +52,14 @@ const Recruitment: React.FC = () => {
         const handleIconClick = useCallback((index: number) => {
             setHighlighted(index);
 
-            // Set state for recruitment form based on selected icon
             switch (index) {
-                case 1:
+                case 0:
                     setRecruitmentForm(RecruitmentForm.NEWSPAPER);
                     break;
-
-                case 2:
+                case 1:
                     setRecruitmentForm(RecruitmentForm.ADVERTISEMENT_BANNER);
                     break;
-                case 3:
+                case 2:
                     setRecruitmentForm(RecruitmentForm.WEBSITE);
                     break;
                 default:
@@ -69,11 +67,50 @@ const Recruitment: React.FC = () => {
             }
         }, []);
 
-        return [highlighted, handleIconClick] as const;
+        const handleMouseEnter = useCallback((index: number, isLeftOverlay: boolean) => {
+            let context = '';
+            switch (index) {
+                case 0:
+                    context = 'Newspaper';
+                    break;
+                case 1:
+                    context = 'Advertisement Banner';
+                    break;
+                case 2:
+                    context = 'Online Website';
+                    break;
+                default:
+                    break;
+            }
+
+            if (isLeftOverlay) {
+                const methodLeftElements = document.querySelectorAll(`.${styles.methodLeft}`);
+
+                methodLeftElements.forEach((element, idx) => {
+                    if (idx === index) {
+                        element.setAttribute('data-context', context);
+                    } else {
+                        element.removeAttribute('data-context');
+                    }
+                });
+            } else {
+                const methodRightElements = document.querySelectorAll(`.${styles.methodRight}`);
+
+                methodRightElements.forEach((element, idx) => {
+                    if (idx === index) {
+                        element.setAttribute('data-context', context);
+                    } else {
+                        element.removeAttribute('data-context');
+                    }
+                });
+            }
+        }, []);
+
+        return [highlighted, handleIconClick, handleMouseEnter] as const;
     };
 
     // State for icon highlight
-    const [highlightedIcon, handleIconClick] = useHighlightIcon();
+    const [highlightedIcon, handleIconClick, handleMouseEnter] = useHighlightIcon();
 
     // Handle CSS UI
     useEffect(() => {
@@ -220,6 +257,16 @@ const Recruitment: React.FC = () => {
                             <label></label>
                         </div>
                         <div className={styles.infield}>
+                            <i className="fa-solid fa-money-bill-1-wave"></i>
+                            <input type="text" placeholder="Salary" name="Salary" />
+                            <label></label>
+                        </div>
+                        <div className={styles.infield}>
+                            <i className="fa-solid fa-graduation-cap"></i>
+                            <input type="text" placeholder="Experience" name="Experience" />
+                            <label></label>
+                        </div>
+                        <div className={styles.infield}>
                             <i className="fa-solid fa-user-plus"></i>
                             <input
                                 type="number"
@@ -259,7 +306,6 @@ const Recruitment: React.FC = () => {
                                 value={recruitmentTime}
                                 onChange={(e) => setRecruitmentTime(e.target.value)}
                             />
-
                             <label></label>
                         </div>
                     </form>
@@ -274,10 +320,11 @@ const Recruitment: React.FC = () => {
                                 {[newSpaper, adBanner, onlWebsite].map((icon, index) => (
                                     <div
                                         key={index}
-                                        className={clsx(styles.method, {
+                                        className={clsx(styles.methodLeft, {
                                             [styles.methodHighlight]: highlightedIcon === index,
                                         })}
                                         onClick={() => handleIconClick(index)}
+                                        onMouseEnter={() => handleMouseEnter(index, true)}
                                     >
                                         <img src={icon} alt={`${icon} recruitment method`} />
                                     </div>
@@ -294,10 +341,11 @@ const Recruitment: React.FC = () => {
                                 {[newSpaper, adBanner, onlWebsite].map((icon, index) => (
                                     <div
                                         key={index}
-                                        className={clsx(styles.method, {
+                                        className={clsx(styles.methodRight, {
                                             [styles.methodHighlight]: highlightedIcon === index,
                                         })}
                                         onClick={() => handleIconClick(index)}
+                                        onMouseEnter={() => handleMouseEnter(index, false)}
                                     >
                                         <img src={icon} alt={`${icon} recruitment method`} />
                                     </div>
