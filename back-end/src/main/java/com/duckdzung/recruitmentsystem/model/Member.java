@@ -1,6 +1,7 @@
 package com.duckdzung.recruitmentsystem.model;
 
 import com.duckdzung.recruitmentsystem.model.enums.Role;
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
@@ -19,6 +20,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "member")
+@JsonIncludeProperties({"id", "name", "address", "email", "phoneNumber", "role"})
 public class Member implements UserDetails {
     @Id
     @Column(name = "id", length = 5, nullable = false)

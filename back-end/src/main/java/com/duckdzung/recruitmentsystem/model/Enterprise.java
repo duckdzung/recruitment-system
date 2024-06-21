@@ -24,7 +24,6 @@ public class Enterprise {
 
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "member_id", nullable = false, unique = true, referencedColumnName = "id")
-    @JsonIgnore
     private Member member;
 
     @Column(name = "company_name", length = 50, nullable = false)
