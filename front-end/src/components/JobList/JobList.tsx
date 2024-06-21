@@ -4,21 +4,28 @@ import styles from './JobList.module.scss';
 import JobItem, { JobItemProps } from '../JobItem/JobItem';
 import { useEffect, useState } from 'react';
 import { getAllRecruitmentForms } from '../../services/recruitmentService';
+import { useLocation, useSearchParams } from 'react-router-dom';
 
 const JobList = () => {
+    const [searchParams] = useSearchParams();
+
+    const isHomePage = useLocation().pathname === '/';
+    const position = searchParams.get('position') || '';
+    const location = searchParams.get('location') || '';
+
     const [jobList, setJobList] = useState<JobItemProps[]>([]);
 
     // State for pagination
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [totalPages, setTotalPages] = useState<number>(1);
-    const size: number = 3;
+    const size: number = isHomePage ? 3 : 6;
 
     useEffect(() => {
         getJobList();
-    }, [currentPage]);
+    }, [currentPage, position, location]);
 
     const getJobList = async () => {
-        const response = await getAllRecruitmentForms(currentPage - 1, size);
+        const response = await getAllRecruitmentForms(currentPage - 1, size, position, location);
 
         setJobList(
             response?.data.content.map((recruitment: any) => {
@@ -50,13 +57,15 @@ const JobList = () => {
                 ))}
             </div>
 
-            <Pagination
-                onChange={onChangeCurentPage}
-                align="center"
-                defaultCurrent={1}
-                current={currentPage}
-                total={totalPages * 10}
-            />
+            {!isHomePage && totalPages > 1 && (
+                <Pagination
+                    onChange={onChangeCurentPage}
+                    align="center"
+                    defaultCurrent={1}
+                    current={currentPage}
+                    total={totalPages * 10}
+                />
+            )}
         </>
     );
 };
