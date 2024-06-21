@@ -58,16 +58,15 @@
     width: 200px;
     border-radius: 10px;
     color: white;
+    transition: all 0.3s ease-in-out;
 
     &:hover {
         background-color: white;
 
         > p {
+            transition: all 0.3s ease-in-out;
             color: #0aadeb;
-            transition: all 0.25s ease-in-out;
         }
-
-        transition: all 0.25s ease-in-out;
     }
 }
 
