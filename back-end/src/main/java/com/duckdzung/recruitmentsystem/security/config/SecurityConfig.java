@@ -68,6 +68,9 @@ public class SecurityConfig {
                                 .requestMatchers(
                                         HttpMethod.GET,
                                         "**/enterprises/**").permitAll()
+                                .requestMatchers(
+                                        HttpMethod.GET,
+                                        "**/members/**").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

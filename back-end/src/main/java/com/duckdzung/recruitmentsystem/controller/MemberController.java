@@ -1,10 +1,15 @@
 package com.duckdzung.recruitmentsystem.controller;
 
-import com.duckdzung.recruitmentsystem.common.ResponseObject;
 import com.duckdzung.recruitmentsystem.common.AuthRequest;
+import com.duckdzung.recruitmentsystem.common.ResponseObject;
+import com.duckdzung.recruitmentsystem.model.Member;
 import com.duckdzung.recruitmentsystem.security.jwt.JwtService;
 import com.duckdzung.recruitmentsystem.service.AuthService;
+import com.duckdzung.recruitmentsystem.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,12 +21,15 @@ public class MemberController {
     @Autowired
     private AuthService authService;
     @Autowired
+    private MemberService memberService;
+    @Autowired
     private JwtService jwtService;
-
+    @Autowired
+    private PagedResourcesAssembler<Member> pagedResourcesAssembler;
     @PostMapping
     public ResponseEntity<ResponseObject> update(@RequestHeader("Authorization") String authorization, @RequestBody AuthRequest updateRequest) {
         String id = jwtService.extractUserIdFromToken(authorization);
-        String updateResult = authService.updateMember(id, updateRequest);
+        String updateResult = authService.upgradeMember(id, updateRequest);
         return new ResponseEntity<>(ResponseObject.builder()
                 .statusCode(200)
                 .message(updateResult)
@@ -45,6 +53,74 @@ public class MemberController {
                 .statusCode(200)
                 .message("Enterprise rejected successfully")
                 .data(null)
+                .build(), HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ResponseObject> getMemberById(@PathVariable String id) {
+        return ResponseEntity.ok(
+                ResponseObject.builder()
+                        .statusCode(200)
+                        .message("Member retrieved successfully")
+                        .data(memberService.getMemberById(id))
+                        .build()
+        );
+    }
+
+    @GetMapping
+    public ResponseEntity<ResponseObject> getAllMembers(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+        Page<Member> members = memberService.getAllMembers(Pageable.ofSize(size).withPage(page));
+        return ResponseEntity.ok(
+                ResponseObject.builder()
+                        .statusCode(200)
+                        .message("Members retrieved successfully")
+                        .data(pagedResourcesAssembler.toModel(members))
+                        .build()
+        );
+    }
+
+    @GetMapping("/candidates")
+    public ResponseEntity<ResponseObject> getAllCandidates(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+        Page<Member> candidates = memberService.getAllCandidates(Pageable.ofSize(size).withPage(page));
+        return ResponseEntity.ok(
+                ResponseObject.builder()
+                        .statusCode(200)
+                        .message("Candidates retrieved successfully")
+                        .data(pagedResourcesAssembler.toModel(candidates))
+                        .build()
+        );
+    }
+
+    @GetMapping("/staffs")
+    public ResponseEntity<ResponseObject> getAllStaffs(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+        Page<Member> staffs = memberService.getAllStaffs(Pageable.ofSize(size).withPage(page));
+        return ResponseEntity.ok(
+                ResponseObject.builder()
+                        .statusCode(200)
+                        .message("Staffs retrieved successfully")
+                        .data(pagedResourcesAssembler.toModel(staffs))
+                        .build()
+        );
+    }
+
+    @GetMapping("/presidents")
+    public ResponseEntity<ResponseObject> getAllPresidents(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+        Page<Member> presidents = memberService.getAllPresidents(Pageable.ofSize(size).withPage(page));
+        return ResponseEntity.ok(
+                ResponseObject.builder()
+                        .statusCode(200)
+                        .message("Presidents retrieved successfully")
+                        .data(pagedResourcesAssembler.toModel(presidents))
+                        .build()
+        );
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ResponseObject> updateMember(@PathVariable String id, @RequestBody AuthRequest updateRequest) {
+        String updateResult = authService.updateMember(id, updateRequest);
+        return new ResponseEntity<>(ResponseObject.builder()
+                .statusCode(200)
+                .message(updateResult)
                 .build(), HttpStatus.OK);
     }
 }
