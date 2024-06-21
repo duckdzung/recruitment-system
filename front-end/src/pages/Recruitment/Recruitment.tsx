@@ -1,5 +1,4 @@
 import React, { useCallback, useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { ValidationError } from 'yup';
 import clsx from 'clsx';
 import styles from './Recruitment.module.scss';
@@ -155,7 +154,7 @@ const Recruitment: React.FC = () => {
 
             const advertisingForm: AdvertisingForm = {
                 advertisingType: recruitmentForm,
-                recruitmentTime: getLocalISOString(recruitmentTime),
+                recruitmentTime: new Date(recruitmentTime).toISOString(),
             };
 
             // Call API
@@ -172,29 +171,6 @@ const Recruitment: React.FC = () => {
                 toast.error('Please type correct data');
             }
         }
-    };
-
-    // This function converts a date to a local ISO string
-    const getLocalISOString = (dateString: string): string => {
-        const date = new Date(dateString);
-
-        const isoDateString =
-            date.getFullYear().toString().padStart(4, '0') +
-            '-' +
-            (date.getMonth() + 1).toString().padStart(2, '0') +
-            '-' +
-            date.getDate().toString().padStart(2, '0') +
-            'T' +
-            date.getHours().toString().padStart(2, '0') +
-            ':' +
-            date.getMinutes().toString().padStart(2, '0') +
-            ':' +
-            date.getSeconds().toString().padStart(2, '0') +
-            '.' +
-            date.getMilliseconds().toString().padStart(3, '0') +
-            'Z';
-
-        return isoDateString;
     };
 
     return (
@@ -263,7 +239,7 @@ const Recruitment: React.FC = () => {
                                 value={timePeriod || ''}
                                 onChange={handleSetTimePeriod}
                             >
-                                <option value="" disabled>
+                                <option value="" disabled hidden>
                                     Select Time Period
                                 </option>
                                 <option value={TimePeriodType.ONE_WEEK}>1 week</option>

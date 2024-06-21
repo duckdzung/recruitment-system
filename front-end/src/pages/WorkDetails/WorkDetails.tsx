@@ -1,13 +1,15 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { animateScroll as scroll } from 'react-scroll';
 
 import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
 
 import styles from './WorkDetails.module.scss';
-import JobDetails from '../../components/JobDetails/JobDetails';
+import JobDetails, { JobDetailsProps } from '../../components/JobDetails/JobDetails';
+import { useParams } from 'react-router-dom';
+import { getRecruitmentFormById } from '../../services/recruitmentService';
 
-const jobDetail = {
+const defaultJobDetail: JobDetailsProps = {
     title: 'Rent Google Play Console Account',
     salary: '120,000',
     location: 'TP. Ho Chi Minh',
@@ -16,6 +18,9 @@ const jobDetail = {
 };
 
 const WorkDetails = () => {
+    const { jobId } = useParams<{ jobId: string }>();
+    const [jobDetail, setJobDetail] = useState<JobDetailsProps>(defaultJobDetail);
+
     useEffect(() => {
         document.body.style.overflowX = 'hidden';
         document.body.style.margin = '0';
@@ -25,7 +30,22 @@ const WorkDetails = () => {
             duration: 1000,
             smooth: true,
         });
+
+        getWorkerDetail();
     }, []);
+
+    const getWorkerDetail = async () => {
+        const response = await getRecruitmentFormById(jobId || '1');
+        const { recruitmentDetails } = response?.data;
+
+        setJobDetail({
+            title: recruitmentDetails.nominee.position,
+            salary: 'Negotiate ',
+            location: recruitmentDetails.recruitmentInformation.enterprise.member.address,
+            requires: recruitmentDetails.requiredInfo,
+            experience: 'Bachelor',
+        });
+    };
 
     return (
         <div className={styles.contactUs}>

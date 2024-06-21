@@ -1,29 +1,63 @@
+import Pagination from 'rc-pagination';
+
 import styles from './JobList.module.scss';
-import JobItem from '../JobItem/JobItem';
+import JobItem, { JobItemProps } from '../JobItem/JobItem';
+import { useEffect, useState } from 'react';
+import { getAllRecruitmentForms } from '../../services/recruitmentService';
 
-interface Props {
-    length: number;
-}
+const JobList = () => {
+    const [jobList, setJobList] = useState<JobItemProps[]>([]);
 
-const jobItem = {
-    imgUrl: '../public/demo.png',
-    name: 'New York Stock Exchange',
-    location: 'New York, NY',
-    jobPosition: 'Software Engineer',
-    salary: '120,000',
-    contact: 'contact@example.com',
-    quantity: 100,
-};
+    // State for pagination
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [totalPages, setTotalPages] = useState<number>(1);
+    const size: number = 3;
 
-const JobList = ({ length }: Props) => {
-    const jobItems = Array.from({ length }, () => ({ ...jobItem }));
+    useEffect(() => {
+        getJobList();
+    }, [currentPage]);
+
+    const getJobList = async () => {
+        const response = await getAllRecruitmentForms(currentPage - 1, size);
+
+        setJobList(
+            response?.data.content.map((recruitment: any) => {
+                return {
+                    id: recruitment.recruitmentDetails.recruitmentInformation.recruitId,
+                    imgUrl: '../public/demo.png',
+                    name: recruitment.recruitmentDetails.recruitmentInformation.enterprise.companyName,
+                    location: recruitment.recruitmentDetails.recruitmentInformation.enterprise.member.address,
+                    jobPosition: recruitment.recruitmentDetails.nominee.position,
+                    salary: recruitment.salary || '120,000',
+                    contact: recruitment.recruitmentDetails.recruitmentInformation.enterprise.member.email,
+                    quantity: recruitment.recruitmentDetails.quantity,
+                };
+            }),
+        );
+
+        setTotalPages(response?.data.page.totalPages);
+    };
+
+    const onChangeCurentPage = (newPage: number) => {
+        setCurrentPage(newPage);
+    };
 
     return (
-        <div className={styles.container}>
-            {jobItems.map((item, index) => (
-                <JobItem key={index} {...item} />
-            ))}
-        </div>
+        <>
+            <div className={styles.container}>
+                {jobList?.map((jobItem, index) => (
+                    <JobItem key={index} {...jobItem} />
+                ))}
+            </div>
+
+            <Pagination
+                onChange={onChangeCurentPage}
+                align="center"
+                defaultCurrent={1}
+                current={currentPage}
+                total={totalPages * 10}
+            />
+        </>
     );
 };
 

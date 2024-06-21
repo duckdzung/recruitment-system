@@ -76,11 +76,20 @@ const Header = () => {
                                         </Link>
                                     </li>
 
-                                    {(role === Role.ENTERPRISE || role === Role.STAFF) && (
+                                    {(role === Role.PRESIDENT || role === Role.STAFF) && (
                                         <li>
                                             <Link to="/system-management" className={styles.dropdownItem}>
                                                 <i className="fa-regular fa-folder-closed"></i>
                                                 <span>System Management</span>
+                                            </Link>
+                                        </li>
+                                    )}
+
+                                    {role === Role.ENTERPRISE && (
+                                        <li>
+                                            <Link to="/recruitment" className={styles.dropdownItem}>
+                                                <i className="fa-regular fa-folder-closed"></i>
+                                                <span>Recruitment form</span>
                                             </Link>
                                         </li>
                                     )}

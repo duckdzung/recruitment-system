@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import './assets/index.less';
 
 import PublicRoute from './routes/PublicRoute';
 import ProtectedRoute from './routes/ProtectedRoute';
@@ -45,7 +46,7 @@ const App: React.FC = () => {
                 <Route element={<PublicRoute restricted={false} />}>
                     <Route path="/" element={<Home />} />
                     <Route path="/job-list" element={<FindWork />} />
-                    <Route path="/job-details" element={<WorkDetails />} />
+                    <Route path="/job-details/:jobId" element={<WorkDetails />} />
                     <Route path="/contact" element={<ContactUs />} />
                     <Route path="/how-we-work" element={<OrganizationalStructures />} />
                     <Route path="/legal" element={<Legal />}>

@@ -29,7 +29,7 @@ const FindWork = () => {
                 </div>
                 <i className="fa-regular fa-face-kiss-wink-heart"></i>
             </div>
-            <JobList length={6} />
+            <JobList />
             <Footer />
         </div>
     );

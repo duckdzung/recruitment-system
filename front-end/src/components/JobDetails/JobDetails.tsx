@@ -1,6 +1,6 @@
 import styles from './JobDetails.module.scss';
 
-interface JobDetailsProps {
+export interface JobDetailsProps {
     title: string;
     salary: string;
     location: string;
