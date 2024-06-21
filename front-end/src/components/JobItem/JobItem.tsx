@@ -1,7 +1,8 @@
 import styles from './JobItem.module.scss';
 import { Link, useNavigate } from 'react-router-dom';
 
-interface JobItemProps {
+export interface JobItemProps {
+    id: number;
     imgUrl: string;
     name: string;
     location: string;
@@ -11,20 +12,16 @@ interface JobItemProps {
     quantity: number;
 }
 
-const JobItem: React.FC<JobItemProps> = ({ imgUrl, name, location, jobPosition, salary, contact, quantity }) => {
-    // Handle for JobItem click
-    const jobItem = document.getElementById('jobItem');
+const JobItem: React.FC<JobItemProps> = ({ id, imgUrl, name, location, jobPosition, salary, contact, quantity }) => {
     const navigate = useNavigate();
 
     const handleJobItemClick = () => {
-        if (jobItem) {
-            navigate('/job-details');
-        }
+        navigate(`/job-details/${id}`);
     };
 
     return (
         <>
-            <div id="jobItem" onClick={handleJobItemClick} className={styles.container}>
+            <div id="jobItem" onClick={() => handleJobItemClick()} className={styles.container}>
                 <div className={styles.topItem}>
                     <div className={styles.topItemFirst}>
                         <div className={styles.attachment}></div>
