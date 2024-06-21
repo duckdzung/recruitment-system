@@ -1,10 +1,13 @@
 package com.duckdzung.recruitmentsystem.service;
 
+import com.duckdzung.recruitmentsystem.exception.ResourceNotFoundException;
 import com.duckdzung.recruitmentsystem.model.Enterprise;
 import com.duckdzung.recruitmentsystem.repository.EnterpriseRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EnterpriseService {
@@ -14,7 +17,20 @@ public class EnterpriseService {
         this.enterpriseRepository = enterpriseRepository;
     }
 
-    public List<Enterprise> getAllEnterprises() {
-        return enterpriseRepository.findAll();
+    public Page<Enterprise> getAllEnterprises(Pageable pageable) {
+        return enterpriseRepository.findAll(pageable);
+    }
+
+    public Enterprise getEnterpriseById(String id) {
+        Optional<Enterprise> optionalEnterprise = enterpriseRepository.findByEnterpriseId(id);
+
+        if (optionalEnterprise.isPresent()) {
+            return optionalEnterprise.get();
+        } else {
+            if (enterpriseRepository.findByMemberId(id) != null) {
+                return enterpriseRepository.findByMemberId(id);
+            }
+            throw new ResourceNotFoundException("Enterprise not found with id: " + id);
+        }
     }
 }

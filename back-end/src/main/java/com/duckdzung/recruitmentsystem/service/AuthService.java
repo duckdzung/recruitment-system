@@ -2,15 +2,18 @@ package com.duckdzung.recruitmentsystem.service;
 
 import com.duckdzung.recruitmentsystem.common.AuthRequest;
 import com.duckdzung.recruitmentsystem.common.TokenResponse;
-import com.duckdzung.recruitmentsystem.repository.CandidateRepository;
-import com.duckdzung.recruitmentsystem.security.jwt.JwtService;
-import com.duckdzung.recruitmentsystem.exception.*;
+import com.duckdzung.recruitmentsystem.exception.DataIntegrityViolationException;
+import com.duckdzung.recruitmentsystem.exception.InternalServerErrorException;
+import com.duckdzung.recruitmentsystem.exception.InvalidRequestException;
+import com.duckdzung.recruitmentsystem.exception.ResourceNotFoundException;
 import com.duckdzung.recruitmentsystem.model.*;
 import com.duckdzung.recruitmentsystem.model.enums.Role;
 import com.duckdzung.recruitmentsystem.model.enums.TokenType;
+import com.duckdzung.recruitmentsystem.repository.CandidateRepository;
 import com.duckdzung.recruitmentsystem.repository.EnterpriseRepository;
-import com.duckdzung.recruitmentsystem.repository.TokenRepository;
 import com.duckdzung.recruitmentsystem.repository.MemberRepository;
+import com.duckdzung.recruitmentsystem.repository.TokenRepository;
+import com.duckdzung.recruitmentsystem.security.jwt.JwtService;
 import com.duckdzung.recruitmentsystem.util.InputValidator;
 import jakarta.transaction.Transactional;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -71,7 +74,7 @@ public class AuthService {
         return createTokenResponse(member);
     }
 
-    public String updateMember(String memberId, AuthRequest signUpRequest) {
+    public String upgradeMember(String memberId, AuthRequest signUpRequest) {
         String validationError = InputValidator.isValidPhoneNumber(truncateSpaceFromPhoneNumber(signUpRequest.getPhoneNum())) ? null : "Invalid phone number format";
         if (validationError != null) {
             throw new InvalidRequestException(validationError);
@@ -86,7 +89,7 @@ public class AuthService {
         updateMemberDetails(member, signUpRequest);
 
         memberRepository.save(member);
-        if(member.getRole() == Role.ENTERPRISE){
+        if (member.getRole() == Role.ENTERPRISE) {
             return "Send request to admin for approval";
         }
         return "Candidate account upgraded successfully";
@@ -131,7 +134,7 @@ public class AuthService {
     public void approveMemberUpgrade(String memberId) {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new ResourceNotFoundException("Member not found"));
 
-        if(member.getIsValidated()){
+        if (member.getIsValidated()) {
             throw new InvalidRequestException("Member has already been approved");
         }
 
@@ -145,7 +148,7 @@ public class AuthService {
     public void rejectMemberUpgrade(String memberId) {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new ResourceNotFoundException("Member not found"));
 
-        if(member.getIsValidated()){
+        if (member.getIsValidated()) {
             throw new InvalidRequestException("Member has already been approved");
         }
 
@@ -378,5 +381,46 @@ public class AuthService {
 
     private String truncateSpaceFromPhoneNumber(String phoneNumber) {
         return phoneNumber.replaceAll("\\s+", "");
+    }
+
+    public String updateMember(String id, AuthRequest updateRequest) {
+        if (updateRequest == null) {
+            throw new IllegalArgumentException("Update request cannot be null");
+        }
+        Member member = memberRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Member not found"));
+
+        if (updateRequest.getName() != null) {
+            member.setName(updateRequest.getName());
+        }
+        if (updateRequest.getAddress() != null) {
+            member.setAddress(updateRequest.getAddress());
+        }
+        if (updateRequest.getPhoneNum() != null) {
+            String validationError = InputValidator.isValidPhoneNumber(truncateSpaceFromPhoneNumber(updateRequest.getPhoneNum())) ? null : "Invalid phone number format";
+            if (validationError != null) {
+                throw new InvalidRequestException(validationError);
+            }
+
+            member.setPhoneNumber(truncateSpaceFromPhoneNumber(updateRequest.getPhoneNum()));
+        }
+
+        if (updateRequest.getTaxCode() != null || updateRequest.getCompanyName() != null) {
+            Enterprise enterprise = enterpriseRepository.findByMemberId(id);
+            if (enterprise == null) {
+                throw new ResourceNotFoundException("Enterprise not found");
+            }
+            if (updateRequest.getTaxCode() != null) {
+                enterprise.setTaxCode(updateRequest.getTaxCode());
+            }
+            if (updateRequest.getCompanyName() != null) {
+                enterprise.setCompanyName(updateRequest.getCompanyName());
+            }
+            enterprise.setMember(member);
+            enterpriseRepository.save(enterprise);
+        }
+
+
+        memberRepository.save(member);
+        return "Member updated successfully";
     }
 }

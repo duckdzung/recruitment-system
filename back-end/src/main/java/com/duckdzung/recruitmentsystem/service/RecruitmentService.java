@@ -7,6 +7,7 @@ import com.duckdzung.recruitmentsystem.exception.ResourceNotFoundException;
 import com.duckdzung.recruitmentsystem.model.*;
 import com.duckdzung.recruitmentsystem.repository.*;
 import jakarta.transaction.Transactional;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -65,6 +66,34 @@ public class RecruitmentService {
                 .build();
     }
 
+    @Transactional
+    public RecruitmentFormResponse updateRecruitmentInformation(int id, RecruitmentFormRequest recruitmentFormRequest) {
+        validateRecruitmentForm(recruitmentFormRequest);
+
+        RecruitmentInformation recruitmentInformation = recruitmentInformationRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Recruitment information not found"));
+
+        Enterprise enterprise = recruitmentInformation.getEnterprise();
+
+        Nominee nominee = getOrSaveNominee(recruitmentFormRequest.getRecruitmentDetails().getNominee());
+
+        RecruitmentDetails recruitmentDetails = recruitmentFormRequest.getRecruitmentDetails();
+        recruitmentDetails.setNominee(nominee);
+        recruitmentDetails.setRecruitmentInformation(recruitmentInformation);
+
+        AdvertisingForm advertisingForm = recruitmentFormRequest.getAdvertisingForm();
+        advertisingForm.setRecruitmentInformation(recruitmentInformation);
+
+        checkRecruitmentDetailsExistence(recruitmentDetails, nominee, advertisingForm, enterprise);
+
+        recruitmentDetails = recruitmentDetailsRepository.save(recruitmentDetails);
+        advertisingFormRepository.save(advertisingForm);
+        return RecruitmentFormResponse.builder()
+                .recruitmentDetails(recruitmentDetails)
+                .advertisingForm(advertisingForm)
+                .build();
+    }
+
     public Page<RecruitmentFormResponse> getAllRecruitments(Pageable pageable) {
         return recruitmentDetailsRepository.findAll(pageable).map(recruitmentDetails -> RecruitmentFormResponse.builder()
                 .recruitmentDetails(recruitmentDetails)
@@ -114,8 +143,11 @@ public class RecruitmentService {
                         .build());
     }
 
+    @Transactional
     public void deleteRecruitmentInformation(int id) {
-        recruitmentInformationRepository.deleteById(id);
+        RecruitmentInformation recruitmentInformation = recruitmentInformationRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Recruitment information not found"));
+        recruitmentInformationRepository.delete(recruitmentInformation);
     }
 
     private Enterprise getEnterpriseByMemberId(String memberId) {
@@ -126,7 +158,7 @@ public class RecruitmentService {
         return enterprise;
     }
 
-    private Nominee getOrSaveNominee(Nominee nominee) {
+    private Nominee getOrSaveNominee(@NotBlank Nominee nominee) {
         Nominee existingNominee = nomineeRepository.findByPosition(nominee.getPosition());
         if (existingNominee != null) {
             return existingNominee;

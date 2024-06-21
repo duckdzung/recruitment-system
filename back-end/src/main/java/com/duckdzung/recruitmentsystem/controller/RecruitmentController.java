@@ -117,4 +117,17 @@ public class RecruitmentController {
                         .build()
         );
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ResponseObject> updateRecruitment(@PathVariable int id, @RequestBody RecruitmentFormRequest recruitmentFormRequest) {
+        return ResponseEntity.ok(
+                ResponseObject.builder()
+                        .statusCode(200)
+                        .message("Recruitment updated successfully")
+                        .data(recruitmentService.updateRecruitmentInformation(id, recruitmentFormRequest))
+                        .build()
+        );
+    }
+
+
 }

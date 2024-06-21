@@ -2,12 +2,15 @@ package com.duckdzung.recruitmentsystem.model.idClass;
 
 import com.duckdzung.recruitmentsystem.model.Nominee;
 import com.duckdzung.recruitmentsystem.model.RecruitmentInformation;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.io.Serializable;
 import java.util.Objects;
 
-
+@Setter
+@Getter
 public class RecruitmentDetailsKey implements Serializable {
     RecruitmentInformation recruitmentInformation;
     Nominee nominee;
