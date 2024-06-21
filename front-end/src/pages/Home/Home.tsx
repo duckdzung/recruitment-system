@@ -216,7 +216,26 @@ const Home = () => {
                 </div>
 
                 <div className={styles.jobBanner}>
-                    <JobList length={3} />
+                    <div className={styles.jobBannerHead}>
+                        <div className={styles.jobBannerHeadFirstText}>
+                            <span>Our services</span>
+                        </div>
+                        <div className={styles.jobBannerHeadSecondText}>
+                            <p>Deliver Outsourced</p>
+                            <span>HR service's</span>
+                        </div>
+                        <div className={styles.jobBannerHeadLink}>
+                            <Link to="/services/talent-acquisition">View All Services</Link>
+                            <i className="fa-solid fa-arrow-right-long"></i>
+                        </div>
+                    </div>
+                    <div className={styles.jobBannerCenter}>
+                        <JobList length={3} />
+                    </div>
+                    <div className={styles.jobBannerBottom}>
+                        <p>Find a job that matches your expertise in our job list.</p>
+                        <Link to="/job-list">Get All Jobs</Link>
+                    </div>
                 </div>
 
                 <Footer />
