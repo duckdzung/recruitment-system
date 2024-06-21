@@ -5,6 +5,7 @@ import com.duckdzung.recruitmentsystem.model.enums.Role;
 import com.duckdzung.recruitmentsystem.repository.MemberRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -33,5 +34,10 @@ public class MemberService {
 
     public Member getMemberById(String id) {
         return memberRepository.findById(id).orElse(null);
+    }
+
+    public Page<Member> searchMembers(String value, Pageable pageable) {
+        Specification<Member> spec = new MemberSpecification<>(value, Member.class);
+        return memberRepository.findAll(spec, pageable);
     }
 }

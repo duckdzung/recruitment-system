@@ -123,4 +123,16 @@ public class MemberController {
                 .message(updateResult)
                 .build(), HttpStatus.OK);
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<ResponseObject> searchMembers(@RequestParam String value, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+        Page<Member> members = memberService.searchMembers(value, Pageable.ofSize(size).withPage(page));
+        return ResponseEntity.ok(
+                ResponseObject.builder()
+                        .statusCode(200)
+                        .message("Members retrieved successfully")
+                        .data(pagedResourcesAssembler.toModel(members))
+                        .build()
+        );
+    }
 }

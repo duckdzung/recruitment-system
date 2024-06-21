@@ -33,4 +33,8 @@ public class EnterpriseService {
             throw new ResourceNotFoundException("Enterprise not found with id: " + id);
         }
     }
+
+    public Page<Enterprise> searchEnterprises(String value, Pageable pageable) {
+        return enterpriseRepository.findAll(new MemberSpecification<>(value, Enterprise.class), pageable);
+    }
 }
