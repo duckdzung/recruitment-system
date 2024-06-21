@@ -20,7 +20,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "member")
-@JsonIncludeProperties({"id", "name", "address", "email", "phoneNumber", "role"})
+@JsonIncludeProperties({"id", "name", "address", "email", "phoneNumber", "role", "isValidated"})
 public class Member implements UserDetails {
     @Id
     @Column(name = "id", length = 5, nullable = false)
