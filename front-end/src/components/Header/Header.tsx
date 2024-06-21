@@ -7,11 +7,19 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
 import { Role } from '../../types';
 import { logoutThunk } from '../../redux/auth/authThunks';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { FormEvent, useState } from 'react';
 
 const Header = () => {
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+
     const { isAuthenticated, role, username } = useSelector((state: RootState) => state.auth);
+
+    // State for search job
+    const [selectedLocation, setSelectedLocation] = useState<string>('');
+    const [locationList] = useState<string[]>(['Hồ Chí Minh', 'Hà Nội']);
+    const [position, setPosition] = useState<string>('');
 
     const handleLogout = (): void => {
         dispatch(logoutThunk());
@@ -33,6 +41,13 @@ const Header = () => {
             searchOverlay.classList.remove(styles.displayFlex);
             searchOverlay.classList.add(styles.displayNone);
         }
+    };
+
+    // Handle search job
+    const handleSearchJob = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        handleBackSearchClick();
+        navigate(`/job-list?position=${position}&location=${selectedLocation}`);
     };
 
     return (
@@ -78,7 +93,7 @@ const Header = () => {
 
                                     {(role === Role.PRESIDENT || role === Role.STAFF) && (
                                         <li>
-                                            <Link to="/system-management" className={styles.dropdownItem}>
+                                            <Link to="/admin/enterpise-listing" className={styles.dropdownItem}>
                                                 <i className="fa-regular fa-folder-closed"></i>
                                                 <span>System Management</span>
                                             </Link>
@@ -126,45 +141,43 @@ const Header = () => {
                     <div className={clsx(styles.searchBox, styles.displayFlex, styles.centered)}>
                         <i className="fa-solid fa-magnifying-glass" onClick={handleSearchButtonClick}></i>
                         <div id="searchOverlay" className={clsx(styles.searchOverlay, styles.displayNone)}>
-                            <form action="" className={styles.searchPanel}>
+                            <form onSubmit={handleSearchJob} className={styles.searchPanel}>
                                 <input
                                     type="text"
                                     className={clsx(styles.searchText, styles.searchPlaceholder)}
-                                    placeholder="Search..."
+                                    placeholder="Search by job position ..."
                                     required
+                                    value={position}
+                                    onChange={(e) => setPosition(e.target.value)}
                                 />
                                 <button className={styles.searchButton}>
                                     <i className="fa-solid fa-magnifying-glass"></i>
                                 </button>
                                 <div className={clsx(styles.searchLocation, styles.displayFlex, styles.centered)}>
                                     <i className="fa-solid fa-location-dot"></i>
-                                    <span>Location</span>
+                                    <span>{selectedLocation || 'Location'}</span>
                                     <i className="fa-solid fa-angle-down"></i>
 
                                     <ul className={styles.locationList}>
-                                        <li className={styles.locationListItem}>
-                                            <i className="fa-solid fa-location-dot"></i>
-                                            <span>TP. Hồ Chí Minh</span>
-                                        </li>
+                                        {locationList?.map((location: string, index: number) => (
+                                            <li
+                                                key={index}
+                                                className={styles.locationListItem}
+                                                onClick={() => setSelectedLocation(location)}
+                                            >
+                                                <i className="fa-solid fa-location-dot"></i>
+                                                <span>{location}</span>
+                                            </li>
+                                        ))}
+
                                         <li className={styles.locationListItem}>
                                             <i className="fa-solid fa-location-dot"></i>
                                             <span>Kiên Giang</span>
                                         </li>
+
                                         <li className={styles.locationListItem}>
                                             <i className="fa-solid fa-location-dot"></i>
                                             <span>An Giang</span>
-                                        </li>
-                                        <li className={styles.locationListItem}>
-                                            <i className="fa-solid fa-location-dot"></i>
-                                            <span>Đồng Tháp</span>
-                                        </li>
-                                        <li className={styles.locationListItem}>
-                                            <i className="fa-solid fa-location-dot"></i>
-                                            <span>Quảng Ngãi</span>
-                                        </li>
-                                        <li className={styles.locationListItem}>
-                                            <i className="fa-solid fa-location-dot"></i>
-                                            <span>Vũng Tàu</span>
                                         </li>
                                     </ul>
                                 </div>

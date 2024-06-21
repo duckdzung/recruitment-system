@@ -10,9 +10,14 @@ export const createRecruitmentForm = async (
     return response.data;
 };
 
-export const getAllRecruitmentForms = async (page: number, size: number): Promise<ApiResponse> => {
-    const queryParams = qs.stringify({ page, size });
-    const response = await axios.get<ApiResponse>(`recruitments?${queryParams}`);
+export const getAllRecruitmentForms = async (
+    page: number,
+    size: number,
+    position: string,
+    address: string,
+): Promise<ApiResponse> => {
+    const queryParams = qs.stringify({ position, address, page, size });
+    const response = await axios.get<ApiResponse>(`recruitments/search?${queryParams}`);
     return response.data;
 };
 
