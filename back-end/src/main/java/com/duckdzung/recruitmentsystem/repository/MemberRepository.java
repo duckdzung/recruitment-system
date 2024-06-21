@@ -4,6 +4,7 @@ import com.duckdzung.recruitmentsystem.model.Member;
 import com.duckdzung.recruitmentsystem.model.enums.Role;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -19,4 +20,5 @@ public interface MemberRepository extends JpaRepository<Member, String> {
 
     Page<Member> findByRole(Role role, Pageable pageable);
 
+    Page<Member> findAll(Specification<Member> spec, Pageable pageable);
 }

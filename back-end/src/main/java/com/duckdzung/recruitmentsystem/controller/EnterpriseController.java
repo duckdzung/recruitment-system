@@ -58,4 +58,16 @@ public class EnterpriseController {
                         .build()
         );
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<ResponseObject> searchEnterprises(@RequestParam String value, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+        Page<Enterprise> enterprises = enterpriseService.searchEnterprises(value, Pageable.ofSize(size).withPage(page));
+        return ResponseEntity.ok(
+                ResponseObject.builder()
+                        .statusCode(200)
+                        .message("Enterprises retrieved successfully")
+                        .data(pagedResourcesAssembler.toModel(enterprises))
+                        .build()
+        );
+    }
 }
