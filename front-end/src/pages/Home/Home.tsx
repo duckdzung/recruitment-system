@@ -230,7 +230,7 @@ const Home = () => {
                         </div>
                     </div>
                     <div className={styles.jobBannerCenter}>
-                        <JobList length={3} />
+                        <JobList />
                     </div>
                     <div className={styles.jobBannerBottom}>
                         <p>Find a job that matches your expertise in our job list.</p>
