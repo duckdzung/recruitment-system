@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -23,4 +25,6 @@ public class AuthRequest {
     private String taxCode;
     private String accessToken;
     private String refreshToken;
+    private LocalDate dateOfExpiration;
+    private Boolean isValidated;
 }

@@ -403,7 +403,11 @@ public class AuthService {
 
             member.setPhoneNumber(truncateSpaceFromPhoneNumber(updateRequest.getPhoneNum()));
         }
+        if (updateRequest.getIsValidated() != null) {
+            member.setIsValidated(updateRequest.getIsValidated());
+        }
 
+        // Update enterprise details
         if (updateRequest.getTaxCode() != null || updateRequest.getCompanyName() != null) {
             Enterprise enterprise = enterpriseRepository.findByMemberId(id);
             if (enterprise == null) {
@@ -414,6 +418,9 @@ public class AuthService {
             }
             if (updateRequest.getCompanyName() != null) {
                 enterprise.setCompanyName(updateRequest.getCompanyName());
+            }
+            if (updateRequest.getDateOfExpiration() != null) {
+                enterprise.setDateOfExpiration(updateRequest.getDateOfExpiration());
             }
             enterprise.setMember(member);
             enterpriseRepository.save(enterprise);
