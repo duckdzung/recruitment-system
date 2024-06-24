@@ -18,8 +18,11 @@ export interface MemberDetails {
     name: string;
     phoneNum: string;
     address: string;
+    email?: string;
     companyName?: string;
     taxCode?: string;
+    isValidated?: boolean;
+    dateOfExpiration?: string;
 }
 
 export interface AxiosError {

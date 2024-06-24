@@ -88,7 +88,7 @@ const AdminPage: React.FC = () => {
                     <img src={logo} alt="logo" style={{ height: '50px' }} />
                 </Link>
                 <Menu theme="dark" mode="horizontal" selectedKeys={[selectedKey]} style={menuStyle}>
-                    {items.map((item) => (
+                    {items?.map((item) => (
                         <Menu.Item key={item.key} style={menuItemStyle}>
                             <Link to={item.route}>{item.label}</Link>
                         </Menu.Item>
