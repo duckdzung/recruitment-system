@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Input, Row, Col, Button } from 'antd';
+import { Table, Input, Row, Col, Tag } from 'antd';
 import type { GetProp, TableProps } from 'antd';
-import qs from 'qs';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import type { SearchProps } from 'antd/es/input/Search';
+
+import { getEnterpriseList, updateMemberByStaff } from '../../services/memberService';
+import EditModal, { FormItem } from '../Modal/EditModal';
+import ConfirmModal from '../Modal/ConfirmModal';
+import { ApiResponse, MemberDetails } from '../../types';
+import { toast } from 'react-toastify';
 
 const { Search } = Input;
 
@@ -22,12 +27,14 @@ const headingStyle: React.CSSProperties = {
 
 // Interface for component
 interface DataType {
+    id: string;
     name: string;
     address: string;
     phoneNumber: string;
     email: string;
+    taxCode: string;
+    dateOfExpiration: string;
     validate: boolean;
-    profiled: boolean;
 }
 
 interface TableParams {
@@ -37,76 +44,10 @@ interface TableParams {
     filters?: Parameters<GetProp<TableProps, 'onChange'>>[1];
 }
 
-const columns: ColumnsType<DataType> = [
-    {
-        title: 'Enterprise',
-        dataIndex: 'name',
-        sorter: true,
-        width: '10%',
-    },
-    {
-        title: 'Address',
-        dataIndex: 'address',
-        width: '20%',
-    },
-    {
-        title: 'Phone number',
-        dataIndex: 'phoneNumber',
-        width: '15%',
-    },
-    {
-        title: 'Email',
-        dataIndex: 'email',
-        width: '15%',
-    },
-    {
-        title: 'Tax code',
-        dataIndex: 'taxCode',
-        width: '10%',
-    },
-    {
-        title: 'Expiration',
-        dataIndex: 'dateOfExpiration',
-        width: '10%',
-    },
-    {
-        title: 'Validate',
-        dataIndex: 'validate',
-        width: '5%',
-        align: 'center',
-        render: (validate: boolean) => <input type="checkbox" checked={validate} style={{ transform: 'scale(1.5)' }} />,
-    },
-    {
-        title: 'Profiled',
-        dataIndex: 'profiled',
-        width: '5%',
-        render: () => (
-            <Button type="primary" ghost size="middle">
-                View
-            </Button>
-        ),
-    },
-    {
-        title: 'Action',
-        dataIndex: 'action',
-        width: '10%',
-        render: () => (
-            <span>
-                <EditOutlined style={{ fontSize: '25px', color: '#f5b342' }} />
-                <DeleteOutlined style={{ fontSize: '25px', color: '#f54242', marginLeft: '20px' }} />
-            </span>
-        ),
-    },
-];
-
-const getRandomuserParams = (params: TableParams) => ({
-    results: params.pagination?.pageSize,
-    page: params.pagination?.current,
-    ...params,
-});
-
 const EnterpiseListing: React.FC = () => {
-    const [data, setData] = useState<DataType[]>([]);
+    const [enterpiseList, setEnterpiseList] = useState<DataType[]>([]);
+    const [editedEnterprise, setEditedEnterprise] = useState<DataType | null>(null);
+    const [deletedEnterprise, setDeletedEnterprise] = useState<DataType | null>(null);
     const [loading, setLoading] = useState(false);
     const [tableParams, setTableParams] = useState<TableParams>({
         pagination: {
@@ -115,43 +56,159 @@ const EnterpiseListing: React.FC = () => {
         },
     });
 
-    const fetchData = () => {
+    const fetchData = async () => {
         setLoading(true);
-        fetch(`https://randomuser.me/api?${qs.stringify(getRandomuserParams(tableParams))}`)
-            .then((res) => res.json())
-            .then(({ results }) => {
-                setData(results);
-                setLoading(false);
-                setTableParams({
-                    ...tableParams,
-                    pagination: {
-                        ...tableParams.pagination,
-                        total: 200,
-                        // 200 is mock data, you should read it from server
-                        // total: data.totalCount,
-                    },
-                });
-            });
+
+        const response = await getEnterpriseList(
+            tableParams.pagination?.current! - 1,
+            tableParams.pagination?.pageSize!,
+        );
+
+        setEnterpiseList(
+            response?.data.content.map((enterprise: any) => {
+                return {
+                    key: enterprise.id,
+                    id: enterprise.id,
+                    name: enterprise.companyName,
+                    address: enterprise.member.address,
+                    phoneNumber: enterprise.member.phoneNumber,
+                    email: enterprise.member.email,
+                    taxCode: enterprise.taxCode,
+                    dateOfExpiration: enterprise.dateOfExpiration || '',
+                    validate: enterprise.member.isValidated,
+                };
+            }),
+        );
+
+        setLoading(false);
+        setTableParams({
+            ...tableParams,
+            pagination: {
+                ...tableParams.pagination,
+                total: response?.data.page.totalPages,
+            },
+        });
     };
 
     useEffect(() => {
         fetchData();
     }, [tableParams.pagination?.current, tableParams.pagination?.pageSize]);
 
-    const handleTableChange: TableProps['onChange'] = (pagination, filters, sorter) => {
+    const handleTableChange: TableProps<DataType>['onChange'] = (pagination, filters, sorter) => {
         setTableParams({
             pagination,
             filters,
             ...sorter,
         });
-
-        // `dataSource` is useless since `pageSize` changed
-        if (pagination.pageSize !== tableParams.pagination?.pageSize) {
-            setData([]);
-        }
     };
 
     const onSearch: SearchProps['onSearch'] = (value, _e, info) => console.log(info?.source, value);
+
+    const handleEditClick = (enterprise: DataType) => {
+        setEditedEnterprise(enterprise);
+    };
+
+    const handleEditSave = async (updatedData: { [key: string]: any }) => {
+        const enterpiseId = updatedData.id?.replace('EN', 'ME');
+        const updatedEnterprise: MemberDetails = {
+            name: updatedData.name,
+            address: updatedData.address,
+            phoneNum: updatedData.phoneNumber,
+            email: updatedData.email,
+            taxCode: updatedData.taxCode,
+            dateOfExpiration: updatedData.dateOfExpiration ? new Date(updatedData.dateOfExpiration).toISOString() : '',
+            isValidated: updatedData.validate,
+        };
+
+        // Call api update enterprise
+        const response: ApiResponse = await updateMemberByStaff(enterpiseId, updatedEnterprise);
+
+        // Update sucessfully
+        if (response && response.statusCode === 200) {
+            toast.success(response.message);
+        }
+
+        // Close the modal after saving
+        setEditedEnterprise(null);
+    };
+
+    const handleDeleteEnterprise = () => {
+        console.log(deletedEnterprise);
+
+        // Perform update operation here
+
+        setDeletedEnterprise(null); // Close the modal after saving
+    };
+
+    const columns: ColumnsType<DataType> = [
+        {
+            title: 'Enterprise',
+            dataIndex: 'name',
+            sorter: true,
+            width: '10%',
+        },
+        {
+            title: 'Address',
+            dataIndex: 'address',
+            width: '20%',
+        },
+        {
+            title: 'Phone number',
+            dataIndex: 'phoneNumber',
+            width: '15%',
+        },
+        {
+            title: 'Email',
+            dataIndex: 'email',
+            width: '15%',
+        },
+        {
+            title: 'Tax code',
+            dataIndex: 'taxCode',
+            width: '10%',
+        },
+        {
+            title: 'Expiration',
+            dataIndex: 'dateOfExpiration',
+            width: '10%',
+        },
+        {
+            title: 'Validate',
+            dataIndex: 'validate',
+            width: '5%',
+            align: 'center',
+            render: (validate: boolean) => (
+                <Tag color={validate ? 'green' : 'volcano'}>{validate ? 'TRUE' : 'FALSE'}</Tag>
+            ),
+        },
+        {
+            title: 'Action',
+            dataIndex: 'action',
+            width: '10%',
+            render: (_, enterprise) => (
+                <span>
+                    <EditOutlined
+                        style={{ fontSize: '25px', color: '#f5b342', cursor: 'pointer' }}
+                        onClick={() => handleEditClick(enterprise)}
+                    />
+                    <DeleteOutlined
+                        style={{ fontSize: '25px', color: '#f54242', marginLeft: '20px', cursor: 'pointer' }}
+                        onClick={() => setDeletedEnterprise(enterprise)}
+                    />
+                </span>
+            ),
+        },
+    ];
+
+    const fields: FormItem[] = [
+        { name: 'name', label: 'Name', type: 'text', isDisabled: false },
+        { name: 'address', label: 'Address', type: 'text', isDisabled: false },
+        { name: 'phoneNumber', label: 'Phone Number', type: 'text', isDisabled: false },
+        { name: 'email', label: 'Email', type: 'text', isDisabled: true },
+        { name: 'taxCode', label: 'Tax Code', type: 'text', isDisabled: false },
+        { name: 'dateOfExpiration', label: 'Date of Expiration', type: 'datetime', isDisabled: false },
+        { name: 'validate', label: 'Validate', type: 'checkbox', isDisabled: false },
+    ];
 
     return (
         <>
@@ -174,13 +231,31 @@ const EnterpiseListing: React.FC = () => {
                 <Col span={24}>
                     <Table
                         columns={columns}
-                        dataSource={data}
+                        dataSource={enterpiseList}
                         pagination={tableParams.pagination}
                         loading={loading}
                         onChange={handleTableChange}
                     />
                 </Col>
             </Row>
+
+            <EditModal
+                title="Edit Enterprise"
+                data={editedEnterprise || {}}
+                isOpen={!!editedEnterprise}
+                fields={fields}
+                onSave={handleEditSave}
+                onCancel={() => setEditedEnterprise(null)}
+            />
+            <ConfirmModal
+                title="Confirm"
+                content="Do you want to delete this enterprise?"
+                okText="Ok"
+                cancelText="Cancel"
+                isOpen={deletedEnterprise !== null}
+                onConfirm={handleDeleteEnterprise}
+                onCancel={() => setDeletedEnterprise(null)}
+            />
         </>
     );
 };

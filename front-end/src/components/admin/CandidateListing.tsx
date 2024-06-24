@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Button, Input, Row, Col } from 'antd';
+import { Table, Button, Input, Row, Col, Tag } from 'antd';
 import type { GetProp, TableProps } from 'antd';
-import qs from 'qs';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import type { SearchProps } from 'antd/es/input/Search';
+import EditModal, { FormItem } from '../Modal/EditModal';
+import ConfirmModal from '../Modal/ConfirmModal';
+import { getCandidateList, updateMemberByStaff } from '../../services/memberService';
+import { toast } from 'react-toastify';
+import { ApiResponse, MemberDetails } from '../../types';
 
 const { Search } = Input;
 
@@ -22,12 +25,13 @@ const headingStyle: React.CSSProperties = {
 
 // Interface for component
 interface DataType {
+    key: string;
+    id: string;
     name: string;
     address: string;
     phoneNumber: string;
     email: string;
     validate: boolean;
-    profiled: boolean;
 }
 
 interface TableParams {
@@ -37,66 +41,8 @@ interface TableParams {
     filters?: Parameters<GetProp<TableProps, 'onChange'>>[1];
 }
 
-const columns: ColumnsType<DataType> = [
-    {
-        title: 'Name',
-        dataIndex: 'name',
-        sorter: true,
-        width: '15%',
-    },
-    {
-        title: 'Address',
-        dataIndex: 'address',
-        width: '20%',
-    },
-    {
-        title: 'Phone number',
-        dataIndex: 'phoneNumber',
-        width: '15%',
-    },
-    {
-        title: 'Email',
-        dataIndex: 'email',
-        width: '15%',
-    },
-    {
-        title: 'Validate',
-        dataIndex: 'validate',
-        width: '5%',
-        align: 'center',
-        render: (validate: boolean) => <input type="checkbox" checked={validate} style={{ transform: 'scale(1.5)' }} />,
-    },
-    {
-        title: 'Profiled',
-        dataIndex: 'profiled',
-        width: '5%',
-        render: () => (
-            <Button type="primary" ghost size="middle">
-                View
-            </Button>
-        ),
-    },
-    {
-        title: 'Action',
-        dataIndex: 'action',
-        width: '10%',
-        render: () => (
-            <span>
-                <EditOutlined style={{ fontSize: '25px', color: '#f5b342' }} />
-                <DeleteOutlined style={{ fontSize: '25px', color: '#f54242', marginLeft: '20px' }} />
-            </span>
-        ),
-    },
-];
-
-const getRandomuserParams = (params: TableParams) => ({
-    results: params.pagination?.pageSize,
-    page: params.pagination?.current,
-    ...params,
-});
-
 const CandidateListing: React.FC = () => {
-    const [data, setData] = useState<DataType[]>([]);
+    const [candidateList, setCandidateList] = useState<DataType[]>([]);
     const [loading, setLoading] = useState(false);
     const [tableParams, setTableParams] = useState<TableParams>({
         pagination: {
@@ -104,44 +50,155 @@ const CandidateListing: React.FC = () => {
             pageSize: 10,
         },
     });
-
-    const fetchData = () => {
-        setLoading(true);
-        fetch(`https://randomuser.me/api?${qs.stringify(getRandomuserParams(tableParams))}`)
-            .then((res) => res.json())
-            .then(({ results }) => {
-                setData(results);
-                setLoading(false);
-                setTableParams({
-                    ...tableParams,
-                    pagination: {
-                        ...tableParams.pagination,
-                        total: 200,
-                        // 200 is mock data, you should read it from server
-                        // total: data.totalCount,
-                    },
-                });
-            });
-    };
+    const [editedCandidate, setEditedCandidate] = useState<DataType | null>(null);
+    const [deletedCandidate, setDeletedCandidate] = useState<DataType | null>(null);
 
     useEffect(() => {
         fetchData();
     }, [tableParams.pagination?.current, tableParams.pagination?.pageSize]);
 
-    const handleTableChange: TableProps['onChange'] = (pagination, filters, sorter) => {
+    const fetchData = async () => {
+        setLoading(true);
+
+        const response = await getCandidateList(
+            tableParams.pagination?.current! - 1,
+            tableParams.pagination?.pageSize!,
+        );
+
+        setCandidateList(
+            response?.data.content.map((candidate: any) => {
+                return {
+                    key: candidate.id,
+                    id: candidate.id,
+                    name: candidate.name,
+                    address: candidate.address,
+                    phoneNumber: candidate.phoneNumber,
+                    email: candidate.email,
+                    validate: candidate.isValidated,
+                };
+            }),
+        );
+
+        setLoading(false);
+        setTableParams({
+            ...tableParams,
+            pagination: {
+                ...tableParams.pagination,
+                total: response?.data.page.totalPages,
+            },
+        });
+    };
+
+    const handleTableChange = (pagination: TablePaginationConfig, filters: any, sorter: any) => {
         setTableParams({
             pagination,
             filters,
             ...sorter,
         });
-
-        // `dataSource` is useless since `pageSize` changed
-        if (pagination.pageSize !== tableParams.pagination?.pageSize) {
-            setData([]);
-        }
     };
 
-    const onSearch: SearchProps['onSearch'] = (value, _e, info) => console.log(info?.source, value);
+    const handleEditSave = async (updatedData: { [key: string]: any }) => {
+        const candidateId = updatedData.id;
+        const updatedCandidate: MemberDetails = {
+            name: updatedData.name,
+            address: updatedData.address,
+            phoneNum: updatedData.phoneNumber,
+            email: updatedData.email,
+            isValidated: updatedData.validate,
+        };
+
+        // Call api update candidate
+        const response: ApiResponse = await updateMemberByStaff(candidateId, updatedCandidate);
+
+        // Update sucessfully
+        if (response && response.statusCode === 200) {
+            fetchData();
+            toast.success(response.message);
+        }
+
+        // Close the modal after saving
+        setEditedCandidate(null);
+    };
+
+    const handleDeleteCandidate = () => {
+        setCandidateList(candidateList.filter((candidate) => candidate.email !== deletedCandidate?.email));
+        setDeletedCandidate(null);
+    };
+
+    const onSearch = (value: string) => {
+        const filteredCandidates = candidateList.filter((candidate) =>
+            candidate.name.toLowerCase().includes(value.toLowerCase()),
+        );
+        setCandidateList(filteredCandidates);
+    };
+
+    const columns: ColumnsType<DataType> = [
+        {
+            title: 'Name',
+            dataIndex: 'name',
+            sorter: true,
+            width: '15%',
+        },
+        {
+            title: 'Address',
+            dataIndex: 'address',
+            width: '20%',
+        },
+        {
+            title: 'Phone number',
+            dataIndex: 'phoneNumber',
+            width: '15%',
+        },
+        {
+            title: 'Email',
+            dataIndex: 'email',
+            width: '15%',
+        },
+        {
+            title: 'Validate',
+            dataIndex: 'validate',
+            width: '5%',
+            align: 'center',
+            render: (validate: boolean) => (
+                <Tag color={validate ? 'green' : 'volcano'}>{validate ? 'TRUE' : 'FALSE'}</Tag>
+            ),
+        },
+        {
+            title: 'Profiled',
+            dataIndex: 'profiled',
+            width: '5%',
+            render: () => (
+                <Button type="primary" ghost size="middle">
+                    View
+                </Button>
+            ),
+        },
+        {
+            title: 'Action',
+            dataIndex: 'action',
+            width: '10%',
+            render: (_, record) => (
+                <>
+                    <EditOutlined
+                        style={{ fontSize: '25px', color: '#f5b342', cursor: 'pointer' }}
+                        onClick={() => setEditedCandidate(record)}
+                    />
+                    <DeleteOutlined
+                        style={{ fontSize: '25px', color: '#f54242', marginLeft: '20px', cursor: 'pointer' }}
+                        onClick={() => setDeletedCandidate(record)}
+                    />
+                </>
+            ),
+        },
+    ];
+
+    const fields: FormItem[] = [
+        { name: 'name', label: 'Name', type: 'text', isDisabled: false },
+        { name: 'address', label: 'Address', type: 'text', isDisabled: false },
+        { name: 'phoneNumber', label: 'Phone Number', type: 'text', isDisabled: false },
+        { name: 'email', label: 'Email', type: 'text', isDisabled: false },
+        { name: 'validate', label: 'Validate', type: 'checkbox', isDisabled: false },
+    ];
 
     return (
         <>
@@ -164,13 +221,35 @@ const CandidateListing: React.FC = () => {
                 <Col span={24}>
                     <Table
                         columns={columns}
-                        dataSource={data}
+                        dataSource={candidateList}
                         pagination={tableParams.pagination}
                         loading={loading}
                         onChange={handleTableChange}
                     />
                 </Col>
             </Row>
+
+            {editedCandidate && (
+                <EditModal
+                    title="Edit Candidate"
+                    data={editedCandidate}
+                    isOpen={!!editedCandidate}
+                    fields={fields}
+                    onSave={handleEditSave}
+                    onCancel={() => setEditedCandidate(null)}
+                />
+            )}
+            {deletedCandidate && (
+                <ConfirmModal
+                    title="Confirm"
+                    content="Do you want to delete this candidate?"
+                    okText="Ok"
+                    cancelText="Cancel"
+                    isOpen={!!deletedCandidate}
+                    onConfirm={handleDeleteCandidate}
+                    onCancel={() => setDeletedCandidate(null)}
+                />
+            )}
         </>
     );
 };
