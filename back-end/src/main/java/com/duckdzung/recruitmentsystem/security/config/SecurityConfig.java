@@ -52,7 +52,7 @@ public class SecurityConfig {
                                         "**/recruitments/**").hasAuthority("ENTERPRISE")
                                 .requestMatchers(
                                         HttpMethod.DELETE,
-                                        "**/recruitments/**").hasAuthority("ENTERPRISE")
+                                        "**/recruitments/**").hasAnyAuthority("ENTERPRISE", "STAFF")
                                 .requestMatchers(
                                         HttpMethod.GET,
                                         "**/recruitments/**").permitAll()
@@ -71,6 +71,9 @@ public class SecurityConfig {
                                 .requestMatchers(
                                         HttpMethod.GET,
                                         "**/members/**").permitAll()
+                                .requestMatchers(
+                                        HttpMethod.DELETE,
+                                        "**/members/**").hasAuthority("STAFF")
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

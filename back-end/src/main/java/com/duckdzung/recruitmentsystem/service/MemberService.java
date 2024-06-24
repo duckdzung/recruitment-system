@@ -40,4 +40,8 @@ public class MemberService {
         Specification<Member> spec = new MemberSpecification<>(value, Member.class);
         return memberRepository.findAll(spec, pageable);
     }
+
+    public void deleteMember(String id) {
+        memberRepository.deleteById(id);
+    }
 }
