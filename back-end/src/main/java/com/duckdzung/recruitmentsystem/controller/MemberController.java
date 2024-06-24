@@ -135,4 +135,16 @@ public class MemberController {
                         .build()
         );
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ResponseObject> deleteMember(@PathVariable String id) {
+        memberService.deleteMember(id);
+        return ResponseEntity.ok(
+                ResponseObject.builder()
+                        .statusCode(200)
+                        .message("Member deleted successfully")
+                        .data(null)
+                        .build()
+        );
+    }
 }
