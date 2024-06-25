@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Input, Checkbox, Form, DatePicker } from 'antd';
 import { CheckboxChangeEvent } from 'antd/es/checkbox';
-import moment from 'moment';
+import moment, { Moment } from 'moment';
 
 export interface FormItem {
     name: string;
@@ -42,11 +42,10 @@ const EditModal: React.FC<EditModalProps> = ({ title, data, isOpen, fields, onSa
         }));
     };
 
-    const handleDateChange = (date: moment.Moment | null, dateString: any, name: string) => {
-        console.log(date);
+    const handleDateChange = (date: Moment | null, dateString: string | string[], name: string) => {
         setFormData((prev) => ({
             ...prev,
-            [name]: dateString,
+            [name]: date ? date.format('YYYY-MM-DD') : null,
         }));
     };
 
@@ -79,10 +78,10 @@ const EditModal: React.FC<EditModalProps> = ({ title, data, isOpen, fields, onSa
             case 'datetime':
                 return (
                     <DatePicker
-                        name={field.name}
                         value={formData[field.name] ? moment(formData[field.name]) : null}
                         disabled={field.isDisabled}
                         onChange={(date, dateString) => handleDateChange(date, dateString, field.name)}
+                        format="YYYY-MM-DD"
                     />
                 );
             default:

@@ -32,6 +32,7 @@ import CurriculumVitae from './components/Admin/CurriculumVitae';
 
 import FindWork from './pages/FindWork/FindWork';
 import WorkDetails from './pages/WorkDetails/WorkDetails';
+import Payment from './components/Payment/Payment';
 
 const App: React.FC = () => {
     return (
@@ -41,9 +42,12 @@ const App: React.FC = () => {
                 <Route element={<PublicRoute restricted={true} />}>
                     <Route path="/login" element={<Authentication />} />
                     <Route path="/register" element={<Authentication />} />
+                    <Route path="/payment" element={<Payment />} />
                 </Route>
 
                 <Route element={<PublicRoute restricted={false} />}>
+                    <Route path="/test" element={<Recruitment />} />
+
                     <Route path="/recruitment" element={<Recruitment />} />
                     <Route path="/" element={<Home />} />
                     <Route path="/job-list" element={<FindWork />} />
@@ -81,7 +85,7 @@ const App: React.FC = () => {
                     </Route>
                 </Route>
             </Routes>
-            <ToastContainer position="top-center" limit={1} />
+            <ToastContainer position="top-center" limit={1} autoClose={2000} />
         </Router>
     );
 };
