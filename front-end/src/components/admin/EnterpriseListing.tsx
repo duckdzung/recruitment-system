@@ -4,7 +4,7 @@ import type { GetProp, TableProps } from 'antd';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import type { SearchProps } from 'antd/es/input/Search';
 
-import { getEnterpriseList, updateMemberByStaff } from '../../services/memberService';
+import { deleteMember, getEnterpriseList, updateMemberByStaff } from '../../services/memberService';
 import EditModal, { FormItem } from '../Modal/EditModal';
 import ConfirmModal from '../Modal/ConfirmModal';
 import { ApiResponse, MemberDetails } from '../../types';
@@ -67,8 +67,8 @@ const EnterpiseListing: React.FC = () => {
         setEnterpiseList(
             response?.data.content.map((enterprise: any) => {
                 return {
-                    key: enterprise.id,
-                    id: enterprise.id,
+                    key: enterprise.member.id,
+                    id: enterprise.member.id,
                     name: enterprise.companyName,
                     address: enterprise.member.address,
                     phoneNumber: enterprise.member.phoneNumber,
@@ -109,7 +109,7 @@ const EnterpiseListing: React.FC = () => {
     };
 
     const handleEditSave = async (updatedData: { [key: string]: any }) => {
-        const enterpiseId = updatedData.id?.replace('EN', 'ME');
+        const enterpiseId = updatedData.id;
         const updatedEnterprise: MemberDetails = {
             name: updatedData.name,
             address: updatedData.address,
@@ -125,6 +125,7 @@ const EnterpiseListing: React.FC = () => {
 
         // Update sucessfully
         if (response && response.statusCode === 200) {
+            fetchData();
             toast.success(response.message);
         }
 
@@ -132,12 +133,20 @@ const EnterpiseListing: React.FC = () => {
         setEditedEnterprise(null);
     };
 
-    const handleDeleteEnterprise = () => {
-        console.log(deletedEnterprise);
+    const handleDeleteEnterprise = async () => {
+        const enterpiseId = deletedEnterprise?.id || '';
 
-        // Perform update operation here
+        // Call api delete enterprise
+        const response: ApiResponse = await deleteMember(enterpiseId);
 
-        setDeletedEnterprise(null); // Close the modal after saving
+        // Delete sucessfully
+        if (response && response.statusCode === 200) {
+            fetchData();
+            toast.success(response.message);
+        }
+
+        // Close the modal after saving
+        setDeletedEnterprise(null);
     };
 
     const columns: ColumnsType<DataType> = [
@@ -247,6 +256,7 @@ const EnterpiseListing: React.FC = () => {
                 onSave={handleEditSave}
                 onCancel={() => setEditedEnterprise(null)}
             />
+
             <ConfirmModal
                 title="Confirm"
                 content="Do you want to delete this enterprise?"
