@@ -40,10 +40,10 @@ const WorkDetails = () => {
 
         setJobDetail({
             title: recruitmentDetails.nominee.position,
-            salary: 'Negotiate ',
+            salary: recruitmentDetails.salary || 'Negotiate ',
             location: recruitmentDetails.recruitmentInformation.enterprise.member.address,
             requires: recruitmentDetails.requiredInfo,
-            experience: 'Bachelor',
+            experience: recruitmentDetails.experience || 'No experience',
         });
     };
 
