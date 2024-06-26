@@ -7,29 +7,30 @@ import './assets/index.less';
 import PublicRoute from './routes/PublicRoute';
 import ProtectedRoute from './routes/ProtectedRoute';
 
-import Home from './pages/Home/Home';
-import ContactUs from './pages/ContactUs/ContactUs';
-import Legal from './pages/Legal/Legal';
-import Services from './pages/Services/Services';
-import Authentication from './pages/Authentication/Authentication';
-import Recruitment from './pages/Recruitment/Recruitment';
-import UpdateMember from './pages/UpdateMember/UpdateMenber';
-
+// Import for Admin UI
 import { Role } from './types';
 import AdminPage from './components/Admin/AdminPage';
 import CandidateListing from './components/Admin/CandidateListing';
 import PaymentDetails from './components/Admin/PaymentDetails';
-import PrivacyPolicy from './components/Legals/PrivacyPolicy';
-import TermsAndConditions from './components/Legals/TermsAndConditions';
-import RefundPolicy from './components/Legals/RefundPolicy';
-import CompensationConsulting from './components/Legals/CompensationConsulting';
-import LeadershipTraining from './components/Legals/LeadershipTraining';
-import TalentAcquisition from './components/Legals/TalentAcquisition';
-import OrganizationalStructures from './pages/OrganizationalStructures/OrganizationalStructures';
 import EnterpiseListing from './components/Admin/EnterpriseListing';
 import JobAdvertisement from './components/Admin/JobAdvertisement';
 import CurriculumVitae from './components/Admin/CurriculumVitae';
 
+// Import for Customer UI
+import Home from './pages/Home/Home';
+import ContactUs from './pages/ContactUs/ContactUs';
+import Legal from './pages/Legal/Legal';
+import PrivacyPolicy from './components/Legals/PrivacyPolicy';
+import TermsAndConditions from './components/Legals/TermsAndConditions';
+import RefundPolicy from './components/Legals/RefundPolicy';
+import Services from './pages/Services/Services';
+import CompensationConsulting from './components/Legals/CompensationConsulting';
+import LeadershipTraining from './components/Legals/LeadershipTraining';
+import TalentAcquisition from './components/Legals/TalentAcquisition';
+import Authentication from './pages/Authentication/Authentication';
+import Recruitment from './pages/Recruitment/Recruitment';
+import UpdateMember from './pages/UpdateMember/UpdateMenber';
+import OrganizationalStructures from './pages/OrganizationalStructures/OrganizationalStructures';
 import FindWork from './pages/FindWork/FindWork';
 import WorkDetails from './pages/WorkDetails/WorkDetails';
 import Payment from './components/Payment/Payment';
@@ -46,9 +47,7 @@ const App: React.FC = () => {
                 </Route>
 
                 <Route element={<PublicRoute restricted={false} />}>
-                    <Route path="/test" element={<Recruitment />} />
-
-                    <Route path="/recruitment" element={<Recruitment />} />
+                    <Route path="/test" element={<Payment />} />
                     <Route path="/" element={<Home />} />
                     <Route path="/job-list" element={<FindWork />} />
                     <Route path="/job-details/:jobId" element={<WorkDetails />} />
