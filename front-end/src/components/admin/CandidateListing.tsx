@@ -4,7 +4,7 @@ import type { GetProp, TableProps } from 'antd';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import EditModal, { FormItem } from '../Modal/EditModal';
 import ConfirmModal from '../Modal/ConfirmModal';
-import { getCandidateList, updateMemberByStaff } from '../../services/memberService';
+import { deleteMember, getCandidateList, updateMemberByStaff } from '../../services/memberService';
 import { toast } from 'react-toastify';
 import { ApiResponse, MemberDetails } from '../../types';
 
@@ -113,15 +113,26 @@ const CandidateListing: React.FC = () => {
         // Update sucessfully
         if (response && response.statusCode === 200) {
             fetchData();
-            toast.success(response.message);
+            toast.success('Update candidate successfully');
         }
 
         // Close the modal after saving
         setEditedCandidate(null);
     };
 
-    const handleDeleteCandidate = () => {
-        setCandidateList(candidateList.filter((candidate) => candidate.email !== deletedCandidate?.email));
+    const handleDeleteCandidate = async () => {
+        const candidateId = deletedCandidate?.id || '';
+
+        // Call api delete candidate
+        const response: ApiResponse = await deleteMember(candidateId);
+
+        // Delete sucessfully
+        if (response && response.statusCode === 200) {
+            fetchData();
+            toast.success('Delete candidate successfully');
+        }
+
+        // Close the modal after saving
         setDeletedCandidate(null);
     };
 
