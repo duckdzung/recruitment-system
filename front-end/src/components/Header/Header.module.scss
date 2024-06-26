@@ -227,7 +227,7 @@
     outline: none;
     background: none;
     color: white;
-    font-size: 100%;
+    font-size: 16px;
     font-family: 'Nunito', sans-serif;
 }
 
@@ -239,11 +239,12 @@
     padding: 0px 10px;
     margin: 0px 50px;
     position: relative;
+    width: 40%;
     transition: all 0.3s ease-in-out;
 
     > span {
+        font-size: 16px;
         font-family: 'Nunito', sans-serif;
-        font-size: 100%;
         font-weight: 400;
     }
 
@@ -274,9 +275,9 @@
     &::before {
         position: absolute;
         content: '';
-        top: -15%;
+        top: -25%;
         left: 0;
-        width: 100%;
+        width: 140%;
         height: 50%;
         background-color: transparent;
         z-index: -1;
@@ -288,7 +289,6 @@
     font-size: 14px;
     display: flex;
     gap: 20px;
-    transition: all 0.15s ease-in-out;
 
     &:hover {
         color: #0aadeb;
