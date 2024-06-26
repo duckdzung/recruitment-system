@@ -126,7 +126,7 @@ const EnterpiseListing: React.FC = () => {
         // Update sucessfully
         if (response && response.statusCode === 200) {
             fetchData();
-            toast.success(response.message);
+            toast.success('Update enterprise successfully');
         }
 
         // Close the modal after saving
@@ -142,7 +142,7 @@ const EnterpiseListing: React.FC = () => {
         // Delete sucessfully
         if (response && response.statusCode === 200) {
             fetchData();
-            toast.success(response.message);
+            toast.success('Delete enterprise successfully');
         }
 
         // Close the modal after saving
