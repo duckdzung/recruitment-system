@@ -35,7 +35,7 @@ const JobList = () => {
                     name: recruitment.recruitmentDetails.recruitmentInformation.enterprise.companyName,
                     location: recruitment.recruitmentDetails.recruitmentInformation.enterprise.member.address,
                     jobPosition: recruitment.recruitmentDetails.nominee.position,
-                    salary: recruitment.salary || '120,000',
+                    salary: recruitment.recruitmentDetails.salary || '2000',
                     contact: recruitment.recruitmentDetails.recruitmentInformation.enterprise.member.email,
                     quantity: recruitment.recruitmentDetails.quantity,
                 };
