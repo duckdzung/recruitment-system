@@ -9,10 +9,12 @@ import adBanner from '../../assets/images/advertisingBannerIcon.png';
 import onlWebsite from '../../assets/images/onlineWebsiteIcon.png';
 import { AdvertisingForm, RecruitmentDetails, RecruitmentForm, TimePeriodType } from '../../types';
 
+import BackgroundSection from '../../components/BackgroundSection/BackgroundSection';
+
 import * as yup from 'yup';
 import { toast } from 'react-toastify';
 import { createRecruitmentForm } from '../../services/recruitmentService';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 // Schema validation using yup
 const schema = yup.object().shape({
@@ -379,38 +381,7 @@ const Recruitment: React.FC = () => {
                     ></button>
                 </div>
             </div>
-            <ul className={styles.backgroundSection}>
-                <li>
-                    <Link to="/">
-                        <i className="fa-solid fa-house-user"></i>
-                    </Link>
-                </li>
-                <li>
-                    <Link to="/">
-                        <i className="fa-solid fa-house-user"></i>
-                    </Link>
-                </li>
-                <li>
-                    <Link to="/">
-                        <i className="fa-solid fa-house-user"></i>
-                    </Link>
-                </li>
-                <li>
-                    <Link to="/">
-                        <i className="fa-solid fa-house-user"></i>
-                    </Link>
-                </li>
-                <li>
-                    <Link to="/">
-                        <i className="fa-solid fa-house-user"></i>
-                    </Link>
-                </li>
-                <li>
-                    <Link to="/">
-                        <i className="fa-solid fa-house-user"></i>
-                    </Link>
-                </li>
-            </ul>
+            <BackgroundSection />
         </>
     );
 };
