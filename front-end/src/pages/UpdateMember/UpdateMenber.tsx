@@ -1,5 +1,4 @@
 import clsx from 'clsx';
-import { Link } from 'react-router-dom';
 import styles from './UpdateMember.module.scss';
 import '../../assets/fonts/fontawesome-free-6.5.2/css/all.min.css';
 import React, { useState, useEffect, FormEvent } from 'react';
@@ -7,6 +6,7 @@ import { ApiResponse, MemberDetails } from '../../types';
 import { updateMember } from '../../services/memberService';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import BackgroundSection from '../../components/BackgroundSection/BackgroundSection';
 
 const defaultMemberDetails = {
     name: '',
@@ -210,38 +210,7 @@ const UpdateMember: React.FC = () => {
                     ></button>
                 </div>
             </div>
-            <ul className={styles.backgroundSection}>
-                <li>
-                    <Link to="/">
-                        <i className="fa-solid fa-house-user"></i>
-                    </Link>
-                </li>
-                <li>
-                    <Link to="/">
-                        <i className="fa-solid fa-house-user"></i>
-                    </Link>
-                </li>
-                <li>
-                    <Link to="/">
-                        <i className="fa-solid fa-house-user"></i>
-                    </Link>
-                </li>
-                <li>
-                    <Link to="/">
-                        <i className="fa-solid fa-house-user"></i>
-                    </Link>
-                </li>
-                <li>
-                    <Link to="/">
-                        <i className="fa-solid fa-house-user"></i>
-                    </Link>
-                </li>
-                <li>
-                    <Link to="/">
-                        <i className="fa-solid fa-house-user"></i>
-                    </Link>
-                </li>
-            </ul>
+            <BackgroundSection />
         </>
     );
 };

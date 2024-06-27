@@ -1,6 +1,6 @@
-import styles from './Payment.module.scss';
 import { useRef, useEffect } from 'react';
 import clsx from 'clsx';
+import styles from './Payment.module.scss';
 
 import visa from '../../assets/images/visa.png';
 import chip from '../../assets/images/chip.png';

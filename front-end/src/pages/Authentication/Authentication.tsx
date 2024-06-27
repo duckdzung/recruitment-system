@@ -10,6 +10,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { register } from '../../services/authService';
 import { loginSuccess } from '../../redux/auth/authSlice';
+import BackgroundSection from '../../components/BackgroundSection/BackgroundSection';
 
 const Authentication: React.FC = () => {
     // State for animation UI
@@ -286,38 +287,7 @@ const Authentication: React.FC = () => {
                     ></button>
                 </div>
             </div>
-            <ul className={styles.backgroundSection}>
-                <li>
-                    <Link to="/">
-                        <i className="fa-solid fa-house-user"></i>
-                    </Link>
-                </li>
-                <li>
-                    <Link to="/">
-                        <i className="fa-solid fa-house-user"></i>
-                    </Link>
-                </li>
-                <li>
-                    <Link to="/">
-                        <i className="fa-solid fa-house-user"></i>
-                    </Link>
-                </li>
-                <li>
-                    <Link to="/">
-                        <i className="fa-solid fa-house-user"></i>
-                    </Link>
-                </li>
-                <li>
-                    <Link to="/">
-                        <i className="fa-solid fa-house-user"></i>
-                    </Link>
-                </li>
-                <li>
-                    <Link to="/">
-                        <i className="fa-solid fa-house-user"></i>
-                    </Link>
-                </li>
-            </ul>
+            <BackgroundSection />
         </>
     );
 };
