@@ -35,6 +35,9 @@ import FindWork from './pages/FindWork/FindWork';
 import WorkDetails from './pages/WorkDetails/WorkDetails';
 import Payment from './components/Payment/Payment';
 
+// Currently under development UI
+import ApplyJob from './components/ApplyJob/ApplyJob';
+
 const App: React.FC = () => {
     return (
         <Router>
@@ -47,7 +50,7 @@ const App: React.FC = () => {
                 </Route>
 
                 <Route element={<PublicRoute restricted={false} />}>
-                    <Route path="/test" element={<Payment />} />
+                    <Route path="/test" element={<ApplyJob />} />
                     <Route path="/" element={<Home />} />
                     <Route path="/job-list" element={<FindWork />} />
                     <Route path="/job-details/:jobId" element={<WorkDetails />} />
