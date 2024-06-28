@@ -1,9 +1,7 @@
 package com.duckdzung.recruitmentsystem.service;
 
-import com.duckdzung.recruitmentsystem.model.Enterprise;
 import com.duckdzung.recruitmentsystem.model.Member;
 import com.duckdzung.recruitmentsystem.model.enums.Role;
-import com.duckdzung.recruitmentsystem.repository.EnterpriseRepository;
 import com.duckdzung.recruitmentsystem.repository.MemberRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
@@ -14,11 +12,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class MemberService {
     private final MemberRepository memberRepository;
-    private final EnterpriseRepository enterpriseRepository;
-
-    public MemberService(MemberRepository memberRepository, EnterpriseRepository enterpriseRepository) {
+    public MemberService(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
-        this.enterpriseRepository = enterpriseRepository;
     }
 
     public Page<Member> getAllMembers(Pageable pageable) {
@@ -48,10 +43,6 @@ public class MemberService {
 
     @Transactional
     public void deleteMember(String id) {
-        Enterprise enterprise = enterpriseRepository.findByMemberId(id);
-        if (enterprise != null) {
-            enterpriseRepository.delete(enterprise);
-        }
         memberRepository.deleteById(id);
     }
 }

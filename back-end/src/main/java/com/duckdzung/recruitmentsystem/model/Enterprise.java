@@ -21,7 +21,7 @@ public class Enterprise {
     @Column(name = "id", length = 5, nullable = false)
     private String id;
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @OneToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "member_id", nullable = false, unique = true, referencedColumnName = "id")
     private Member member;
 
