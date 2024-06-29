@@ -1,13 +1,16 @@
 package com.duckdzung.recruitmentsystem.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.Setter;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "profiles")
 public class Profile {
@@ -17,9 +20,11 @@ public class Profile {
     private Integer profileId;
 
     @Column(name = "is_validate")
-    private boolean isValidate;
+    @Builder.Default
+    private boolean isValidate = false;
 
     @Column(name = "date_of_receipt")
+    @CreationTimestamp
     private LocalDateTime dateOfReceipt;
 
     @Column(name = "date_of_processing")

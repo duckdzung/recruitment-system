@@ -31,9 +31,11 @@ public class ApplicationForm {
     Profile profile;
 
     // Application form status
-    Boolean isProcessed;
+    @Builder.Default
+    Boolean isProcessed = false;
 
     // If the application form is responded by the enterprise
-    Boolean isResponded;
+    @Builder.Default
+    Boolean isResponded = false;
 
 }
