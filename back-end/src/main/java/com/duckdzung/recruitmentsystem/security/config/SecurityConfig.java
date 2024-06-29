@@ -74,6 +74,9 @@ public class SecurityConfig {
                                 .requestMatchers(
                                         HttpMethod.DELETE,
                                         "**/members/**").hasAuthority("STAFF")
+                                .requestMatchers(
+                                        HttpMethod.POST,
+                                        "**/feedback/**").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
