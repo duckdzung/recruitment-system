@@ -31,12 +31,14 @@ public class MemberController {
     private UpgradeRequestService upgradeRequestService;
     @Autowired
     private PagedResourcesAssembler<Member> pagedResourcesAssembler;
+    @Autowired
+    private PagedResourcesAssembler<UpgradeRequest> upgradeRequestPagedResourcesAssembler;
 
     @PreAuthorize("hasAuthority('MEMBER')")
     @PostMapping("/request")
-    public ResponseEntity<ResponseObject> requestUpgrade(@RequestHeader("Authorization") String authorization, @RequestBody AuthRequest updateRequest) {
+    public ResponseEntity<ResponseObject> requestUpgrade(@RequestHeader("Authorization") String authorization, @RequestBody UpgradeRequest upgradeRequest) {
         String id = jwtService.extractUserIdFromToken(authorization);
-        UpgradeRequest request = upgradeRequestService.createUpgradeRequest(id, updateRequest);
+        UpgradeRequest request = upgradeRequestService.createUpgradeRequest(id, upgradeRequest);
         return ResponseEntity.ok(
                 ResponseObject.builder()
                         .statusCode(201)
@@ -66,6 +68,19 @@ public class MemberController {
                 ResponseObject.builder()
                         .statusCode(200)
                         .message("Request rejected")
+                        .build()
+        );
+    }
+
+    @PreAuthorize("hasAuthority('STAFF')")
+    @GetMapping("/requests")
+    public ResponseEntity<ResponseObject> getAllRequests(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+        Page<UpgradeRequest> requests = upgradeRequestService.getAllRequests(Pageable.ofSize(size).withPage(page));
+        return ResponseEntity.ok(
+                ResponseObject.builder()
+                        .statusCode(200)
+                        .message("Requests retrieved successfully")
+                        .data(upgradeRequestPagedResourcesAssembler.toModel(requests))
                         .build()
         );
     }

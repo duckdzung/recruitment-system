@@ -1,6 +1,5 @@
 package com.duckdzung.recruitmentsystem.service;
 
-import com.duckdzung.recruitmentsystem.common.AuthRequest;
 import com.duckdzung.recruitmentsystem.exception.InvalidRequestException;
 import com.duckdzung.recruitmentsystem.exception.ResourceNotFoundException;
 import com.duckdzung.recruitmentsystem.model.Candidate;
@@ -15,6 +14,8 @@ import com.duckdzung.recruitmentsystem.repository.MemberRepository;
 import com.duckdzung.recruitmentsystem.repository.UpgradeRequestRepository;
 import com.duckdzung.recruitmentsystem.util.InputValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,8 +35,8 @@ public class UpgradeRequestService {
     private CandidateRepository candidateRepository;
 
     @Transactional
-    public UpgradeRequest createUpgradeRequest(String memberId, AuthRequest updateRequest) {
-        String validationError = InputValidator.isValidPhoneNumber(truncateSpaceFromPhoneNumber(updateRequest.getPhoneNum())) ? null : "Invalid phone number format";
+    public UpgradeRequest createUpgradeRequest(String memberId, UpgradeRequest upgradeRequest) {
+        String validationError = InputValidator.isValidPhoneNumber(truncateSpaceFromPhoneNumber(upgradeRequest.getPhoneNumber())) ? null : "Invalid phone number format";
         if (validationError != null) {
             throw new InvalidRequestException(validationError);
         }
@@ -45,23 +46,23 @@ public class UpgradeRequestService {
             throw new InvalidRequestException("Member can only upgrade their account once");
         }
         UpgradeRequest request;
-        if (updateRequest.getRole() == Role.CANDIDATE) {
+        if (upgradeRequest.getRole() == Role.CANDIDATE) {
             request = UpgradeRequest.builder()
                     .member(member)
-                    .name(updateRequest.getName())
-                    .address(updateRequest.getAddress())
-                    .phoneNumber(truncateSpaceFromPhoneNumber(updateRequest.getPhoneNum()))
+                    .name(upgradeRequest.getName())
+                    .address(upgradeRequest.getAddress())
+                    .phoneNumber(truncateSpaceFromPhoneNumber(upgradeRequest.getPhoneNumber()))
                     .status(RequestStatus.PENDING)
                     .role(Role.CANDIDATE)
                     .build();
-        } else if (updateRequest.getRole() == Role.ENTERPRISE) {
+        } else if (upgradeRequest.getRole() == Role.ENTERPRISE) {
             request = UpgradeRequest.builder()
                     .member(member)
-                    .name(updateRequest.getName())
-                    .address(updateRequest.getAddress())
-                    .phoneNumber(truncateSpaceFromPhoneNumber(updateRequest.getPhoneNum()))
-                    .companyName(updateRequest.getCompanyName())
-                    .taxCode(updateRequest.getTaxCode())
+                    .name(upgradeRequest.getName())
+                    .address(upgradeRequest.getAddress())
+                    .phoneNumber(truncateSpaceFromPhoneNumber(upgradeRequest.getPhoneNumber()))
+                    .companyName(upgradeRequest.getCompanyName())
+                    .taxCode(upgradeRequest.getTaxCode())
                     .status(RequestStatus.PENDING)
                     .role(Role.ENTERPRISE)
                     .build();
@@ -129,6 +130,10 @@ public class UpgradeRequestService {
                 .taxCode(request.getTaxCode())
                 .build();
         enterpriseRepository.save(enterprise);
+    }
+
+    public Page<UpgradeRequest> getAllRequests(Pageable pageable) {
+        return upgradeRequestRepository.findAll(pageable);
     }
 
     private String truncateSpaceFromPhoneNumber(String phoneNumber) {
