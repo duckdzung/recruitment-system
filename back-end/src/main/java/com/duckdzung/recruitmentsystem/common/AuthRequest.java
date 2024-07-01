@@ -1,5 +1,6 @@
 package com.duckdzung.recruitmentsystem.common;
 
+import com.duckdzung.recruitmentsystem.model.enums.Role;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,6 +26,7 @@ public class AuthRequest {
     private String taxCode;
     private String accessToken;
     private String refreshToken;
+    private Role role;
     private LocalDate dateOfExpiration;
     private Boolean isValidated;
 }

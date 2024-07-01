@@ -3,15 +3,18 @@ package com.duckdzung.recruitmentsystem.controller;
 import com.duckdzung.recruitmentsystem.common.AuthRequest;
 import com.duckdzung.recruitmentsystem.common.ResponseObject;
 import com.duckdzung.recruitmentsystem.model.Member;
+import com.duckdzung.recruitmentsystem.model.UpgradeRequest;
 import com.duckdzung.recruitmentsystem.security.jwt.JwtService;
 import com.duckdzung.recruitmentsystem.service.AuthService;
 import com.duckdzung.recruitmentsystem.service.MemberService;
+import com.duckdzung.recruitmentsystem.service.UpgradeRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin
@@ -25,35 +28,46 @@ public class MemberController {
     @Autowired
     private JwtService jwtService;
     @Autowired
+    private UpgradeRequestService upgradeRequestService;
+    @Autowired
     private PagedResourcesAssembler<Member> pagedResourcesAssembler;
-    @PostMapping
-    public ResponseEntity<ResponseObject> update(@RequestHeader("Authorization") String authorization, @RequestBody AuthRequest updateRequest) {
+
+    @PreAuthorize("hasAuthority('MEMBER')")
+    @PostMapping("/request")
+    public ResponseEntity<ResponseObject> requestUpgrade(@RequestHeader("Authorization") String authorization, @RequestBody AuthRequest updateRequest) {
         String id = jwtService.extractUserIdFromToken(authorization);
-        String updateResult = authService.upgradeMember(id, updateRequest);
-        return new ResponseEntity<>(ResponseObject.builder()
-                .statusCode(200)
-                .message(updateResult)
-                .build(), HttpStatus.OK);
+        UpgradeRequest request = upgradeRequestService.createUpgradeRequest(id, updateRequest);
+        return ResponseEntity.ok(
+                ResponseObject.builder()
+                        .statusCode(201)
+                        .message("Request created successfully")
+                        .data(request)
+                        .build()
+        );
     }
 
-    @PutMapping("/{id}/approve")
-    public ResponseEntity<ResponseObject> approve(@PathVariable String id) {
-        authService.approveMemberUpgrade(id);
-        return new ResponseEntity<>(ResponseObject.builder()
-                .statusCode(200)
-                .message("Enterprise approved successfully")
-                .data(null)
-                .build(), HttpStatus.OK);
+    @PreAuthorize("hasAuthority('STAFF')")
+    @PostMapping("/approve/{id}")
+    public ResponseEntity<ResponseObject> approveRequest(@PathVariable int id) {
+        upgradeRequestService.approveRequest(id);
+        return ResponseEntity.ok(
+                ResponseObject.builder()
+                        .statusCode(200)
+                        .message("Request approved")
+                        .build()
+        );
     }
 
-    @PutMapping("/{id}/reject")
-    public ResponseEntity<ResponseObject> reject(@PathVariable String id) {
-        authService.rejectMemberUpgrade(id);
-        return new ResponseEntity<>(ResponseObject.builder()
-                .statusCode(200)
-                .message("Enterprise rejected successfully")
-                .data(null)
-                .build(), HttpStatus.OK);
+    @PreAuthorize("hasAuthority('STAFF')")
+    @PostMapping("/reject/{id}")
+    public ResponseEntity<ResponseObject> rejectRequest(@PathVariable int id) {
+        upgradeRequestService.rejectRequest(id);
+        return ResponseEntity.ok(
+                ResponseObject.builder()
+                        .statusCode(200)
+                        .message("Request rejected")
+                        .build()
+        );
     }
 
     @GetMapping("/{id}")
