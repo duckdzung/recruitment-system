@@ -13,6 +13,7 @@ import com.duckdzung.recruitmentsystem.repository.EnterpriseRepository;
 import com.duckdzung.recruitmentsystem.repository.MemberRepository;
 import com.duckdzung.recruitmentsystem.repository.UpgradeRequestRepository;
 import com.duckdzung.recruitmentsystem.util.InputValidator;
+import com.duckdzung.recruitmentsystem.util.UserIDGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -116,7 +117,7 @@ public class UpgradeRequestService {
 
     private void createCandidate(Member member) {
         Candidate candidate = Candidate.builder()
-                .id(member.getId())
+                .id(UserIDGenerator.generateUserID(Role.CANDIDATE))
                 .member(member)
                 .build();
         candidateRepository.save(candidate);
@@ -124,7 +125,7 @@ public class UpgradeRequestService {
 
     private void createEnterprise(Member member, UpgradeRequest request) {
         Enterprise enterprise = Enterprise.builder()
-                .id(member.getId())
+                .id(UserIDGenerator.generateUserID(Role.ENTERPRISE))
                 .member(member)
                 .companyName(request.getCompanyName())
                 .taxCode(request.getTaxCode())
