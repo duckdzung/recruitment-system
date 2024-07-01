@@ -6,10 +6,12 @@ import com.duckdzung.recruitmentsystem.exception.DataIntegrityViolationException
 import com.duckdzung.recruitmentsystem.exception.InternalServerErrorException;
 import com.duckdzung.recruitmentsystem.exception.InvalidRequestException;
 import com.duckdzung.recruitmentsystem.exception.ResourceNotFoundException;
-import com.duckdzung.recruitmentsystem.model.*;
+import com.duckdzung.recruitmentsystem.model.AccessToken;
+import com.duckdzung.recruitmentsystem.model.Enterprise;
+import com.duckdzung.recruitmentsystem.model.Member;
+import com.duckdzung.recruitmentsystem.model.RefreshToken;
 import com.duckdzung.recruitmentsystem.model.enums.Role;
 import com.duckdzung.recruitmentsystem.model.enums.TokenType;
-import com.duckdzung.recruitmentsystem.repository.CandidateRepository;
 import com.duckdzung.recruitmentsystem.repository.EnterpriseRepository;
 import com.duckdzung.recruitmentsystem.repository.MemberRepository;
 import com.duckdzung.recruitmentsystem.repository.TokenRepository;
@@ -23,13 +25,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
+
+import static com.duckdzung.recruitmentsystem.util.UserIDGenerator.generateUserID;
 
 @Service
 public class AuthService {
     private final MemberRepository memberRepository;
     private final EnterpriseRepository enterpriseRepository;
-    private final CandidateRepository candidateRepository;
     private final TokenRepository<AccessToken> accessTokenRepository;
     private final TokenRepository<RefreshToken> refreshTokenRepository;
     private final JwtService jwtService;
@@ -37,10 +39,9 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final TokenRepository<?> tokenRepository;
 
-    public AuthService(MemberRepository memberRepository, EnterpriseRepository enterpriseRepository, CandidateRepository candidateRepository, TokenRepository<AccessToken> accessTokenRepository, TokenRepository<RefreshToken> refreshTokenRepository, JwtService jwtService, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, TokenRepository<?> tokenRepository) {
+    public AuthService(MemberRepository memberRepository, EnterpriseRepository enterpriseRepository, TokenRepository<AccessToken> accessTokenRepository, TokenRepository<RefreshToken> refreshTokenRepository, JwtService jwtService, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, TokenRepository<?> tokenRepository) {
         this.memberRepository = memberRepository;
         this.enterpriseRepository = enterpriseRepository;
-        this.candidateRepository = candidateRepository;
         this.accessTokenRepository = accessTokenRepository;
         this.refreshTokenRepository = refreshTokenRepository;
         this.jwtService = jwtService;
@@ -72,94 +73,6 @@ public class AuthService {
 
 
         return createTokenResponse(member);
-    }
-
-    public String upgradeMember(String memberId, AuthRequest signUpRequest) {
-        String validationError = InputValidator.isValidPhoneNumber(truncateSpaceFromPhoneNumber(signUpRequest.getPhoneNum())) ? null : "Invalid phone number format";
-        if (validationError != null) {
-            throw new InvalidRequestException(validationError);
-        }
-
-        Member member = memberRepository.findById(memberId).orElseThrow(() -> new ResourceNotFoundException("Member not found"));
-
-        if (member.getRole() != Role.MEMBER) {
-            throw new InvalidRequestException("Member can only upgrade their account once");
-        }
-
-        updateMemberDetails(member, signUpRequest);
-
-        memberRepository.save(member);
-        if (member.getRole() == Role.ENTERPRISE) {
-            return "Send request to admin for approval";
-        }
-        return "Candidate account upgraded successfully";
-    }
-
-    private void updateMemberDetails(Member member, AuthRequest signUpRequest) {
-        // Set common details
-        member.setName(signUpRequest.getName());
-        member.setAddress(signUpRequest.getAddress());
-        member.setPhoneNumber(truncateSpaceFromPhoneNumber(signUpRequest.getPhoneNum()));
-
-        // Check if company name is provided
-        if (signUpRequest.getCompanyName() != null && !signUpRequest.getCompanyName().isEmpty()) {
-            // Update as enterprise
-            member.setRole(Role.ENTERPRISE);
-            updateAsEnterprise(member, signUpRequest);
-        } else {
-            // Update as candidate
-            member.setRole(Role.CANDIDATE);
-            updateAsCandidate(member);
-        }
-    }
-
-    private void updateAsEnterprise(Member member, AuthRequest signUpRequest) {
-        Enterprise enterprise = Enterprise.builder()
-                .id(generateUserID(Role.ENTERPRISE))
-                .member(member)
-                .companyName(signUpRequest.getCompanyName())
-                .taxCode(signUpRequest.getTaxCode())
-                .build();
-        enterpriseRepository.save(enterprise);
-    }
-
-    private void updateAsCandidate(Member member) {
-        Candidate candidate = Candidate.builder()
-                .id(generateUserID(Role.CANDIDATE))
-                .member(member)
-                .build();
-        candidateRepository.save(candidate);
-    }
-
-    public void approveMemberUpgrade(String memberId) {
-        Member member = memberRepository.findById(memberId).orElseThrow(() -> new ResourceNotFoundException("Member not found"));
-
-        if (member.getIsValidated()) {
-            throw new InvalidRequestException("Member has already been approved");
-        }
-
-        member.setIsValidated(true);
-        revokeAllUserTokens(member);
-        memberRepository.save(member);
-
-    }
-
-    @Transactional
-    public void rejectMemberUpgrade(String memberId) {
-        Member member = memberRepository.findById(memberId).orElseThrow(() -> new ResourceNotFoundException("Member not found"));
-
-        if (member.getIsValidated()) {
-            throw new InvalidRequestException("Member has already been approved");
-        }
-
-        member.setIsValidated(false);
-        member.setRole(Role.MEMBER);
-        member.setName(null);
-        member.setAddress(null);
-        member.setPhoneNumber(null);
-
-        memberRepository.save(member);
-        enterpriseRepository.deleteByMemberId(memberId);
     }
 
     public TokenResponse createStaff(AuthRequest signUpRequest) {
@@ -334,40 +247,6 @@ public class AuthService {
         }
     }
 
-    private String generateUserID(Role role) {
-        String prefix;
-        Optional<String> latestIdOpt = switch (role) {
-            case CANDIDATE -> {
-                prefix = "CA";
-                yield candidateRepository.findFirstByIdStartsWithOrderByIdDesc(prefix)
-                        .map(Candidate::getId);
-            }
-            case ENTERPRISE -> {
-                prefix = "EN";
-                yield enterpriseRepository.findFirstByIdStartsWithOrderByIdDesc(prefix)
-                        .map(Enterprise::getId);
-            }
-            case PRESIDENT -> {
-                prefix = "PR";
-                yield memberRepository.findFirstByIdStartsWithOrderByIdDesc(prefix)
-                        .map(Member::getId);
-            }
-            case STAFF -> {
-                prefix = "ST";
-                yield memberRepository.findFirstByIdStartsWithOrderByIdDesc(prefix)
-                        .map(Member::getId);
-            }
-            case MEMBER -> {
-                prefix = "ME";
-                yield memberRepository.findFirstByIdStartsWithOrderByIdDesc(prefix)
-                        .map(Member::getId);
-            }
-            default -> throw new IllegalArgumentException("Invalid role: " + role);
-        };
-
-        return prefix + String.format("%03d", latestIdOpt.map(id -> Integer.parseInt(id.substring(2)) + 1).orElse(1));
-    }
-
     private String validateSignUpRequest(AuthRequest signUpRequest) {
         if (!InputValidator.isValidEmail(signUpRequest.getEmail())) {
             return "Invalid email format";
@@ -408,7 +287,7 @@ public class AuthService {
         }
 
         // Update enterprise details
-        if (updateRequest.getTaxCode() != null || updateRequest.getCompanyName() != null) {
+        if (updateRequest.getTaxCode() != null || updateRequest.getCompanyName() != null || updateRequest.getDateOfExpiration() != null) {
             Enterprise enterprise = enterpriseRepository.findByMemberId(id);
             if (enterprise == null) {
                 throw new ResourceNotFoundException("Enterprise not found");
