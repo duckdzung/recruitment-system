@@ -60,12 +60,6 @@ public class SecurityConfig {
                                         HttpMethod.GET,
                                         "**/nominees/**").permitAll()
                                 .requestMatchers(
-                                        HttpMethod.PUT,
-                                        "**/members/").hasAnyAuthority("STAFF","PRESIDENT")
-                                .requestMatchers(
-                                        HttpMethod.POST,
-                                        "**/members").hasAuthority("MEMBER")
-                                .requestMatchers(
                                         HttpMethod.GET,
                                         "**/enterprises/**").permitAll()
                                 .requestMatchers(

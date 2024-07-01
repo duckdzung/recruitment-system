@@ -36,7 +36,7 @@ public class EmailService {
             helper.setSubject("Feedback Form Submission");
 
             String templateContent = loadTemplate();
-            System.out.println(templateContent);
+
             String message = templateContent.replace("{{name}}", feedbackForm.getName())
                     .replace("{{email}}", feedbackForm.getEmail())
                     .replace("{{phoneNum}}", feedbackForm.getPhoneNum())
