@@ -1,5 +1,6 @@
 package com.duckdzung.recruitmentsystem.model;
 
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,6 +14,8 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "candidates")
+@JsonIncludeProperties({"id", "member"})
 public class Candidate {
     @Id
     @Column(name = "id", length = 5, nullable = false)

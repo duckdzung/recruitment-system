@@ -73,6 +73,24 @@ public class SecurityConfig {
                                 .requestMatchers(
                                         HttpMethod.POST,
                                         "**/feedback/**").permitAll()
+                                .requestMatchers(
+                                        HttpMethod.GET,
+                                        "**/profiles/**").hasAnyAuthority("CANDIDATE", "STAFF")
+                                .requestMatchers(
+                                        HttpMethod.POST,
+                                        "**/profiles/**").hasAuthority("CANDIDATE")
+                                .requestMatchers(
+                                        HttpMethod.PATCH,
+                                        "**/profiles/**").hasAuthority("STAFF")
+                                .requestMatchers(
+                                        HttpMethod.PUT,
+                                        "**/profiles/**").hasAuthority("CANDIDATE")
+                                .requestMatchers(
+                                        HttpMethod.DELETE,
+                                        "**/profiles/**").hasAnyAuthority("CANDIDATE", "STAFF")
+                                .requestMatchers(
+                                        HttpMethod.GET,
+                                        "**/candidates/**").hasAuthority("STAFF")
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

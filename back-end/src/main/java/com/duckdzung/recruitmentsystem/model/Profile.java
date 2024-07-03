@@ -1,7 +1,10 @@
 package com.duckdzung.recruitmentsystem.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
@@ -12,33 +15,29 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "profiles")
 public class Profile {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer profileId;
+    private Integer id;
 
-    @Column(name = "is_validate")
+    private String filePath;
+    private String fileName;
+
     @Builder.Default
     private boolean isValidate = false;
 
-    @Column(name = "date_of_receipt")
+    private String validatedBy;
+
     @CreationTimestamp
     private LocalDateTime dateOfReceipt;
 
-    @Column(name = "date_of_processing")
     private LocalDateTime dateOfProcessing;
 
-    @Column(name = "file_path")
-    private String filePath;
-
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "candidate_id", nullable = false)
-    @Setter
     private Candidate candidate;
 
     @OneToMany(mappedBy = "profile", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ApplicationForm> applicationForms;
-
 }

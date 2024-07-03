@@ -9,4 +9,6 @@ import java.util.Optional;
 @Repository
 public interface CandidateRepository extends JpaRepository<Candidate, String> {
     Optional<Candidate> findFirstByIdStartsWithOrderByIdDesc(String prefix);
+
+    Optional<Candidate> findByMemberId(String memberId);
 }
