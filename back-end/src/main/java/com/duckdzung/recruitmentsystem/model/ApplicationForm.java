@@ -34,6 +34,9 @@ public class ApplicationForm {
     @Builder.Default
     Boolean isProcessed = false;
 
+    // The staff who processed the application form
+    String processedBy;
+
     // If the application form is responded by the enterprise
     @Builder.Default
     Boolean isResponded = false;

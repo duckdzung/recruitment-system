@@ -91,6 +91,18 @@ public class SecurityConfig {
                                 .requestMatchers(
                                         HttpMethod.GET,
                                         "**/candidates/**").hasAuthority("STAFF")
+                                .requestMatchers(
+                                        HttpMethod.POST,
+                                        "**/application-form/**").hasAuthority("CANDIDATE")
+                                .requestMatchers(
+                                        HttpMethod.PUT,
+                                        "**/application-form/**").hasAuthority("STAFF")
+                                .requestMatchers(
+                                        HttpMethod.DELETE,
+                                        "**/application-form/**").hasAuthority("STAFF")
+                                .requestMatchers(
+                                        HttpMethod.GET,
+                                        "**/application-form/**").hasAnyAuthority("CANDIDATE", "STAFF")
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

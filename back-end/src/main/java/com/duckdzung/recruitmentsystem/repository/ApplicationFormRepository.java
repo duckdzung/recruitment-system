@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ApplicationFormRepository extends JpaRepository<ApplicationForm, ApplicationFormKey> {
+    ApplicationForm findByRecruitmentInformation_RecruitIdAndNominee_NomineeIdAndProfileId(int recruitId, int nomineeId, int profileId);
 }
