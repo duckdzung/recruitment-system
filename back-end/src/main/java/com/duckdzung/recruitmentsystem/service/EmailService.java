@@ -1,5 +1,6 @@
 package com.duckdzung.recruitmentsystem.service;
 
+import com.duckdzung.recruitmentsystem.exception.InternalServerErrorException;
 import com.duckdzung.recruitmentsystem.model.FeedbackForm;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -47,7 +48,7 @@ public class EmailService {
 
             mailSender.send(mimeMessage);
         } catch (MessagingException | IOException e) {
-            throw new RuntimeException(e);
+            throw new InternalServerErrorException("Failed to send feedback email");
         }
     }
 

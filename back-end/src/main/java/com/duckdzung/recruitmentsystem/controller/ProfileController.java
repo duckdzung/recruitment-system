@@ -1,14 +1,11 @@
 package com.duckdzung.recruitmentsystem.controller;
 
 import com.duckdzung.recruitmentsystem.common.ResponseObject;
-import com.duckdzung.recruitmentsystem.model.Profile;
+import com.duckdzung.recruitmentsystem.security.jwt.JwtService;
 import com.duckdzung.recruitmentsystem.service.ProfileService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,85 +15,114 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/api/profiles")
 public class ProfileController {
 
-    @Autowired
-    private ProfileService profileService;
+    private final ProfileService profileService;
+    private final JwtService jwtService;
 
-    @GetMapping
-    public ResponseEntity<ResponseObject> getAllProfiles(Pageable pageable) {
-        Page<Profile> profiles = profileService.getAllProfiles(pageable);
-        return ResponseEntity.ok(
-                ResponseObject.builder()
-                        .statusCode(HttpStatus.OK.value())
-                        .message("Success")
-                        .data(profiles)
+    public ProfileController(ProfileService profileService, JwtService jwtService) {
+        this.profileService = profileService;
+        this.jwtService = jwtService;
+    }
+
+    @PostMapping(path = "", consumes = "multipart/form-data")
+    public ResponseEntity<ResponseObject> createProfile(
+            @RequestHeader("Authorization") String authorization,
+            @RequestBody MultipartFile file
+    ) {
+        String memberId = jwtService.extractUserIdFromToken(authorization);
+        profileService.createProfile(memberId, file);
+        return ResponseEntity.ok()
+                .body(ResponseObject.builder()
+                        .statusCode(201)
+                        .message("Upload file successfully")
                         .build()
-        );
+                );
+    }
+
+    @GetMapping("/download/{id}")
+    public ResponseEntity<Resource> downloadFile(@PathVariable int id) {
+        Resource resource = profileService.getFileAsResource(id);
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_PDF)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+                .body(resource);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ResponseObject> getProfileById(@PathVariable("id") int id) {
-        Profile profile = profileService.getProfileById(id);
-        return ResponseEntity.ok(
-                ResponseObject.builder()
-                        .statusCode(HttpStatus.OK.value())
-                        .message("Success")
-                        .data(profile)
-                        .build()
-        );
-    }
-
-    @GetMapping("/{id}/pdf")
-    public ResponseEntity<Resource> getProfilePdf(@PathVariable("id") int id) {
-        Resource file = profileService.loadFileAsResource(id);
+    public ResponseEntity<ResponseObject> getProfileById(@PathVariable int id) {
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
-                .body(file);
+                .body(ResponseObject.builder()
+                        .statusCode(200)
+                        .message("File detail retrieved successfully")
+                        .data(profileService.getProfileById(id))
+                        .build()
+                );
     }
 
-    @PostMapping
-    public ResponseEntity<ResponseObject> createProfile(@RequestBody Profile profile) {
-        Profile createdProfile = profileService.createProfile(profile);
-        return ResponseEntity.status(HttpStatus.CREATED).body(
+    @GetMapping("/candidate/{candidateId}")
+    public ResponseEntity<ResponseObject> getProfilesByCandidateId(@PathVariable String candidateId) {
+        return ResponseEntity.ok()
+                .body(ResponseObject.builder()
+                        .statusCode(200)
+                        .message("File details retrieved successfully")
+                        .data(profileService.getProfilesByCandidateId(candidateId))
+                        .build()
+                );
+    }
+
+    @GetMapping
+    public ResponseEntity<ResponseObject> getAllProfiles() {
+        return ResponseEntity.ok()
+                .body(ResponseObject.builder()
+                        .statusCode(200)
+                        .message("File details retrieved successfully")
+                        .data(profileService.getAllProfiles())
+                        .build()
+                );
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ResponseObject> deleteProfile(@PathVariable int id) {
+        profileService.deleteProfile(id);
+        return ResponseEntity.ok()
+                .body(ResponseObject.builder()
+                        .statusCode(200)
+                        .message("File detail deleted successfully")
+                        .build()
+                );
+    }
+
+    @PatchMapping("/approve/{id}")
+    public ResponseEntity<ResponseObject> approveRequest(@RequestHeader("Authorization") String authorization, @PathVariable int id) {
+        String staffId = jwtService.extractUserIdFromToken(authorization);
+        profileService.approveRequest(staffId, id);
+        return ResponseEntity.ok(
                 ResponseObject.builder()
-                        .statusCode(HttpStatus.CREATED.value())
-                        .message("Profile created successfully")
-                        .data(createdProfile)
+                        .statusCode(200)
+                        .message("Request approved")
                         .build()
         );
     }
 
-    @PostMapping("/{id}/upload")
-    public ResponseEntity<ResponseObject> uploadProfilePdf(@PathVariable("id") int id, @RequestParam("file") MultipartFile file) {
-        profileService.storeFile(id, file);
+    @PatchMapping("/reject/{id}")
+    public ResponseEntity<ResponseObject> rejectRequest(@RequestHeader("Authorization") String authorization, @PathVariable int id) {
+        String staffId = jwtService.extractUserIdFromToken(authorization);
+        profileService.rejectRequest(staffId, id);
         return ResponseEntity.ok(
                 ResponseObject.builder()
-                        .statusCode(HttpStatus.OK.value())
-                        .message("File uploaded successfully")
+                        .statusCode(200)
+                        .message("Request rejected")
                         .build()
         );
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ResponseObject> updateProfile(@PathVariable("id") int id, @RequestBody Profile profile) {
-        Profile updatedProfile = profileService.updateProfile(id, profile);
-        return ResponseEntity.ok(
-                ResponseObject.builder()
-                        .statusCode(HttpStatus.OK.value())
-                        .message("Profile updated successfully")
-                        .data(updatedProfile)
+    public ResponseEntity<ResponseObject> updateFileDetail(@PathVariable int id, @RequestBody MultipartFile file) {
+        profileService.updateProfile(id, file);
+        return ResponseEntity.ok()
+                .body(ResponseObject.builder()
+                        .statusCode(200)
+                        .message("File detail updated successfully")
                         .build()
-        );
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<ResponseObject> deleteProfile(@PathVariable("id") int id) {
-        profileService.deleteProfile(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(
-                ResponseObject.builder()
-                        .statusCode(HttpStatus.NO_CONTENT.value())
-                        .message("Profile deleted successfully")
-                        .data(null)
-                        .build()
-        );
+                );
     }
 }
