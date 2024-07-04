@@ -4,6 +4,7 @@ import com.duckdzung.recruitmentsystem.common.ResponseObject;
 import com.duckdzung.recruitmentsystem.security.jwt.JwtService;
 import com.duckdzung.recruitmentsystem.service.ProfileService;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -59,23 +60,30 @@ public class ProfileController {
     }
 
     @GetMapping("/candidate/{candidateId}")
-    public ResponseEntity<ResponseObject> getProfilesByCandidateId(@PathVariable String candidateId) {
+    public ResponseEntity<ResponseObject> getProfilesByCandidateId(
+            @PathVariable String candidateId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
         return ResponseEntity.ok()
                 .body(ResponseObject.builder()
                         .statusCode(200)
                         .message("File details retrieved successfully")
-                        .data(profileService.getProfilesByCandidateId(candidateId))
+                        .data(profileService.getProfilesByCandidateId(candidateId, PageRequest.of(page, size)))
                         .build()
                 );
     }
 
     @GetMapping
-    public ResponseEntity<ResponseObject> getAllProfiles() {
+    public ResponseEntity<ResponseObject> getAllProfiles(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
         return ResponseEntity.ok()
                 .body(ResponseObject.builder()
                         .statusCode(200)
                         .message("File details retrieved successfully")
-                        .data(profileService.getAllProfiles())
+                        .data(profileService.getAllProfiles(PageRequest.of(page, size)))
                         .build()
                 );
     }
