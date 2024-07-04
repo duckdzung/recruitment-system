@@ -8,6 +8,11 @@
             font-family: Arial, sans-serif;
         }
 
+        .logo {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
         .container {
             margin: 20px;
             padding: 20px;
@@ -25,14 +30,13 @@
             margin-bottom: 20px;
         }
 
-        .footer {
-            font-size: 12px;
-            color: #888;
-        }
     </style>
 </head>
 <body>
 <div class="container">
+    <div class="logo">
+        <img src="cid:logoImage" alt="Company Logo" width="70">
+    </div>
     <div class="header">Feedback Submission</div>
     <div class="content">
         <p><strong>Name:</strong> {{name}}</p>
@@ -42,7 +46,6 @@
         <p><strong>Message:</strong></p>
         <p>{{message}}</p>
     </div>
-    <div class="footer">Thank you for your feedback!</div>
 </div>
 </body>
 </html>

@@ -80,7 +80,7 @@ public class ApplicationFormController {
         );
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<ResponseObject> getAllApplicationForms(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size

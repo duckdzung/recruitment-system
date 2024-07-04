@@ -33,18 +33,23 @@ public class EmailService {
         try {
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
             helper.setFrom(fromEmail);
-            helper.setTo("thanhhai18121510@gmail.com");
+            helper.setTo("huytranmac@gmail.com");
             helper.setSubject("Feedback Form Submission");
 
             String templateContent = loadTemplate();
 
-            String message = templateContent.replace("{{name}}", feedbackForm.getName())
+            ClassPathResource logoResource = new ClassPathResource("templates/logo.png");
+            String message = templateContent
+                    .replace("{{name}}", feedbackForm.getName())
                     .replace("{{email}}", feedbackForm.getEmail())
                     .replace("{{phoneNum}}", feedbackForm.getPhoneNum())
                     .replace("{{trainingTips}}", feedbackForm.getTrainingTips())
                     .replace("{{message}}", feedbackForm.getMessage());
 
+
             helper.setText(message, true); // enable HTML
+
+            helper.addInline("logoImage", logoResource);
 
             mailSender.send(mimeMessage);
         } catch (MessagingException | IOException e) {

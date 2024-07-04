@@ -9,6 +9,8 @@ import com.duckdzung.recruitmentsystem.repository.CandidateRepository;
 import com.duckdzung.recruitmentsystem.repository.ProfileRepository;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,7 +22,6 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 public class ProfileService {
@@ -103,12 +104,12 @@ public class ProfileService {
                 .orElseThrow(() -> new ResourceNotFoundException("No file detail found with the provided profileId"));
     }
 
-    public List<Profile> getProfilesByCandidateId(String candidateId) {
-        return profileRepository.findByCandidateId(candidateId);
+    public Page<Profile> getProfilesByCandidateId(String candidateId, PageRequest pageRequest) {
+        return profileRepository.findByCandidateId(candidateId, pageRequest);
     }
 
-    public List<Profile> getAllProfiles() {
-        return profileRepository.findAll();
+    public Page<Profile> getAllProfiles(PageRequest pageRequest) {
+        return profileRepository.findAll(pageRequest);
     }
 
     public Resource getFileAsResource(Integer profileId) {
