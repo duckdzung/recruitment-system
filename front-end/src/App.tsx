@@ -36,8 +36,9 @@ import WorkDetails from './pages/WorkDetails/WorkDetails';
 
 // Currently under development UI
 import ApplyJob from './components/ApplyJob/ApplyJob';
-import EnterpiseReport from './components/Admin/EnterpriseReport';
+// import EnterpiseReport from './components/Admin/EnterpriseReport';
 import Payment2 from './components/Payment/Payment2';
+import Payment from './components/Payment/Payment';
 
 const App: React.FC = () => {
     return (
@@ -51,6 +52,7 @@ const App: React.FC = () => {
 
                 <Route element={<PublicRoute restricted={false} />}>
                     <Route path="/" element={<Home />} />
+                    <Route path="/test" element={<Payment2 />} />
                     <Route path="/job-list" element={<FindWork />} />
                     <Route path="/job-details/:jobId" element={<WorkDetails />} />
                     <Route path="/contact" element={<ContactUs />} />
@@ -83,7 +85,7 @@ const App: React.FC = () => {
 
                 <Route element={<ProtectedRoute allowRoutes={[Role.STAFF, Role.PRESIDENT]} />}>
                     <Route path="/admin" element={<AdminPage />}>
-                        <Route path="enterpise-report" element={<EnterpiseReport />} />
+                        {/* <Route path="enterpise-report" element={<EnterpiseReport />} /> */}
                         <Route path="enterpise-listing" element={<EnterpiseListing />} />
                         <Route path="candidate-listing" element={<CandidateListing />} />
                         <Route path="payment-details" element={<PaymentDetails />} />

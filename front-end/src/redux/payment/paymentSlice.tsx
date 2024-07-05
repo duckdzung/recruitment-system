@@ -4,7 +4,7 @@ import { PaymentState } from '../../types';
 const initialState: PaymentState = {
     recruitId: 0,
     paymentId: 0,
-    amount: 0,
+    amount: 1000,
     currency: '',
     clientSecret: '',
     publishableKey: '',

@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import styles from './UpdateMember.module.scss';
 import '../../assets/fonts/fontawesome-free-6.5.2/css/all.min.css';
 import React, { useState, useEffect, FormEvent } from 'react';
-import { ApiResponse, MemberDetails } from '../../types';
+import { ApiResponse, MemberDetails, Role } from '../../types';
 import { updateMember } from '../../services/memberService';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
@@ -10,10 +10,11 @@ import BackgroundSection from '../../components/BackgroundSection/BackgroundSect
 
 const defaultMemberDetails = {
     name: '',
-    phoneNum: '',
+    phoneNumber: '',
     address: '',
     companyName: '',
     taxCode: '',
+    role: Role.CANDIDATE,
 };
 
 const UpdateMember: React.FC = () => {
@@ -52,8 +53,11 @@ const UpdateMember: React.FC = () => {
             setBtnScaled(true);
         });
 
-        // Reset state
-        setMemberDetails(defaultMemberDetails);
+        // Reset state and change role
+        setMemberDetails({
+            ...defaultMemberDetails,
+            role: isRightPanelActive ? Role.CANDIDATE : Role.ENTERPRISE,
+        });
     };
 
     // Handle input change for memberDetails
@@ -72,7 +76,7 @@ const UpdateMember: React.FC = () => {
         const response: ApiResponse = await updateMember(memberDetails);
 
         // Update sucessfully
-        if (response && response.statusCode === 200) {
+        if (response && response.statusCode === 201) {
             toast.success(response.message);
             navigate('/');
         }
@@ -137,8 +141,8 @@ const UpdateMember: React.FC = () => {
                             <input
                                 type="text"
                                 placeholder="Phone number"
-                                name="phoneNum"
-                                value={memberDetails.phoneNum}
+                                name="phoneNumber"
+                                value={memberDetails.phoneNumber}
                                 onChange={handleMemberDetailsChange}
                             />
                             <label></label>
@@ -178,8 +182,8 @@ const UpdateMember: React.FC = () => {
                             <input
                                 type="text"
                                 placeholder="Phone number"
-                                name="phoneNum"
-                                value={memberDetails.phoneNum}
+                                name="phoneNumber"
+                                value={memberDetails.phoneNumber}
                                 onChange={handleMemberDetailsChange}
                             />
                             <label></label>
