@@ -136,8 +136,8 @@ public class UpgradeRequestService {
         enterpriseRepository.save(enterprise);
     }
 
-    public Page<UpgradeRequest> getAllRequests(Pageable pageable) {
-        return upgradeRequestRepository.findAll(pageable);
+    public Page<UpgradeRequest> getAllRequests(Role role, Pageable pageable) {
+        return upgradeRequestRepository.findAllByRole(role, pageable);
     }
 
     private String truncateSpaceFromPhoneNumber(String phoneNumber) {
