@@ -42,7 +42,7 @@ public class EmailService {
             String message = templateContent
                     .replace("{{name}}", feedbackForm.getName())
                     .replace("{{email}}", feedbackForm.getEmail())
-                    .replace("{{phoneNum}}", feedbackForm.getPhoneNum())
+                    .replace("{{phoneNum}}", feedbackForm.getPhoneNumber())
                     .replace("{{trainingTips}}", feedbackForm.getTrainingTips())
                     .replace("{{message}}", feedbackForm.getMessage());
 

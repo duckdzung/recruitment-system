@@ -1,13 +1,46 @@
 import { useEffect } from 'react';
+import { useState } from 'react';
+import { feedback } from "../../services/emailService.ts";
 import { animateScroll as scroll } from 'react-scroll';
 
 import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
 
 import styles from './ContactUs.module.scss';
+import {FeedbackData} from "../../types";
+import {toast} from "react-toastify";
 
 const ContactUs = () => {
     // Effect for body element
+    // Define state for form fields
+    const [formData, setFormData] = useState<FeedbackData>({
+        name: '',
+        email: '',
+        phoneNumber: '',
+        trainingTips: '',
+        message: '',
+    });
+
+    // Handle input change
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({
+            ...formData,
+            [name]: value,
+        });
+    };
+
+    // Handle form submission
+    const handleSubmit = async (e) => {
+        e.preventDefault(); // Prevent default form submission behavior
+        try {
+            const response = await feedback(formData);
+            toast.success(response.message);
+        } catch (error) {
+            console.error('Error sending feedback:', error);
+        }
+    };
+
     useEffect(() => {
         document.body.style.overflowX = 'hidden';
         document.body.style.margin = '0';
@@ -61,7 +94,7 @@ const ContactUs = () => {
                 </div>
             </div>
             <div className={styles.thirdBanner}>
-                <form action="" className={styles.feedbackForm}>
+                <form action="" onSubmit={handleSubmit} className={styles.feedbackForm}>
                     <div className={styles.leftForm}>
                         <span>Message Us</span>
                         <p>Have be any Question? feel free to contact with us.</p>
@@ -77,13 +110,13 @@ const ContactUs = () => {
                     </div>
                     <div className={styles.rightForm}>
                         <div className={styles.rightFormInput}>
-                            <input type="text" placeholder="Your Name" />
-                            <input type="email" placeholder="Email Address" />
-                            <input type="tel" placeholder="Phone Number" />
-                            <input type="text" placeholder="Training Tips" />
+                            <input type="text" name="name" placeholder="Your Name" onChange={handleInputChange}/>
+                            <input type="email" name="email" placeholder="Email Address" onChange={handleInputChange}/>
+                            <input type="tel" name="phoneNumber" placeholder="Phone Number" onChange={handleInputChange}/>
+                            <input type="text" name="trainingTips" placeholder="Training Tips" onChange={handleInputChange}/>
                         </div>
-                        <textarea name="WriteMessage" id="" placeholder="Write Message"></textarea>
-                        <button>Send Message</button>
+                        <textarea name="message" id="" placeholder="Write Message" onChange={handleInputChange}></textarea>
+                        <button>Send Message </button>
                     </div>
                 </form>
             </div>
