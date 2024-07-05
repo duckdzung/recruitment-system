@@ -96,6 +96,7 @@ public class PaymentService {
                 .payment(payment)
                 .paymentAmount(BigDecimal.valueOf(paymentConfirmRequest.getPaymentAmount()))
                 .paymentMethod(paymentConfirmRequest.getPaymentMethod())
+                .phase(0)
                 .build();
 
         return paymentDetailsRepository.save(paymentDetails);

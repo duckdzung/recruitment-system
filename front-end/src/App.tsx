@@ -33,10 +33,11 @@ import UpdateMember from './pages/UpdateMember/UpdateMenber';
 import OrganizationalStructures from './pages/OrganizationalStructures/OrganizationalStructures';
 import FindWork from './pages/FindWork/FindWork';
 import WorkDetails from './pages/WorkDetails/WorkDetails';
-import Payment from './components/Payment/Payment';
 
 // Currently under development UI
 import ApplyJob from './components/ApplyJob/ApplyJob';
+import EnterpiseReport from './components/Admin/EnterpriseReport';
+import Payment2 from './components/Payment/Payment2';
 
 const App: React.FC = () => {
     return (
@@ -46,11 +47,9 @@ const App: React.FC = () => {
                 <Route element={<PublicRoute restricted={true} />}>
                     <Route path="/login" element={<Authentication />} />
                     <Route path="/register" element={<Authentication />} />
-                    <Route path="/payment" element={<Payment />} />
                 </Route>
 
                 <Route element={<PublicRoute restricted={false} />}>
-                    <Route path="/test" element={<ApplyJob />} />
                     <Route path="/" element={<Home />} />
                     <Route path="/job-list" element={<FindWork />} />
                     <Route path="/job-details/:jobId" element={<WorkDetails />} />
@@ -73,12 +72,18 @@ const App: React.FC = () => {
                     <Route path="/update-member" element={<UpdateMember />} />
                 </Route>
 
+                <Route element={<ProtectedRoute allowRoutes={[Role.CANDIDATE]} />}>
+                    <Route path="/apply-job/:jobId" element={<ApplyJob />} />
+                </Route>
+
                 <Route element={<ProtectedRoute allowRoutes={[Role.ENTERPRISE]} />}>
                     <Route path="/recruitment" element={<Recruitment />} />
+                    <Route path="/payment/:recruitmentId" element={<Payment2 />} />
                 </Route>
 
                 <Route element={<ProtectedRoute allowRoutes={[Role.STAFF, Role.PRESIDENT]} />}>
                     <Route path="/admin" element={<AdminPage />}>
+                        <Route path="enterpise-report" element={<EnterpiseReport />} />
                         <Route path="enterpise-listing" element={<EnterpiseListing />} />
                         <Route path="candidate-listing" element={<CandidateListing />} />
                         <Route path="payment-details" element={<PaymentDetails />} />
