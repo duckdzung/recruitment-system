@@ -9,6 +9,16 @@ export interface AuthState {
     error: string;
 }
 
+export interface PaymentState {
+    recruitId: number;
+    paymentId: number;
+    amount: number;
+    currency: string;
+    clientSecret: string;
+    publishableKey: string;
+    error: string;
+}
+
 export interface Credentials {
     email: string;
     password: string;
@@ -64,6 +74,19 @@ export interface AdvertisingForm {
     recruitmentTime: string;
 }
 
+export interface PaymentCreatationDetails {
+    recruitId: number;
+    amount: number;
+    currency: string;
+    isFullPayment: boolean;
+}
+
+export interface PaymentConfirmationDetails {
+    paymentId: number;
+    paymentAmount: number;
+    paymentMethod: PaymentMethod;
+}
+
 // Enum
 export enum Role {
     MEMBER = 'MEMBER',
@@ -71,11 +94,6 @@ export enum Role {
     ENTERPRISE = 'ENTERPRISE',
     STAFF = 'STAFF',
     PRESIDENT = 'PRESIDENT',
-}
-
-export enum PaymentMethod {
-    DIRECT = 'DIRECT',
-    CREDIT_CARD = 'CREDIT_CARD',
 }
 
 export enum RecruitmentForm {
@@ -89,4 +107,9 @@ export enum TimePeriodType {
     TWO_WEEKS = 'TWO_WEEKS',
     ONE_MONTH = 'ONE_MONTH',
     TWO_MONTHS = 'TWO_MONTHS',
+}
+
+export enum PaymentMethod {
+    CASH = 'CASH',
+    BANK_TRANSFER = 'BANK_TRANSFER',
 }

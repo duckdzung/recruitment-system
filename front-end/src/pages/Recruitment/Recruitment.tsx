@@ -15,6 +15,8 @@ import * as yup from 'yup';
 import { toast } from 'react-toastify';
 import { createRecruitmentForm } from '../../services/recruitmentService';
 import { useNavigate } from 'react-router-dom';
+import { useAppDispatch } from '../../redux/hooks';
+import { updateAmount, updateRecruitId } from '../../redux/payment/paymentSlice';
 
 // Schema validation using yup
 const schema = yup.object().shape({
@@ -48,6 +50,7 @@ const Recruitment: React.FC = () => {
     const [isBtnScaled, setBtnScaled] = useState<boolean>(false);
 
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
 
     // Hook to handle icon highlighting
     const useHighlightIcon = () => {
@@ -165,6 +168,22 @@ const Recruitment: React.FC = () => {
         }
     };
 
+    // Calculate amount from time period
+    const getRecruitmentAmount = (timePeriod: TimePeriodType | null): number => {
+        switch (timePeriod) {
+            case TimePeriodType.ONE_WEEK:
+                return 1000;
+            case TimePeriodType.TWO_WEEKS:
+                return 2000;
+            case TimePeriodType.ONE_MONTH:
+                return 5000;
+            case TimePeriodType.TWO_MONTHS:
+                return 10000;
+            default:
+                return 1000;
+        }
+    };
+
     // Handle form submission
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -204,8 +223,15 @@ const Recruitment: React.FC = () => {
             const response = await createRecruitmentForm(recruitmentDetails, advertisingForm);
 
             if (response?.statusCode === 201) {
+                const recruitId = response.data.recruitmentDetails.recruitmentInformation.recruitId;
+                const amount = getRecruitmentAmount(timePeriod);
+
+                // Update paymentSlice
+                dispatch(updateRecruitId(recruitId));
+                dispatch(updateAmount(amount));
+
                 toast.success(response.message);
-                navigate('/');
+                navigate(`/payment/${recruitId}`);
             }
         } catch (error) {
             if (error instanceof ValidationError) {
