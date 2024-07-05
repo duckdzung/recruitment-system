@@ -1,6 +1,6 @@
 import qs from 'qs';
 import axios from '../axios/axiosClient';
-import { ApiResponse, MemberDetails } from '../types';
+import { ApiResponse, MemberDetails, Role } from '../types';
 
 export const updateMember = async (memberDetails: MemberDetails): Promise<ApiResponse> => {
     const response = await axios.post<ApiResponse>('/members/request', memberDetails);
@@ -17,9 +17,9 @@ export const updateMemberByStaff = async (memberId: string, memberDetails: Membe
     return response.data;
 };
 
-export const getEnterpriseList = async (page: number, size: number): Promise<ApiResponse> => {
-    const queryParams = qs.stringify({ page, size });
-    const response = await axios.get<ApiResponse>(`enterprises?${queryParams}`);
+export const getAllMembers = async (role: Role, page: number, size: number): Promise<ApiResponse> => {
+    const queryParams = qs.stringify({ role, page, size });
+    const response = await axios.get<ApiResponse>(`members/requests?${queryParams}`);
     return response.data;
 };
 

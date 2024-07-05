@@ -4,10 +4,10 @@ import type { GetProp, TableProps } from 'antd';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import type { SearchProps } from 'antd/es/input/Search';
 
-import { deleteMember, getAllMembers, updateMemberByStaff } from '../../services/memberService';
+import { deleteMember, getEnterpriseList, updateMemberByStaff } from '../../services/memberService';
 import EditModal, { FormItem } from '../Modal/EditModal';
 import ConfirmModal from '../Modal/ConfirmModal';
-import { ApiResponse, MemberDetails, Role } from '../../types';
+import { ApiResponse, MemberDetails } from '../../types';
 import { toast } from 'react-toastify';
 
 const { Search } = Input;
@@ -44,7 +44,7 @@ interface TableParams {
     filters?: Parameters<GetProp<TableProps, 'onChange'>>[1];
 }
 
-const EnterpiseListing: React.FC = () => {
+const EnterpiseReport: React.FC = () => {
     const [enterpiseList, setEnterpiseList] = useState<DataType[]>([]);
     const [editedEnterprise, setEditedEnterprise] = useState<DataType | null>(null);
     const [deletedEnterprise, setDeletedEnterprise] = useState<DataType | null>(null);
@@ -59,8 +59,7 @@ const EnterpiseListing: React.FC = () => {
     const fetchData = async () => {
         setLoading(true);
 
-        const response = await getAllMembers(
-            Role.ENTERPRISE,
+        const response = await getEnterpriseList(
             tableParams.pagination?.current! - 1,
             tableParams.pagination?.pageSize!,
         );
@@ -71,8 +70,8 @@ const EnterpiseListing: React.FC = () => {
                     key: enterprise.member.id,
                     id: enterprise.member.id,
                     name: enterprise.companyName,
-                    address: enterprise.address,
-                    phoneNumber: enterprise.phoneNumber,
+                    address: enterprise.member.address,
+                    phoneNumber: enterprise.member.phoneNumber,
                     email: enterprise.member.email,
                     taxCode: enterprise.taxCode,
                     dateOfExpiration: enterprise.dateOfExpiration || '',
@@ -114,7 +113,7 @@ const EnterpiseListing: React.FC = () => {
         const updatedEnterprise: MemberDetails = {
             name: updatedData.name,
             address: updatedData.address,
-            phoneNumber: updatedData.phoneNumber,
+            phoneNum: updatedData.phoneNumber,
             email: updatedData.email,
             taxCode: updatedData.taxCode,
             dateOfExpiration: updatedData.dateOfExpiration ? new Date(updatedData.dateOfExpiration).toISOString() : '',
@@ -158,9 +157,9 @@ const EnterpiseListing: React.FC = () => {
             width: '10%',
         },
         {
-            title: 'Address',
-            dataIndex: 'address',
-            width: '20%',
+            title: 'Expiration',
+            dataIndex: 'dateOfExpiration',
+            width: '10%',
         },
         {
             title: 'Phone number',
@@ -168,28 +167,33 @@ const EnterpiseListing: React.FC = () => {
             width: '15%',
         },
         {
-            title: 'Email',
-            dataIndex: 'email',
-            width: '15%',
-        },
-        {
-            title: 'Tax code',
-            dataIndex: 'taxCode',
-            width: '10%',
-        },
-        {
-            title: 'Expiration',
-            dataIndex: 'dateOfExpiration',
-            width: '10%',
-        },
-        {
-            title: 'Validate',
-            dataIndex: 'validate',
+            title: 'Potential',
+            dataIndex: 'potential',
             width: '5%',
             align: 'center',
             render: (validate: boolean) => (
                 <Tag color={validate ? 'green' : 'volcano'}>{validate ? 'TRUE' : 'FALSE'}</Tag>
             ),
+        },
+        {
+            title: 'Great Potential',
+            dataIndex: 'greatPotential',
+            width: '5%',
+            align: 'center',
+            render: (validate: boolean) => (
+                <Tag color={validate ? 'green' : 'volcano'}>{validate ? 'TRUE' : 'FALSE'}</Tag>
+            ),
+        },
+        {
+            title: 'Strategy',
+            dataIndex: 'strategy',
+            width: '20%',
+        },
+        {
+            title: 'Status',
+            dataIndex: 'status',
+            width: '5%',
+            render: () => <Tag color="green">SUCESS</Tag>,
         },
         {
             title: 'Action',
@@ -223,7 +227,7 @@ const EnterpiseListing: React.FC = () => {
     return (
         <>
             <Row>
-                <h3 style={headingStyle}>ENTERPRISE LISTING</h3>
+                <h3 style={headingStyle}>MONTHLY ENTERPRISE REPORTS</h3>
             </Row>
             <Row>
                 <Col span={4} offset={20}>
@@ -271,4 +275,4 @@ const EnterpiseListing: React.FC = () => {
     );
 };
 
-export default EnterpiseListing;
+export default EnterpiseReport;

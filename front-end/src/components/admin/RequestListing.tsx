@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Input, Row, Col, Tag } from 'antd';
 import type { GetProp, TableProps } from 'antd';
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import type { SearchProps } from 'antd/es/input/Search';
 
 import { deleteMember, getAllMembers, updateMemberByStaff } from '../../services/memberService';
@@ -29,11 +29,7 @@ const headingStyle: React.CSSProperties = {
 interface DataType {
     id: string;
     name: string;
-    address: string;
-    phoneNumber: string;
-    email: string;
-    taxCode: string;
-    dateOfExpiration: string;
+    roleRequest: Role;
     validate: boolean;
 }
 
@@ -44,10 +40,10 @@ interface TableParams {
     filters?: Parameters<GetProp<TableProps, 'onChange'>>[1];
 }
 
-const EnterpiseListing: React.FC = () => {
-    const [enterpiseList, setEnterpiseList] = useState<DataType[]>([]);
-    const [editedEnterprise, setEditedEnterprise] = useState<DataType | null>(null);
-    const [deletedEnterprise, setDeletedEnterprise] = useState<DataType | null>(null);
+const RequestListing: React.FC = () => {
+    const [requestList, setRequestList] = useState<DataType[]>([]);
+    const [editedRequest, setEditedRequest] = useState<DataType | null>(null);
+    const [deletedRequest, setDeletedRequest] = useState<DataType | null>(null);
     const [loading, setLoading] = useState(false);
     const [tableParams, setTableParams] = useState<TableParams>({
         pagination: {
@@ -65,18 +61,14 @@ const EnterpiseListing: React.FC = () => {
             tableParams.pagination?.pageSize!,
         );
 
-        setEnterpiseList(
-            response?.data.content.map((enterprise: any) => {
+        setRequestList(
+            response?.data.content.map((request: any) => {
                 return {
-                    key: enterprise.member.id,
-                    id: enterprise.member.id,
-                    name: enterprise.companyName,
-                    address: enterprise.address,
-                    phoneNumber: enterprise.phoneNumber,
-                    email: enterprise.member.email,
-                    taxCode: enterprise.taxCode,
-                    dateOfExpiration: enterprise.dateOfExpiration || '',
-                    validate: enterprise.member.isValidated,
+                    key: request.member.id,
+                    id: request.member.id,
+                    name: request.companyName,
+                    roleRequest: request.role,
+                    validate: request.member.isValidated,
                 };
             }),
         );
@@ -105,13 +97,13 @@ const EnterpiseListing: React.FC = () => {
 
     const onSearch: SearchProps['onSearch'] = (value, _e, info) => console.log(info?.source, value);
 
-    const handleEditClick = (enterprise: DataType) => {
-        setEditedEnterprise(enterprise);
+    const handleApproveClick = (request: DataType) => {
+        setEditedRequest(request);
     };
 
-    const handleEditSave = async (updatedData: { [key: string]: any }) => {
-        const enterpiseId = updatedData.id;
-        const updatedEnterprise: MemberDetails = {
+    const handleApproveSave = async (updatedData: { [key: string]: any }) => {
+        const requestId = updatedData.id;
+        const updatedRequest: MemberDetails = {
             name: updatedData.name,
             address: updatedData.address,
             phoneNumber: updatedData.phoneNumber,
@@ -121,65 +113,46 @@ const EnterpiseListing: React.FC = () => {
             isValidated: updatedData.validate,
         };
 
-        // Call api update enterprise
-        const response: ApiResponse = await updateMemberByStaff(enterpiseId, updatedEnterprise);
+        // Call api update request
+        const response: ApiResponse = await updateMemberByStaff(requestId, updatedRequest);
 
-        // Update sucessfully
+        // Update successfully
         if (response && response.statusCode === 200) {
             fetchData();
-            toast.success('Update enterprise successfully');
+            toast.success('Request approved successfully');
         }
 
         // Close the modal after saving
-        setEditedEnterprise(null);
+        setEditedRequest(null);
     };
 
-    const handleDeleteEnterprise = async () => {
-        const enterpiseId = deletedEnterprise?.id || '';
+    const handleRejectRequest = async () => {
+        const requestId = deletedRequest?.id || '';
 
-        // Call api delete enterprise
-        const response: ApiResponse = await deleteMember(enterpiseId);
+        // Call api delete request
+        const response: ApiResponse = await deleteMember(requestId);
 
-        // Delete sucessfully
+        // Delete successfully
         if (response && response.statusCode === 200) {
             fetchData();
-            toast.success('Delete enterprise successfully');
+            toast.success('Request rejected successfully');
         }
 
         // Close the modal after saving
-        setDeletedEnterprise(null);
+        setDeletedRequest(null);
     };
 
     const columns: ColumnsType<DataType> = [
         {
-            title: 'Enterprise',
+            title: 'Member',
             dataIndex: 'name',
             sorter: true,
             width: '10%',
         },
         {
-            title: 'Address',
-            dataIndex: 'address',
-            width: '20%',
-        },
-        {
-            title: 'Phone number',
-            dataIndex: 'phoneNumber',
-            width: '15%',
-        },
-        {
-            title: 'Email',
-            dataIndex: 'email',
-            width: '15%',
-        },
-        {
-            title: 'Tax code',
-            dataIndex: 'taxCode',
-            width: '10%',
-        },
-        {
-            title: 'Expiration',
-            dataIndex: 'dateOfExpiration',
+            title: 'Role Request',
+            dataIndex: 'roleRequest',
+            sorter: true,
             width: '10%',
         },
         {
@@ -195,15 +168,15 @@ const EnterpiseListing: React.FC = () => {
             title: 'Action',
             dataIndex: 'action',
             width: '10%',
-            render: (_, enterprise) => (
+            render: (_, request) => (
                 <span>
-                    <EditOutlined
-                        style={{ fontSize: '25px', color: '#f5b342', cursor: 'pointer' }}
-                        onClick={() => handleEditClick(enterprise)}
+                    <CheckOutlined
+                        style={{ fontSize: '25px', color: '#42b72a', cursor: 'pointer' }}
+                        onClick={() => handleApproveClick(request)}
                     />
-                    <DeleteOutlined
+                    <CloseOutlined
                         style={{ fontSize: '25px', color: '#f54242', marginLeft: '20px', cursor: 'pointer' }}
-                        onClick={() => setDeletedEnterprise(enterprise)}
+                        onClick={() => setDeletedRequest(request)}
                     />
                 </span>
             ),
@@ -223,7 +196,7 @@ const EnterpiseListing: React.FC = () => {
     return (
         <>
             <Row>
-                <h3 style={headingStyle}>ENTERPRISE LISTING</h3>
+                <h3 style={headingStyle}>REQUEST LISTING</h3>
             </Row>
             <Row>
                 <Col span={4} offset={20}>
@@ -241,7 +214,7 @@ const EnterpiseListing: React.FC = () => {
                 <Col span={24}>
                     <Table
                         columns={columns}
-                        dataSource={enterpiseList}
+                        dataSource={requestList}
                         pagination={tableParams.pagination}
                         loading={loading}
                         onChange={handleTableChange}
@@ -250,25 +223,25 @@ const EnterpiseListing: React.FC = () => {
             </Row>
 
             <EditModal
-                title="Edit Enterprise"
-                data={editedEnterprise || {}}
-                isOpen={!!editedEnterprise}
+                title="Approve Request"
+                data={editedRequest || {}}
+                isOpen={!!editedRequest}
                 fields={fields}
-                onSave={handleEditSave}
-                onCancel={() => setEditedEnterprise(null)}
+                onSave={handleApproveSave}
+                onCancel={() => setEditedRequest(null)}
             />
 
             <ConfirmModal
                 title="Confirm"
-                content="Do you want to delete this enterprise?"
+                content="Do you want to reject this request?"
                 okText="Ok"
                 cancelText="Cancel"
-                isOpen={deletedEnterprise !== null}
-                onConfirm={handleDeleteEnterprise}
-                onCancel={() => setDeletedEnterprise(null)}
+                isOpen={deletedRequest !== null}
+                onConfirm={handleRejectRequest}
+                onCancel={() => setDeletedRequest(null)}
             />
         </>
     );
 };
 
-export default EnterpiseListing;
+export default RequestListing;

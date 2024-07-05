@@ -53,7 +53,7 @@ const WorkDetails = () => {
                 <Header />
                 <div className={styles.firstBanner}>
                     <span>Find a Work</span>
-                    <p>Exploring your inner potential with ABS company !</p>
+                    <p>Exploring your inner potential with ABC company !</p>
                 </div>
                 <i className="fa-regular fa-face-kiss-wink-heart"></i>
             </div>

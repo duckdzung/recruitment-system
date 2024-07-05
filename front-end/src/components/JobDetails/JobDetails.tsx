@@ -1,3 +1,4 @@
+import { useNavigate, useParams } from 'react-router-dom';
 import styles from './JobDetails.module.scss';
 
 export interface JobDetailsProps {
@@ -9,6 +10,13 @@ export interface JobDetailsProps {
 }
 
 const JobDetails: React.FC<JobDetailsProps> = ({ title, salary, location, experience, requires }) => {
+    const { jobId } = useParams<{ jobId: string }>();
+    const navigate = useNavigate();
+
+    const handleClickApplyJob = () => {
+        navigate(`/apply-job/${jobId}`);
+    };
+
     return (
         <>
             <div className={styles.container}>
@@ -47,7 +55,7 @@ const JobDetails: React.FC<JobDetailsProps> = ({ title, salary, location, experi
                     </div>
                 </div>
                 <div className={styles.button}>
-                    <div className={styles.btnImage}>
+                    <div className={styles.btnImage} onClick={handleClickApplyJob}>
                         <i className="fa-regular fa-paper-plane"></i>
                         <span>Apply this Job</span>
                     </div>
