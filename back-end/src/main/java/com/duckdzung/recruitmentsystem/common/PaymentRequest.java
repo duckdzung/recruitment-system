@@ -5,11 +5,9 @@ import lombok.Value;
 
 @Value
 @Builder
-public class PaymentIntentResponse {
-    String id;
-    String clientSecret;
-    String publishableKey;
+public class PaymentRequest {
     Long amount;
     String currency;
-    String status;
+    String paymentMethodId;
+    String paymentIntentId;
 }
