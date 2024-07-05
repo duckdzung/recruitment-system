@@ -1,5 +1,6 @@
 package com.duckdzung.recruitmentsystem.model;
 
+import com.duckdzung.recruitmentsystem.model.enums.ReportStatus;
 import com.duckdzung.recruitmentsystem.model.idClass.ReportDetailsKey;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -26,11 +27,17 @@ public class ReportDetails {
     Enterprise enterprise;
 
     // If the enterprise is potential
-    Boolean isPotential;
+    @Builder.Default
+    Boolean isPotential = false;
 
     // If the enterprise is great potential
-    Boolean isGreatPotential;
+    @Builder.Default
+    Boolean isGreatPotential = false;
 
     @Column(length = 50)
     String strategy;
+
+    @Enumerated(EnumType.STRING)
+    @Builder.Default
+    ReportStatus reportStatus = ReportStatus.IN_PROGRESS;
 }

@@ -20,6 +20,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+
 @Service
 public class UpgradeRequestService {
 
@@ -129,6 +131,7 @@ public class UpgradeRequestService {
                 .member(member)
                 .companyName(request.getCompanyName())
                 .taxCode(request.getTaxCode())
+                .dateOfExpiration(LocalDate.now().plusMonths(3))
                 .build();
         enterpriseRepository.save(enterprise);
     }
