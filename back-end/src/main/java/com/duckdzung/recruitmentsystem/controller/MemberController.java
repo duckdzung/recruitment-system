@@ -4,7 +4,6 @@ import com.duckdzung.recruitmentsystem.common.AuthRequest;
 import com.duckdzung.recruitmentsystem.common.ResponseObject;
 import com.duckdzung.recruitmentsystem.model.Member;
 import com.duckdzung.recruitmentsystem.model.UpgradeRequest;
-import com.duckdzung.recruitmentsystem.model.enums.Role;
 import com.duckdzung.recruitmentsystem.security.jwt.JwtService;
 import com.duckdzung.recruitmentsystem.service.AuthService;
 import com.duckdzung.recruitmentsystem.service.MemberService;
@@ -75,8 +74,8 @@ public class MemberController {
 
     @PreAuthorize("hasAuthority('STAFF')")
     @GetMapping("/requests")
-    public ResponseEntity<ResponseObject> getAllRequests(@RequestParam Role role, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
-        Page<UpgradeRequest> requests = upgradeRequestService.getAllRequests(role, Pageable.ofSize(size).withPage(page));
+    public ResponseEntity<ResponseObject> getAllRequests(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+        Page<UpgradeRequest> requests = upgradeRequestService.getAllRequests(Pageable.ofSize(size).withPage(page));
         return ResponseEntity.ok(
                 ResponseObject.builder()
                         .statusCode(200)

@@ -33,7 +33,7 @@ public class EmailService {
         try {
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
             helper.setFrom(fromEmail);
-            helper.setTo("huytranmac@gmail.com");
+            helper.setTo("thanhhai18121510@gmail.com");
             helper.setSubject("Feedback Form Submission");
 
             String templateContent = loadTemplate();
