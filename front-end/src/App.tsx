@@ -38,7 +38,6 @@ import WorkDetails from './pages/WorkDetails/WorkDetails';
 import ApplyJob from './components/ApplyJob/ApplyJob';
 // import EnterpiseReport from './components/Admin/EnterpriseReport';
 import Payment2 from './components/Payment/Payment2';
-import Payment from './components/Payment/Payment';
 
 const App: React.FC = () => {
     return (

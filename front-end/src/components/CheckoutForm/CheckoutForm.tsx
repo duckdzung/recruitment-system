@@ -1,5 +1,5 @@
 import { PaymentElement } from '@stripe/react-stripe-js';
-import { useState, FormEvent } from 'react';
+import { useState, FormEvent, useEffect } from 'react';
 import { useStripe, useElements } from '@stripe/react-stripe-js';
 import { toast } from 'react-toastify';
 import { useAppDispatch } from '../../redux/hooks';
@@ -61,12 +61,16 @@ const CheckoutForm = () => {
         setIsProcessing(false);
     };
 
+    useEffect(() => {
+        document.querySelector;
+    }, []);
+
     return (
-        <div className={styles.paymentForm}>
+        <div className={styles.checkoutForm}>
             <form id="payment-form" onSubmit={handleSubmit}>
                 <PaymentElement id="payment-element" />
 
-                <button disabled={isProcessing || !stripe || !elements} id="submit">
+                <button disabled={isProcessing || !stripe || !elements} id="submit" className={styles.payBtn}>
                     <span id="button-text">{isProcessing ? 'Processing ... ' : 'Pay now'}</span>
                 </button>
 
