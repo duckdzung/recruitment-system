@@ -103,6 +103,15 @@ public class SecurityConfig {
                                 .requestMatchers(
                                         HttpMethod.GET,
                                         "**/application-form/**").hasAnyAuthority("CANDIDATE", "STAFF")
+                                .requestMatchers(
+                                        HttpMethod.GET,
+                                        "**/reports/**").hasAnyAuthority("PRESIDENT", "STAFF")
+                                .requestMatchers(
+                                        HttpMethod.PUT,
+                                        "**/reports/**").hasAuthority("PRESIDENT")
+                                .requestMatchers(
+                                        HttpMethod.PATCH,
+                                        "**/reports/**").hasAuthority("STAFF")
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

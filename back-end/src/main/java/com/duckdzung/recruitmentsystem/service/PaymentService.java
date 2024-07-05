@@ -37,6 +37,7 @@ public class PaymentService {
         this.recruitmentInformationRepository = recruitmentInformationRepository;
     }
 
+    @Transactional
     public PaymentCreateResponse createPaymentIntent(PaymentCreateRequest paymentCreateRequest) throws StripeException {
         PaymentIntentCreateParams createParams = new PaymentIntentCreateParams.Builder()
                 .setAmount(paymentCreateRequest.getAmount())
@@ -94,6 +95,7 @@ public class PaymentService {
 
         PaymentDetails paymentDetails = PaymentDetails.builder()
                 .payment(payment)
+                .phase(0)
                 .paymentAmount(BigDecimal.valueOf(paymentConfirmRequest.getPaymentAmount()))
                 .paymentMethod(paymentConfirmRequest.getPaymentMethod())
                 .build();

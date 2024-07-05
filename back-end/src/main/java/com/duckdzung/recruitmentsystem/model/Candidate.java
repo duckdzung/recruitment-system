@@ -14,7 +14,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "candidates")
+@Table(name = "candidate")
 @JsonIncludeProperties({"id", "member"})
 public class Candidate {
     @Id
