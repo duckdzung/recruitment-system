@@ -196,10 +196,8 @@ const Header = () => {
                     <div className={clsx(styles.menuItem, styles.displayFlex)}>
                         <Link to="/">Home</Link>
                         <Link to="/job-list">Find Work</Link>
-                        <Link to="/test">Test</Link>
-                        <Link to="#">Projects</Link>
-                        <Link to="#">Blog</Link>
                         <Link to="/contact">Contact Us</Link>
+                        <Link to="/test">Test</Link>
                     </div>
                 </div>
 

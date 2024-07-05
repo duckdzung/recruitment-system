@@ -18,12 +18,12 @@ const Authentication: React.FC = () => {
     const [isBtnScaled, setBtnScaled] = useState<boolean>(false);
 
     // State for passworld eye
-    const eyeClose01 = document.getElementById('_eyeClose01_1r1cf_1');
-    const eyeOpen01 = document.getElementById('_eyeOpen01_1r1cf_1');
+    const eyeClose01 = document.getElementById(`${styles.eyeClose01}`);
+    const eyeOpen01 = document.getElementById(`${styles.eyeOpen01}`);
     const passwordInput01 = document.getElementById('passwordInput01');
 
-    const eyeClose02 = document.getElementById('_eyeClose02_1r1cf_1');
-    const eyeOpen02 = document.getElementById('_eyeOpen02_1r1cf_1');
+    const eyeClose02 = document.getElementById(`${styles.eyeClose02}`);
+    const eyeOpen02 = document.getElementById(`${styles.eyeOpen02}`);
     const passwordInput02 = document.getElementById('passwordInput02');
 
     // State for creditials
@@ -157,7 +157,7 @@ const Authentication: React.FC = () => {
             toast.success(response.message);
             const { accessToken, refreshToken, expirationTime, role, email } = response.data;
             dispatch(loginSuccess({ accessToken, refreshToken, expirationTime, role, email }));
-            navigate('/update-member');
+            navigate('/login');
         }
     };
 

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import styles from './PaymentMethodPop.module.scss';
 
 const PaymentMethodPop = () => {
@@ -10,17 +10,17 @@ const PaymentMethodPop = () => {
     }, []);
 
     // Hanlde for exits button click
-    const handlExitsBtnClick = () => {
-        const paymentPage = document.getElementById('paymentMethodPopUp');
+    const exitBtnRef = useRef<HTMLDivElement>(null);
 
-        if (paymentPage) {
-            paymentPage.classList.add(styles.displayNone);
+    const handlExitsBtnClick = () => {
+        if (exitBtnRef.current) {
+            exitBtnRef.current.classList.add(styles.displayNone);
         }
     };
 
     return (
         <>
-            <div id="paymentMethodPopUp" className={styles.container}>
+            <div ref={exitBtnRef} className={styles.container}>
                 <div className={styles.popUp}>
                     <div className={styles.popUpTop}>
                         <div className={styles.left}>
