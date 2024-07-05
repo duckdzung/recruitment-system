@@ -5,9 +5,9 @@ import lombok.Value;
 
 @Value
 @Builder
-public class PaymentRequest {
+public class PaymentCreateRequest {
     Long amount;
     String currency;
-    String paymentMethodId;
-    String paymentIntentId;
+    Boolean isFullPayment;
+    int recruitId;
 }

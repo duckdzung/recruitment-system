@@ -1,6 +1,7 @@
 package com.duckdzung.recruitmentsystem.controller;
 
-import com.duckdzung.recruitmentsystem.common.PaymentRequest;
+import com.duckdzung.recruitmentsystem.common.PaymentConfirmRequest;
+import com.duckdzung.recruitmentsystem.common.PaymentCreateRequest;
 import com.duckdzung.recruitmentsystem.common.ResponseObject;
 import com.duckdzung.recruitmentsystem.service.PaymentService;
 import com.stripe.exception.StripeException;
@@ -17,21 +18,20 @@ public class PaymentController {
     private PaymentService paymentService;
 
     @PostMapping("/create")
-    public ResponseEntity<ResponseObject> createPayment(@RequestBody PaymentRequest paymentRequest) throws StripeException {
-        System.out.println(paymentRequest.getAmount());
+    public ResponseEntity<ResponseObject> createPayment(@RequestBody PaymentCreateRequest paymentCreateRequest) throws StripeException {
         return ResponseEntity.ok(ResponseObject.builder()
                 .statusCode(200)
                 .message("Payment intent created successfully")
-                .data(paymentService.createPaymentIntent(paymentRequest.getAmount(), paymentRequest.getCurrency()))
+                .data(paymentService.createPaymentIntent(paymentCreateRequest))
                 .build());
     }
 
     @PostMapping("/confirm")
-    public ResponseEntity<ResponseObject> confirmPayment(@RequestBody PaymentRequest paymentRequest) throws StripeException {
+    public ResponseEntity<ResponseObject> confirmPayment(@RequestBody PaymentConfirmRequest paymentConfirmRequest) {
         return ResponseEntity.ok(ResponseObject.builder()
                 .statusCode(200)
                 .message("Payment intent confirmed successfully")
-                .data(paymentService.confirmPaymentIntent(paymentRequest.getPaymentIntentId(), paymentRequest.getPaymentMethodId()))
+                .data(paymentService.confirmPaymentIntent(paymentConfirmRequest))
                 .build());
     }
 }
