@@ -26,13 +26,14 @@ export interface Credentials {
 
 export interface MemberDetails {
     name: string;
-    phoneNum: string;
+    phoneNumber: string;
     address: string;
     email?: string;
     companyName?: string;
     taxCode?: string;
     isValidated?: boolean;
     dateOfExpiration?: string;
+    role?: Role;
 }
 
 export interface AxiosError {

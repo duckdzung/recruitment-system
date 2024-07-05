@@ -9,6 +9,8 @@ import { confirmPaymentThunk } from '../../redux/payment/paymentThunks';
 import { PaymentMethod } from '../../types';
 import { useNavigate } from 'react-router-dom';
 
+import styles from './CheckoutForm.module.scss';
+
 const CheckoutForm = () => {
     const stripe = useStripe();
     const elements = useElements();
@@ -60,16 +62,18 @@ const CheckoutForm = () => {
     };
 
     return (
-        <form id="payment-form" onSubmit={handleSubmit}>
-            <PaymentElement id="payment-element" />
+        <div className={styles.paymentForm}>
+            <form id="payment-form" onSubmit={handleSubmit}>
+                <PaymentElement id="payment-element" />
 
-            <button disabled={isProcessing || !stripe || !elements} id="submit">
-                <span id="button-text">{isProcessing ? 'Processing ... ' : 'Pay now'}</span>
-            </button>
+                <button disabled={isProcessing || !stripe || !elements} id="submit">
+                    <span id="button-text">{isProcessing ? 'Processing ... ' : 'Pay now'}</span>
+                </button>
 
-            {/* Show any error or success messages */}
-            {message && <div id="payment-message">{message}</div>}
-        </form>
+                {/* Show any error or success messages */}
+                {message && <div id="payment-message">{message}</div>}
+            </form>
+        </div>
     );
 };
 
