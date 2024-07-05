@@ -14,7 +14,6 @@ import com.duckdzung.recruitmentsystem.repository.MemberRepository;
 import com.duckdzung.recruitmentsystem.repository.UpgradeRequestRepository;
 import com.duckdzung.recruitmentsystem.util.InputValidator;
 import com.duckdzung.recruitmentsystem.util.UserIDGenerator;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -24,18 +23,17 @@ import java.time.LocalDate;
 
 @Service
 public class UpgradeRequestService {
+    private final UpgradeRequestRepository upgradeRequestRepository;
+    private final MemberRepository memberRepository;
+    private final EnterpriseRepository enterpriseRepository;
+    private final CandidateRepository candidateRepository;
 
-    @Autowired
-    private UpgradeRequestRepository upgradeRequestRepository;
-
-    @Autowired
-    private MemberRepository memberRepository;
-
-    @Autowired
-    private EnterpriseRepository enterpriseRepository;
-
-    @Autowired
-    private CandidateRepository candidateRepository;
+    public UpgradeRequestService(UpgradeRequestRepository upgradeRequestRepository, MemberRepository memberRepository, EnterpriseRepository enterpriseRepository, CandidateRepository candidateRepository) {
+        this.upgradeRequestRepository = upgradeRequestRepository;
+        this.memberRepository = memberRepository;
+        this.enterpriseRepository = enterpriseRepository;
+        this.candidateRepository = candidateRepository;
+    }
 
     @Transactional
     public UpgradeRequest createUpgradeRequest(String memberId, UpgradeRequest upgradeRequest) {
