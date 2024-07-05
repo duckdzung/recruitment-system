@@ -1,31 +1,32 @@
 .container {
     position: fixed;
-    width: 100%;
-    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     background-color: transparent;
     z-index: 1;
-    --growth-from: 0;
-    --growth-to: 1;
     animation: growth 0.4s ease-in-out;
 }
 
 @keyframes growth {
     from {
-        transform: scale(var(--growth-from));
+        transform: scale(0);
     }
     to {
-        transform: scale(var(--growth-to));
+        transform: scale(1);
     }
 }
 
 .paymentForm {
     position: relative;
+    width: 1000px;
+    height: 500px;
     display: grid;
-    grid-template-columns: 1fr 0.75fr;
-    padding: 100px;
+    grid-template-columns: 1fr 1fr;
     background-color: rgb(255, 255, 255);
     border-radius: 10px;
     box-shadow: 25px 25px 55px rgba(0, 0, 0, 0.3);
@@ -37,7 +38,7 @@
 .card {
     position: absolute;
     left: -15%;
-    top: 19%;
+    top: 15%;
     height: 300px;
     width: 500px;
     border-radius: 20px;
@@ -192,150 +193,7 @@
 
 .details {
     grid-column-start: 2;
-    display: grid;
-    grid-template-rows: 1.5fr 0.5fr 0.5fr 0.5fr;
-    gap: 20px;
-
-    input {
-        height: 50px;
-        padding: 0px 10px;
-        border: none;
-        border-bottom: 1px solid rgb(208, 208, 208);
-
-        &:-webkit-autofill,
-        &:-webkit-autofill:hover,
-        &:-webkit-autofill:focus,
-        &:-webkit-autofill:active {
-            -webkit-box-shadow: 0 0 0px 1000px transparent inset !important;
-            -webkit-text-fill-color: inherit !important;
-            transition: background-color 5000s ease-in-out 0s !important;
-        }
-
-        &:focus {
-            outline: none;
-            border: none;
-
-            ~ label {
-                width: 100%;
-            }
-        }
-
-        &::placeholder {
-            color: #b0b6bf;
-        }
-    }
-
-    select {
-        height: 50px;
-        width: 80px;
-        text-align: center;
-        border: none;
-        border-bottom: 1px solid rgb(208, 208, 208);
-        color: #b0b6bf;
-
-        &:focus {
-            outline: none;
-            border: none;
-
-            ~ label {
-                width: 100%;
-            }
-        }
-    }
-}
-
-.inputBox {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-
-    > label {
-        background-color: #0aadeb;
-        height: 1px;
-        width: 0%;
-        transition: all 0.3s ease-in-out;
-    }
-}
-
-.detailsSection01 {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    gap: 20px;
-}
-
-.detailsSection02 {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 20px;
-}
-
-.detailsSection03 {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.dateInput {
-    width: fit-content;
-}
-
-.cvvInput {
-    width: 47%;
-}
-
-.detailsSection04 {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-
-    > input {
-        width: 150px;
-        height: 30px;
-        border-radius: 20px;
-        border: none;
-        cursor: pointer;
-        font-size: 12px;
-        font-weight: bold;
-        color: white;
-        background-color: #0aadeb;
-        transition: all 0.3s ease-in-out;
-
-        &:hover {
-            transform: scale(1.1);
-            box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.2);
-        }
-    }
-}
-
-.exits {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 100px;
-    height: 100px;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #0aadeb;
-    border-bottom-left-radius: 100%;
-    border-top-right-radius: 5px;
-    cursor: pointer;
-
-    > i {
-        font-size: 30px;
-        color: white;
-        margin-left: 20px;
-        margin-bottom: 15px;
-        transition: all 0.3s ease-in-out;
-
-        &:hover {
-            transform: scale(1.5);
-        }
-    }
-}
-
-.displayNone {
-    display: none;
 }
