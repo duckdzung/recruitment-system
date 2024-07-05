@@ -88,6 +88,14 @@ export interface PaymentConfirmationDetails {
     paymentMethod: PaymentMethod;
 }
 
+export interface FeedbackData {
+    name: string;
+    email: string;
+    phoneNumber: string;
+    trainingTips: string;
+    message: string;
+}
+
 // Enum
 export enum Role {
     MEMBER = 'MEMBER',
