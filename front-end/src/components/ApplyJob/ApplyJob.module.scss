@@ -1,289 +1,263 @@
 .container {
     position: fixed;
-    top: 15%;
-    left: 30%;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: whitesmoke;
+}
+
+.form {
     display: grid;
-    grid-template-rows: auto auto auto;
-    gap: 40px;
-    width: 500px;
-    box-sizing: border-box;
-    padding: 20px;
-    background-color: white;
-    border-radius: 5px;
-    box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.2);
-    font-family: 'Inter', sans-serif;
+    grid-template-columns: 1fr 1fr;
+    width: 1000px;
+    height: 600px;
+    font-family: 'Muli', sans-serif;
     letter-spacing: 0.1cap;
-    transition: all 0.3s ease-in-out;
-    z-index: 10;
-
-    &:hover {
-        transform: scale(1.1);
-    }
+    border-radius: 5px;
+    background-color: transparent;
 }
 
-.top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.left {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.leftForm {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
     gap: 20px;
+    background-color: white;
+    box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
 }
 
-.uploadIcon {
+.LeftFormTop {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 50px;
-    width: 50px;
-    background-color: #0aadeb;
+}
+
+.outerCircle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 150px;
+    height: 150px;
     border-radius: 50%;
-
-    > i {
-        color: white;
-        font-size: 20px;
-    }
+    background-color: hsla(235, 100%, 90%, 1);
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
 }
 
-.uploadIconContent {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    gap: 5px;
-
-    > span {
-        font-size: 18px;
-        font-weight: 800;
-        color: #0aadeb;
-    }
-
-    > p {
-        font-size: 14px;
-        margin: 0;
-        color: rgba(0, 0, 0, 0.5);
-    }
-}
-
-.right {
+.coreCircle {
     display: flex;
     justify-content: center;
     align-items: center;
-    cursor: pointer;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: white;
+    border: 4px solid hsla(235, 100%, 78%, 1);
     transition: all 0.3s ease-in-out;
+    animation: growth 0.5s ease-in-out infinite alternate;
 
     > i {
-        font-size: 25px;
-        color: #0aadeb;
-    }
-
-    &:hover {
-        transform: scale(1.3);
-    }
-}
-
-.middle {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
-    box-sizing: border-box;
-    padding: 30px;
-    border: 2px dashed #6990f2;
-    border-radius: 5px;
-
-    > form {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        gap: 30px;
-
-        > span {
-            font-size: 14px;
-            color: #0aadeb;
-        }
-    }
-}
-
-.browseFileIcon {
-    transition: all 0.3s ease-in-out;
-    cursor: pointer;
-
-    > i {
-        font-size: 100px;
-        color: #0aadeb;
-    }
-
-    &:hover {
-        transform: scale(1.1);
-    }
-}
-
-.bottom {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
-}
-
-.progressArea,
-.uploadedArea {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
-    width: 100%;
-    font-family: 'Poppins', sans-serif;
-    letter-spacing: normal;
-}
-
-.progressdRow {
-    display: grid;
-    grid-template-columns: 25px auto;
-    gap: 10px;
-    width: 100%;
-    height: 60px;
-    background-color: #e9f0ff;
-    border-radius: 5px;
-    box-sizing: border-box;
-    padding: 15px 10px;
-    list-style: none;
-
-    > i {
-        font-size: 30px;
-        color: #0aadeb;
-    }
-}
-
-.uploadRow {
-    display: grid;
-    grid-template-columns: 25px auto 25px;
-    gap: 10px;
-    width: 100%;
-    height: 60px;
-    background-color: #e9f0ff;
-    border-radius: 5px;
-    box-sizing: border-box;
-    padding: 15px 10px;
-    list-style: none;
-
-    > i {
-        font-size: 30px;
-        color: #0aadeb;
-    }
-}
-
-.progressContent {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 5px;
-}
-
-.uploadContent {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-}
-
-.uploadedIcon {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    > i {
-        color: #0aadeb;
-    }
-}
-
-.fileName {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 14px;
-
-    i {
-        color: #0aadeb;
-        margin-left: 20px;
-        margin-right: 5px;
-    }
-
-    > span {
-        color: #0aadeb;
-    }
-}
-
-.uploadingState {
-    width: fit-content;
-    > i {
-        animation: roate 1s ease-in-out infinite;
-    }
-}
-
-.uploadedState {
-    width: fit-content;
-    > i {
-        animation: growth 1s ease-in-out alternate infinite;
-    }
-}
-
-@keyframes roate {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
+        font-size: 40px;
+        color: hsla(235, 100%, 78%, 1);
     }
 }
 
 @keyframes growth {
     from {
-        transform: scale(0.8);
-    }
-    to {
         transform: scale(1);
+    }
+
+    to {
+        transform: scale(1.1);
+        box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.2);
     }
 }
 
-.uploadPercent {
+.leftFormBottom {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 25px;
+
+    > h1 {
+        font-size: 20px;
+        font-weight: 900;
+        text-align: center;
+        color: rgba(0, 0, 0, 0.5);
+        margin: 0;
+    }
+
+    > span {
+        letter-spacing: normal;
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: rgba(0, 0, 0, 0.3);
+    }
+
+    > p {
+        margin: 0;
+        font-size: 14px;
+        font-weight: 900;
+        letter-spacing: 0.1cap;
+        color: hsla(235, 100%, 78%, 1);
+    }
+}
+
+.uploadBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+
+    > i {
+        font-size: 50px;
+        color: hsla(235, 100%, 78%, 1);
+    }
+
+    &:hover {
+        transform: scale(1.2);
+    }
+}
+
+.rightForm {
+    background-color: transparent;
+    box-sizing: border-box;
+    padding: 20px;
+}
+
+.uploadList {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+}
+
+.uploadFile {
+    display: grid;
+    grid-template-columns: 50px auto 50px;
+    gap: 15px;
+    width: 100%;
+}
+
+.thumbnail {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 5px;
+    background-color: #0aadeb;
+    box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.2);
+
+    > i {
+        color: white;
+        font-size: 25px;
+    }
+}
+
+.checkIcon {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 35%;
+    right: -7px;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: white;
+
+    > i {
+        font-size: 18px;
+        color: green;
+    }
+}
+
+.properties {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 5px;
+}
+
+.title {
     font-size: 14px;
 }
 
-.fileSize {
+.size {
     font-size: 10px;
     color: rgba(0, 0, 0, 0.5);
 }
 
-.progressDetails {
+.progress {
+    position: relative;
+    width: 100%;
+    height: 5px;
+    background-color: white;
+    border-radius: 10px;
+
+    &::before {
+        position: absolute;
+        left: 0;
+        top: 0;
+        content: '';
+        width: 50%;
+        height: 100%;
+        background-color: hsla(235, 100%, 78%, 1);
+        border-radius: 10px;
+    }
+}
+
+.progressArea {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.uploadHanler {
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
 }
 
-.progressBar {
-    width: 100%;
-    height: 6px;
-    border-radius: 5px;
-    background-color: white;
+.remove {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: fit-content;
+    background-color: transparent;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+
+    > i {
+        font-size: 25px;
+        color: red;
+    }
+
+    &:hover {
+        transform: scale(1.2);
+    }
 }
 
-.progress {
-    width: 50%;
-    height: 6px;
-    border-radius: 5px;
-    background-color: #0aadeb;
+.checkBox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: fit-content;
 }
 
-.displayNone {
-    display: none;
+.percent {
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.5);
 }

@@ -157,6 +157,7 @@
         padding: 10px;
         border-radius: 5px;
         letter-spacing: 0.1cap;
+        cursor: pointer;
         transition: all 0.3s ease-in-out;
 
         &:hover {
@@ -172,6 +173,7 @@
     right: 100px;
     color: white;
     font-size: 50px;
+    cursor: pointer;
     transition: all 0.5s ease-in-out;
 
     &:hover {

@@ -1,22 +1,26 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import styles from './PopUpImage.module.scss';
 
 const PopUpImage = ({ Title = 'Default Title' }) => {
+    // Effect for body element
     useEffect(() => {
         document.body.style.margin = '0';
+        return () => {
+            document.body.style.margin = '';
+        };
     }, []);
 
     // Handle exits button
-    const handlExitsBtnClick = () => {
-        const paymentPage = document.getElementById('popUpPage');
+    const paymentPageRef = useRef<HTMLDivElement>(null);
 
-        if (paymentPage) {
-            paymentPage.classList.add(styles.displayNone);
+    const handlExitsBtnClick = () => {
+        if (paymentPageRef.current) {
+            paymentPageRef.current.classList.add(styles.displayNone);
         }
     };
 
     return (
-        <div id="popUpPage" className={styles.container}>
+        <div ref={paymentPageRef} className={styles.container}>
             <div className={styles.popUp}>
                 <div className={styles.popUpTop}>
                     <div className={styles.checkIcon}>
@@ -43,7 +47,7 @@ const PopUpImage = ({ Title = 'Default Title' }) => {
                         </li>
                     </ul>
                 </div>
-                <div className={styles.popUpBottom}>
+                <div className={styles.popUpBottom} onClick={handlExitsBtnClick}>
                     <span>Success !</span>
                     <p>{Title}</p>
                     <button>Continue</button>

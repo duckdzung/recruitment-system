@@ -7,6 +7,7 @@ import Footer from '../../components/Footer/Footer';
 import styles from './ContactUs.module.scss';
 
 const ContactUs = () => {
+    // Effect for body element
     useEffect(() => {
         document.body.style.overflowX = 'hidden';
         document.body.style.margin = '0';

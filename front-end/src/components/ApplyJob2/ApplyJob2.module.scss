@@ -1,0 +1,323 @@
+.uploadForm {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+}
+
+.container {
+    position: relative;
+    display: grid;
+    grid-template-rows: auto auto auto;
+    gap: 40px;
+    width: 500px;
+    box-sizing: border-box;
+    padding: 20px;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.2);
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 0.1cap;
+    z-index: 10;
+}
+
+.top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.left {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.uploadIcon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    width: 50px;
+    background-color: #0aadeb;
+    border-radius: 50%;
+
+    > i {
+        color: white;
+        font-size: 20px;
+    }
+}
+
+.uploadIconContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 5px;
+
+    > span {
+        font-size: 18px;
+        font-weight: 800;
+        color: #0aadeb;
+    }
+
+    > p {
+        font-size: 14px;
+        margin: 0;
+        color: rgba(0, 0, 0, 0.5);
+    }
+}
+
+.right {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+
+    > i {
+        font-size: 25px;
+        color: #0aadeb;
+    }
+
+    &:hover {
+        transform: scale(1.3);
+    }
+}
+
+.middle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    box-sizing: border-box;
+    padding: 30px;
+    border: 2px dashed #6990f2;
+    border-radius: 5px;
+
+    > form {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 30px;
+
+        > span {
+            font-size: 14px;
+            color: #0aadeb;
+        }
+    }
+}
+
+.browseFileIcon {
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+
+    > i {
+        font-size: 100px;
+        color: #0aadeb;
+    }
+
+    &:hover {
+        transform: scale(1.1);
+    }
+}
+
+.bottom {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+
+.progressArea,
+.uploadedArea {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    font-family: 'Poppins', sans-serif;
+    letter-spacing: normal;
+}
+
+.progressdRow {
+    display: grid;
+    grid-template-columns: 25px auto;
+    gap: 10px;
+    width: 100%;
+    height: 60px;
+    background-color: #e9f0ff;
+    border-radius: 5px;
+    box-sizing: border-box;
+    padding: 15px 10px;
+    list-style: none;
+
+    > i {
+        font-size: 30px;
+        color: #0aadeb;
+    }
+}
+
+.uploadRow {
+    display: grid;
+    grid-template-columns: 25px auto 25px;
+    gap: 10px;
+    width: 100%;
+    height: 60px;
+    background-color: #e9f0ff;
+    border-radius: 5px;
+    box-sizing: border-box;
+    padding: 15px 10px;
+    list-style: none;
+
+    > i {
+        font-size: 30px;
+        color: #0aadeb;
+    }
+}
+
+.progressContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+.uploadContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.uploadedIcon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    > i {
+        font-size: 20px;
+        color: #0aadeb;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+
+        &:hover {
+            transform: scale(1.3);
+        }
+    }
+}
+
+.fileName {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+
+    i {
+        color: #0aadeb;
+        margin-left: 20px;
+        margin-right: 5px;
+    }
+
+    > span {
+        color: #0aadeb;
+    }
+}
+
+.uploadingState {
+    width: fit-content;
+    > i {
+        animation: roate 1s ease-in-out infinite;
+    }
+}
+
+.uploadedState {
+    width: fit-content;
+    > i {
+        animation: growth 1s ease-in-out alternate infinite;
+    }
+}
+
+@keyframes roate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes growth {
+    from {
+        transform: scale(0.8);
+    }
+    to {
+        transform: scale(1);
+    }
+}
+
+.uploadPercent {
+    font-size: 14px;
+}
+
+.fileSize {
+    font-size: 10px;
+    color: rgba(0, 0, 0, 0.5);
+}
+
+.progressDetails {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.progressBar {
+    width: 100%;
+    height: 6px;
+    border-radius: 5px;
+    background-color: white;
+}
+
+.progress {
+    width: 50%;
+    height: 6px;
+    border-radius: 5px;
+    background-color: #0aadeb;
+}
+
+.nextBtn {
+    position: absolute;
+    right: 0;
+    top: 103%;
+    width: 80px;
+    height: 30px;
+    background-color: #0aadeb;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.2);
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 0.1cap;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+
+    &:hover {
+        transform: scale(1.2);
+    }
+}
+
+.displayNone {
+    display: none;
+}
