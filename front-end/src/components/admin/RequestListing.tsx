@@ -4,10 +4,9 @@ import type { GetProp, TableProps } from 'antd';
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import type { SearchProps } from 'antd/es/input/Search';
 
-import { deleteMember, getAllMembers, updateMemberByStaff } from '../../services/memberService';
-import EditModal, { FormItem } from '../Modal/EditModal';
+import { approveRequest, getAllRequests, rejectRequest } from '../../services/memberService';
 import ConfirmModal from '../Modal/ConfirmModal';
-import { ApiResponse, MemberDetails, Role } from '../../types';
+import { ApiResponse, Role } from '../../types';
 import { toast } from 'react-toastify';
 
 const { Search } = Input;
@@ -28,6 +27,7 @@ const headingStyle: React.CSSProperties = {
 // Interface for component
 interface DataType {
     id: string;
+    requestId: number;
     name: string;
     roleRequest: Role;
     validate: boolean;
@@ -42,8 +42,8 @@ interface TableParams {
 
 const RequestListing: React.FC = () => {
     const [requestList, setRequestList] = useState<DataType[]>([]);
-    const [editedRequest, setEditedRequest] = useState<DataType | null>(null);
-    const [deletedRequest, setDeletedRequest] = useState<DataType | null>(null);
+    const [selectedRequest, setSelectedRequest] = useState<DataType | null>(null);
+    const [isApproveRequest, setIsApproveRequest] = useState(false);
     const [loading, setLoading] = useState(false);
     const [tableParams, setTableParams] = useState<TableParams>({
         pagination: {
@@ -55,19 +55,15 @@ const RequestListing: React.FC = () => {
     const fetchData = async () => {
         setLoading(true);
 
-        const response = await getAllMembers(
-            Role.ENTERPRISE,
-            tableParams.pagination?.current! - 1,
-            tableParams.pagination?.pageSize!,
-        );
+        const response = await getAllRequests(tableParams.pagination?.current! - 1, tableParams.pagination?.pageSize!);
 
         setRequestList(
             response?.data.content.map((request: any) => {
                 return {
-                    key: request.member.id,
                     id: request.member.id,
-                    name: request.companyName,
+                    name: request.companyName || request.name,
                     roleRequest: request.role,
+                    requestId: request.requestId,
                     validate: request.member.isValidated,
                 };
             }),
@@ -98,48 +94,45 @@ const RequestListing: React.FC = () => {
     const onSearch: SearchProps['onSearch'] = (value, _e, info) => console.log(info?.source, value);
 
     const handleApproveClick = (request: DataType) => {
-        setEditedRequest(request);
+        setIsApproveRequest(true);
+        setSelectedRequest(request);
     };
 
-    const handleApproveSave = async (updatedData: { [key: string]: any }) => {
-        const requestId = updatedData.id;
-        const updatedRequest: MemberDetails = {
-            name: updatedData.name,
-            address: updatedData.address,
-            phoneNumber: updatedData.phoneNumber,
-            email: updatedData.email,
-            taxCode: updatedData.taxCode,
-            dateOfExpiration: updatedData.dateOfExpiration ? new Date(updatedData.dateOfExpiration).toISOString() : '',
-            isValidated: updatedData.validate,
-        };
+    const handleRejectClick = (request: DataType) => {
+        setIsApproveRequest(false);
+        setSelectedRequest(request);
+    };
 
-        // Call api update request
-        const response: ApiResponse = await updateMemberByStaff(requestId, updatedRequest);
+    const handleApproveRequest = async () => {
+        const requestId = selectedRequest?.requestId || 0;
 
-        // Update successfully
+        // Call api aprrove request
+        const response: ApiResponse = await approveRequest(requestId);
+
+        // Approve successfully
         if (response && response.statusCode === 200) {
             fetchData();
             toast.success('Request approved successfully');
         }
 
-        // Close the modal after saving
-        setEditedRequest(null);
+        // Close the modal after approve request
+        setSelectedRequest(null);
     };
 
     const handleRejectRequest = async () => {
-        const requestId = deletedRequest?.id || '';
+        const requestId = selectedRequest?.requestId || 0;
 
-        // Call api delete request
-        const response: ApiResponse = await deleteMember(requestId);
+        // Call api aprrove request
+        const response: ApiResponse = await rejectRequest(requestId);
 
-        // Delete successfully
+        // Approve successfully
         if (response && response.statusCode === 200) {
             fetchData();
-            toast.success('Request rejected successfully');
+            toast.success('Request approved successfully');
         }
 
-        // Close the modal after saving
-        setDeletedRequest(null);
+        // Close the modal after approve request
+        setSelectedRequest(null);
     };
 
     const columns: ColumnsType<DataType> = [
@@ -154,6 +147,7 @@ const RequestListing: React.FC = () => {
             dataIndex: 'roleRequest',
             sorter: true,
             width: '10%',
+            render: (roleRequest: Role) => <Tag color="processing">{roleRequest}</Tag>,
         },
         {
             title: 'Validate',
@@ -176,21 +170,11 @@ const RequestListing: React.FC = () => {
                     />
                     <CloseOutlined
                         style={{ fontSize: '25px', color: '#f54242', marginLeft: '20px', cursor: 'pointer' }}
-                        onClick={() => setDeletedRequest(request)}
+                        onClick={() => handleRejectClick(request)}
                     />
                 </span>
             ),
         },
-    ];
-
-    const fields: FormItem[] = [
-        { name: 'name', label: 'Name', type: 'text', isDisabled: false },
-        { name: 'address', label: 'Address', type: 'text', isDisabled: false },
-        { name: 'phoneNumber', label: 'Phone Number', type: 'text', isDisabled: false },
-        { name: 'email', label: 'Email', type: 'text', isDisabled: true },
-        { name: 'taxCode', label: 'Tax Code', type: 'text', isDisabled: false },
-        { name: 'dateOfExpiration', label: 'Date of Expiration', type: 'datetime', isDisabled: false },
-        { name: 'validate', label: 'Validate', type: 'checkbox', isDisabled: false },
     ];
 
     return (
@@ -222,23 +206,16 @@ const RequestListing: React.FC = () => {
                 </Col>
             </Row>
 
-            <EditModal
-                title="Approve Request"
-                data={editedRequest || {}}
-                isOpen={!!editedRequest}
-                fields={fields}
-                onSave={handleApproveSave}
-                onCancel={() => setEditedRequest(null)}
-            />
-
             <ConfirmModal
                 title="Confirm"
-                content="Do you want to reject this request?"
+                content={
+                    isApproveRequest ? 'Do you want to aprrove this request?' : 'Do you want to reject this request?'
+                }
                 okText="Ok"
                 cancelText="Cancel"
-                isOpen={deletedRequest !== null}
-                onConfirm={handleRejectRequest}
-                onCancel={() => setDeletedRequest(null)}
+                isOpen={selectedRequest !== null}
+                onConfirm={isApproveRequest ? handleApproveRequest : handleRejectRequest}
+                onCancel={() => setSelectedRequest(null)}
             />
         </>
     );

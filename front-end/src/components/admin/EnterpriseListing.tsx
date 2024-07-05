@@ -4,10 +4,10 @@ import type { GetProp, TableProps } from 'antd';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import type { SearchProps } from 'antd/es/input/Search';
 
-import { deleteMember, getAllMembers, updateMemberByStaff } from '../../services/memberService';
+import { deleteMember, getCandidateList, getEnterpriseList, updateMemberByStaff } from '../../services/memberService';
 import EditModal, { FormItem } from '../Modal/EditModal';
 import ConfirmModal from '../Modal/ConfirmModal';
-import { ApiResponse, MemberDetails, Role } from '../../types';
+import { ApiResponse, MemberDetails } from '../../types';
 import { toast } from 'react-toastify';
 
 const { Search } = Input;
@@ -59,8 +59,7 @@ const EnterpiseListing: React.FC = () => {
     const fetchData = async () => {
         setLoading(true);
 
-        const response = await getAllMembers(
-            Role.ENTERPRISE,
+        const response = await getEnterpriseList(
             tableParams.pagination?.current! - 1,
             tableParams.pagination?.pageSize!,
         );
@@ -71,8 +70,8 @@ const EnterpiseListing: React.FC = () => {
                     key: enterprise.member.id,
                     id: enterprise.member.id,
                     name: enterprise.companyName,
-                    address: enterprise.address,
-                    phoneNumber: enterprise.phoneNumber,
+                    address: enterprise.member.address,
+                    phoneNumber: enterprise.member.phoneNumber,
                     email: enterprise.member.email,
                     taxCode: enterprise.taxCode,
                     dateOfExpiration: enterprise.dateOfExpiration || '',

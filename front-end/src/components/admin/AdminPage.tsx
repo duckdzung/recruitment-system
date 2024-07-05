@@ -7,9 +7,9 @@ const { Header, Content, Footer } = Layout;
 
 const items = [
     {
-        key: 'account',
-        label: 'ACCOUNT',
-        route: '/admin/account',
+        key: 'request',
+        label: 'REQUEST',
+        route: '/admin/request-listing',
     },
     {
         key: 'staff',
