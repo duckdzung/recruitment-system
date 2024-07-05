@@ -4,6 +4,7 @@ import com.duckdzung.recruitmentsystem.common.PaymentIntentResponse;
 import com.stripe.exception.StripeException;
 import com.stripe.model.PaymentIntent;
 import com.stripe.param.PaymentIntentCreateParams;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -11,6 +12,12 @@ import java.util.Map;
 
 @Service
 public class PaymentService {
+
+    private final String PUBLISHABLE_KEY;
+
+    public PaymentService(Environment environment) {
+        PUBLISHABLE_KEY = environment.getProperty("application.stripe.publishableKey");
+    }
 
     public PaymentIntentResponse createPaymentIntent(Long amount, String currency) throws StripeException {
         PaymentIntentCreateParams createParams = new PaymentIntentCreateParams.Builder()
@@ -29,6 +36,7 @@ public class PaymentService {
         return PaymentIntentResponse.builder()
                 .id(paymentIntent.getId())
                 .clientSecret(paymentIntent.getClientSecret())
+                .publishableKey(PUBLISHABLE_KEY)
                 .amount(paymentIntent.getAmount())
                 .currency(paymentIntent.getCurrency())
                 .status(paymentIntent.getStatus())
