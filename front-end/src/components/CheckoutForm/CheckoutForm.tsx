@@ -22,7 +22,8 @@ const CheckoutForm = () => {
     const [message, setMessage] = useState<string | null>(null);
     const [isProcessing, setIsProcessing] = useState(false);
 
-    const handleSubmit = async (e: FormEvent) => {
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+        console.log('call');
         e.preventDefault();
 
         if (!stripe || !elements) {

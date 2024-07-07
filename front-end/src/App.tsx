@@ -39,6 +39,7 @@ import ApplyJob from './components/ApplyJob/ApplyJob';
 // import EnterpiseReport from './components/Admin/EnterpriseReport';
 import Payment from './components/Payment/Payment';
 import RequestListing from './components/Admin/RequestListing';
+import EnterpiseReport from './components/Admin/EnterpriseReport';
 
 const App: React.FC = () => {
     return (
@@ -85,7 +86,7 @@ const App: React.FC = () => {
 
                 <Route element={<ProtectedRoute allowRoutes={[Role.STAFF, Role.PRESIDENT]} />}>
                     <Route path="/admin" element={<AdminPage />}>
-                        {/* <Route path="enterpise-report" element={<EnterpiseReport />} /> */}
+                        <Route path="enterpise-report" element={<EnterpiseReport />} />
                         <Route path="request-listing" element={<RequestListing />} />
                         <Route path="enterpise-listing" element={<EnterpiseListing />} />
                         <Route path="candidate-listing" element={<CandidateListing />} />

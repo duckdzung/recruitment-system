@@ -12,11 +12,6 @@ const items = [
         route: '/admin/request-listing',
     },
     {
-        key: 'staff',
-        label: 'STAFF',
-        route: '/admin/staff',
-    },
-    {
         key: 'enterprise',
         label: 'ENTERPRISE',
         route: '/admin/enterpise-listing',
@@ -29,7 +24,7 @@ const items = [
     {
         key: 'renewal',
         label: 'RENEWAL',
-        route: '/admin/renewal',
+        route: '/admin/enterpise-report',
     },
 ];
 

@@ -122,3 +122,9 @@ export enum PaymentMethod {
     CASH = 'CASH',
     BANK_TRANSFER = 'BANK_TRANSFER',
 }
+
+export enum ReportStatus {
+    IN_PROGRESS = 'IN_PROGRESS',
+    FAILED = 'FAILED',
+    SUCCESS = 'SUCCESS',
+}

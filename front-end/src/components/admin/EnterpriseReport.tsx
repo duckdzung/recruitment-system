@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Input, Row, Col, Tag } from 'antd';
+import { Table, Input, Row, Col, Tag, DatePicker, Select } from 'antd';
 import type { GetProp, TableProps } from 'antd';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import type { SearchProps } from 'antd/es/input/Search';
 
-import { deleteMember, getEnterpriseList, updateMemberByStaff } from '../../services/memberService';
+import { deleteMember, updateMemberByStaff } from '../../services/memberService';
 import EditModal, { FormItem } from '../Modal/EditModal';
 import ConfirmModal from '../Modal/ConfirmModal';
-import { ApiResponse, MemberDetails } from '../../types';
+import { ApiResponse, MemberDetails, ReportStatus } from '../../types';
 import { toast } from 'react-toastify';
+import { getAllReports, updateReportByStaff } from '../../services/reportService';
 
 const { Search } = Input;
 
@@ -28,13 +29,14 @@ const headingStyle: React.CSSProperties = {
 // Interface for component
 interface DataType {
     id: string;
-    name: string;
-    address: string;
+    enterpriseId: string;
+    companyName: string;
+    date: string;
     phoneNumber: string;
-    email: string;
-    taxCode: string;
-    dateOfExpiration: string;
-    validate: boolean;
+    potential: boolean;
+    greatPotential: boolean;
+    strategy: string;
+    status: ReportStatus;
 }
 
 interface TableParams {
@@ -45,9 +47,9 @@ interface TableParams {
 }
 
 const EnterpiseReport: React.FC = () => {
-    const [enterpiseList, setEnterpiseList] = useState<DataType[]>([]);
-    const [editedEnterprise, setEditedEnterprise] = useState<DataType | null>(null);
-    const [deletedEnterprise, setDeletedEnterprise] = useState<DataType | null>(null);
+    const [reportList, setReportList] = useState<DataType[]>([]);
+    const [editedReport, setEditedReport] = useState<DataType | null>(null);
+    const [deletedReport, setDeletedReport] = useState<DataType | null>(null);
     const [loading, setLoading] = useState(false);
     const [tableParams, setTableParams] = useState<TableParams>({
         pagination: {
@@ -56,26 +58,31 @@ const EnterpiseReport: React.FC = () => {
         },
     });
 
+    const [year, setYear] = useState<number>(2024);
+    const [month, setMonth] = useState<number>(10);
+
     const fetchData = async () => {
         setLoading(true);
 
-        const response = await getEnterpriseList(
+        const response = await getAllReports(
+            month,
+            year,
             tableParams.pagination?.current! - 1,
             tableParams.pagination?.pageSize!,
         );
 
-        setEnterpiseList(
-            response?.data.content.map((enterprise: any) => {
+        setReportList(
+            response?.data.content.map((report: any) => {
                 return {
-                    key: enterprise.member.id,
-                    id: enterprise.member.id,
-                    name: enterprise.companyName,
-                    address: enterprise.member.address,
-                    phoneNumber: enterprise.member.phoneNumber,
-                    email: enterprise.member.email,
-                    taxCode: enterprise.taxCode,
-                    dateOfExpiration: enterprise.dateOfExpiration || '',
-                    validate: enterprise.member.isValidated,
+                    id: report.report.reportId,
+                    enterpriseId: report.enterprise.id,
+                    companyName: report.enterprise.companyName,
+                    date: report.report.date,
+                    phoneNumber: report.enterprise.member.phoneNumber,
+                    potential: report.isPotential,
+                    greatPotential: report.isGreatPotential,
+                    strategy: report.strategy,
+                    status: report.reportStatus as ReportStatus,
                 };
             }),
         );
@@ -92,7 +99,7 @@ const EnterpiseReport: React.FC = () => {
 
     useEffect(() => {
         fetchData();
-    }, [tableParams.pagination?.current, tableParams.pagination?.pageSize]);
+    }, [tableParams.pagination?.current, tableParams.pagination?.pageSize, year, month]);
 
     const handleTableChange: TableProps<DataType>['onChange'] = (pagination, filters, sorter) => {
         setTableParams({
@@ -104,61 +111,48 @@ const EnterpiseReport: React.FC = () => {
 
     const onSearch: SearchProps['onSearch'] = (value, _e, info) => console.log(info?.source, value);
 
-    const handleEditClick = (enterprise: DataType) => {
-        setEditedEnterprise(enterprise);
+    const handleEditClick = (report: DataType) => {
+        setEditedReport(report);
     };
 
     const handleEditSave = async (updatedData: { [key: string]: any }) => {
-        const enterpiseId = updatedData.id;
-        const updatedEnterprise: MemberDetails = {
-            name: updatedData.name,
-            address: updatedData.address,
-            phoneNum: updatedData.phoneNumber,
-            email: updatedData.email,
-            taxCode: updatedData.taxCode,
-            dateOfExpiration: updatedData.dateOfExpiration ? new Date(updatedData.dateOfExpiration).toISOString() : '',
-            isValidated: updatedData.validate,
+        const updatedReport = {
+            reportId: updatedData.id,
+            enterpriseId: updatedData.enterpriseId,
+            isPotential: updatedData.potential,
+            isGreatPotential: updatedData.greatPotential,
+            strategy: updatedData.strategy,
+            reportStatus: updatedData.status,
         };
 
-        // Call api update enterprise
-        const response: ApiResponse = await updateMemberByStaff(enterpiseId, updatedEnterprise);
+        // Call api update report
+        const response: ApiResponse = await updateReportByStaff(updatedReport);
 
         // Update sucessfully
         if (response && response.statusCode === 200) {
             fetchData();
-            toast.success('Update enterprise successfully');
+            toast.success('Update report successfully');
         }
 
         // Close the modal after saving
-        setEditedEnterprise(null);
+        setEditedReport(null);
     };
 
     const handleDeleteEnterprise = async () => {
-        const enterpiseId = deletedEnterprise?.id || '';
-
-        // Call api delete enterprise
-        const response: ApiResponse = await deleteMember(enterpiseId);
-
-        // Delete sucessfully
-        if (response && response.statusCode === 200) {
-            fetchData();
-            toast.success('Delete enterprise successfully');
-        }
-
-        // Close the modal after saving
-        setDeletedEnterprise(null);
+        toast.warn('Cannot delete report');
+        setDeletedReport(null);
     };
 
     const columns: ColumnsType<DataType> = [
         {
             title: 'Enterprise',
-            dataIndex: 'name',
+            dataIndex: 'companyName',
             sorter: true,
             width: '10%',
         },
         {
-            title: 'Expiration',
-            dataIndex: 'dateOfExpiration',
+            title: 'Date',
+            dataIndex: 'date',
             width: '10%',
         },
         {
@@ -192,36 +186,62 @@ const EnterpiseReport: React.FC = () => {
         {
             title: 'Status',
             dataIndex: 'status',
-            width: '5%',
-            render: () => <Tag color="green">SUCESS</Tag>,
+            width: '10%',
+            render: (status: ReportStatus) => {
+                let color = '';
+                let text = '';
+                switch (status) {
+                    case ReportStatus.IN_PROGRESS:
+                        color = 'blue';
+                        text = 'IN PROGRESS';
+                        break;
+                    case ReportStatus.FAILED:
+                        color = 'red';
+                        text = 'FAILED';
+                        break;
+                    case ReportStatus.SUCCESS:
+                        color = 'green';
+                        text = 'SUCCESS';
+                        break;
+                    default:
+                        color = 'gray';
+                        text = 'UNKNOWN';
+                }
+                return <Tag color={color}>{text}</Tag>;
+            },
         },
         {
             title: 'Action',
             dataIndex: 'action',
             width: '10%',
-            render: (_, enterprise) => (
+            render: (_, report) => (
                 <span>
                     <EditOutlined
                         style={{ fontSize: '25px', color: '#f5b342', cursor: 'pointer' }}
-                        onClick={() => handleEditClick(enterprise)}
+                        onClick={() => handleEditClick(report)}
                     />
                     <DeleteOutlined
                         style={{ fontSize: '25px', color: '#f54242', marginLeft: '20px', cursor: 'pointer' }}
-                        onClick={() => setDeletedEnterprise(enterprise)}
+                        onClick={() => setDeletedReport(report)}
                     />
                 </span>
             ),
         },
     ];
 
+    const reportStatusOptions = Object.values(ReportStatus).map((status) => ({
+        label: status.replace('_', ' '),
+        value: status,
+    }));
+
     const fields: FormItem[] = [
-        { name: 'name', label: 'Name', type: 'text', isDisabled: false },
-        { name: 'address', label: 'Address', type: 'text', isDisabled: false },
-        { name: 'phoneNumber', label: 'Phone Number', type: 'text', isDisabled: false },
-        { name: 'email', label: 'Email', type: 'text', isDisabled: true },
-        { name: 'taxCode', label: 'Tax Code', type: 'text', isDisabled: false },
-        { name: 'dateOfExpiration', label: 'Date of Expiration', type: 'datetime', isDisabled: false },
-        { name: 'validate', label: 'Validate', type: 'checkbox', isDisabled: false },
+        { name: 'companyName', label: 'Company Name', type: 'text', isDisabled: true },
+        { name: 'phoneNumber', label: 'Phone Number', type: 'text', isDisabled: true },
+        { name: 'date', label: 'Date', type: 'datetime', isDisabled: true },
+        { name: 'potential', label: 'Potential', type: 'checkbox', isDisabled: false },
+        { name: 'greatPotential', label: 'Great Potential', type: 'checkbox', isDisabled: false },
+        { name: 'strategy', label: 'Strategy', type: 'text', isDisabled: false },
+        { name: 'status', label: 'Status', type: 'select', options: reportStatusOptions, isDisabled: false },
     ];
 
     return (
@@ -230,9 +250,121 @@ const EnterpiseReport: React.FC = () => {
                 <h3 style={headingStyle}>MONTHLY ENTERPRISE REPORTS</h3>
             </Row>
             <Row>
-                <Col span={4} offset={20}>
+                <Col span={3} offset={10}>
+                    <Select
+                        placeholder="Select month"
+                        optionFilterProp="label"
+                        style={{ width: 150 }}
+                        onChange={(value: string) => setMonth(parseInt(value))}
+                        options={[
+                            {
+                                value: '1',
+                                label: '1',
+                            },
+                            {
+                                value: '2',
+                                label: '2',
+                            },
+                            {
+                                value: '3',
+                                label: '3',
+                            },
+                            {
+                                value: '4',
+                                label: '4',
+                            },
+                            {
+                                value: '5',
+                                label: '5',
+                            },
+                            {
+                                value: '6',
+                                label: '6',
+                            },
+                            {
+                                value: '7',
+                                label: '7',
+                            },
+                            {
+                                value: '8',
+                                label: '8',
+                            },
+                            {
+                                value: '9',
+                                label: '9',
+                            },
+                            {
+                                value: '10',
+                                label: '10',
+                            },
+                            {
+                                value: '11',
+                                label: '11',
+                            },
+                            {
+                                value: '12',
+                                label: '12',
+                            },
+                        ]}
+                    />
+                </Col>
+                <Col span={3}>
+                    <Select
+                        placeholder="Select year"
+                        optionFilterProp="label"
+                        style={{ width: 150 }}
+                        onChange={(value: number) => setYear(value)}
+                        options={[
+                            {
+                                value: 2020,
+                                label: '2020',
+                            },
+                            {
+                                value: 2021,
+                                label: '2021',
+                            },
+                            {
+                                value: 2022,
+                                label: '2022',
+                            },
+                            {
+                                value: 2023,
+                                label: '2023',
+                            },
+                            {
+                                value: 2024,
+                                label: '2024',
+                            },
+                            {
+                                value: 2025,
+                                label: '2025',
+                            },
+                            {
+                                value: 2026,
+                                label: '2026',
+                            },
+                            {
+                                value: 2027,
+                                label: '2027',
+                            },
+                            {
+                                value: 2028,
+                                label: '2028',
+                            },
+                            {
+                                value: 2029,
+                                label: '2029',
+                            },
+                            {
+                                value: 2030,
+                                label: '2015',
+                            },
+                        ]}
+                    />
+                </Col>
+                <Col span={8}>
                     <Search
-                        placeholder="Type here ... "
+                        placeholder="Type here ..."
                         allowClear
                         onSearch={onSearch}
                         size="large"
@@ -245,7 +377,7 @@ const EnterpiseReport: React.FC = () => {
                 <Col span={24}>
                     <Table
                         columns={columns}
-                        dataSource={enterpiseList}
+                        dataSource={reportList}
                         pagination={tableParams.pagination}
                         loading={loading}
                         onChange={handleTableChange}
@@ -255,21 +387,21 @@ const EnterpiseReport: React.FC = () => {
 
             <EditModal
                 title="Edit Enterprise"
-                data={editedEnterprise || {}}
-                isOpen={!!editedEnterprise}
+                data={editedReport || {}}
+                isOpen={!!editedReport}
                 fields={fields}
                 onSave={handleEditSave}
-                onCancel={() => setEditedEnterprise(null)}
+                onCancel={() => setEditedReport(null)}
             />
 
             <ConfirmModal
                 title="Confirm"
-                content="Do you want to delete this enterprise?"
+                content="Do you want to delete this report?"
                 okText="Ok"
                 cancelText="Cancel"
-                isOpen={deletedEnterprise !== null}
+                isOpen={deletedReport !== null}
                 onConfirm={handleDeleteEnterprise}
-                onCancel={() => setDeletedEnterprise(null)}
+                onCancel={() => setDeletedReport(null)}
             />
         </>
     );

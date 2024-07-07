@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Input, Checkbox, Form, DatePicker } from 'antd';
+import { Modal, Input, Checkbox, Form, DatePicker, Select } from 'antd';
 import { CheckboxChangeEvent } from 'antd/es/checkbox';
 import moment, { Moment } from 'moment';
 
 export interface FormItem {
     name: string;
     label: string;
-    type: 'text' | 'checkbox' | 'datetime';
+    type: 'text' | 'checkbox' | 'datetime' | 'select';
+    options?: any;
     isDisabled: boolean;
 }
 
@@ -49,6 +50,13 @@ const EditModal: React.FC<EditModalProps> = ({ title, data, isOpen, fields, onSa
         }));
     };
 
+    const handleSelectChange = (value: any, name: string) => {
+        setFormData((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
+    };
+
     const handleSave = () => {
         onSave(formData);
     };
@@ -82,6 +90,16 @@ const EditModal: React.FC<EditModalProps> = ({ title, data, isOpen, fields, onSa
                         disabled={field.isDisabled}
                         onChange={(date, dateString) => handleDateChange(date, dateString, field.name)}
                         format="YYYY-MM-DD"
+                    />
+                );
+            case 'select':
+                return (
+                    <Select
+                        value={formData[field.name]}
+                        onChange={(value) => handleSelectChange(value, field.name)}
+                        options={field.options}
+                        disabled={field.isDisabled}
+                        style={{ width: 150 }}
                     />
                 );
             default:
