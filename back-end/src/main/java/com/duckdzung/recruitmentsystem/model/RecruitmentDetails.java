@@ -8,7 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.proxy.HibernateProxy;
 
-import java.math.BigDecimal;
 import java.util.Objects;
 
 @Data
@@ -25,9 +24,6 @@ public class RecruitmentDetails {
     @Column(length = 50)
     String requiredInfo;
 
-    BigDecimal salary;
-
-    String experience;
     @Id
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "recruit_id", nullable = false)
