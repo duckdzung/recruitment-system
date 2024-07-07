@@ -307,10 +307,10 @@ const Recruitment: React.FC = () => {
                                 <option value="" disabled hidden>
                                     Select Time Period
                                 </option>
-                                <option value={TimePeriodType.ONE_WEEK}>1 week</option>
-                                <option value={TimePeriodType.TWO_WEEKS}>2 weeks</option>
-                                <option value={TimePeriodType.ONE_MONTH}>1 month</option>
-                                <option value={TimePeriodType.TWO_MONTHS}>2 months</option>
+                                <option value={TimePeriodType.ONE_WEEK}>1 week - $1000</option>
+                                <option value={TimePeriodType.TWO_WEEKS}>2 weeks - $2000</option>
+                                <option value={TimePeriodType.ONE_MONTH}>1 month - $5000</option>
+                                <option value={TimePeriodType.TWO_MONTHS}>2 months - $10000 </option>
                             </select>
                             <label></label>
                         </div>
