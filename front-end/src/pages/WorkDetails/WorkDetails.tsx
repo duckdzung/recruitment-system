@@ -11,9 +11,7 @@ import { getRecruitmentFormById } from '../../services/recruitmentService';
 
 const defaultJobDetail: JobDetailsProps = {
     title: 'Rent Google Play Console Account',
-    salary: '120,000',
     location: 'TP. Ho Chi Minh',
-    experience: 'No Experience',
     requires: 'Job Requires',
 };
 
@@ -40,10 +38,8 @@ const WorkDetails = () => {
 
         setJobDetail({
             title: recruitmentDetails.nominee.position,
-            salary: recruitmentDetails.salary || 'Negotiate ',
             location: recruitmentDetails.recruitmentInformation.enterprise.member.address,
             requires: recruitmentDetails.requiredInfo,
-            experience: recruitmentDetails.experience || 'No experience',
         });
     };
 

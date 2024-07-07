@@ -63,8 +63,6 @@ interface RecruitmentInformation {
 
 export interface RecruitmentDetails {
     quantity: number;
-    salary: number;
-    experience: string;
     requiredInfo: string;
     nominee: Nominee;
     recruitmentInformation: RecruitmentInformation;

@@ -39,8 +39,6 @@ const Recruitment: React.FC = () => {
     const [requestedInformation, setRequestedInformation] = useState('');
     const [jobPosition, setJobPosition] = useState('');
     const [quantity, setQuantity] = useState<number>();
-    const [salary, setSalary] = useState<number>();
-    const [experience, setExperience] = useState<string>();
     const [timePeriod, setTimePeriod] = useState<TimePeriodType | null>(null);
     const [recruitmentTime, setRecruitmentTime] = useState<string>('');
     const [recruitmentForm, setRecruitmentForm] = useState<RecruitmentForm>(RecruitmentForm.WEBSITE);
@@ -202,8 +200,6 @@ const Recruitment: React.FC = () => {
             // Map data to object
             const recruitmentDetails: RecruitmentDetails = {
                 quantity: quantity || 1,
-                salary: salary || 1,
-                experience: experience || '',
                 requiredInfo: requestedInformation,
                 nominee: {
                     position: jobPosition,
@@ -285,28 +281,6 @@ const Recruitment: React.FC = () => {
                                 name="JobPosition"
                                 value={jobPosition}
                                 onChange={(e) => setJobPosition(e.target.value)}
-                            />
-                            <label></label>
-                        </div>
-                        <div className={styles.infield}>
-                            <i className="fa-solid fa-money-bill-1-wave"></i>
-                            <input
-                                type="text"
-                                placeholder="Salary"
-                                name="salary"
-                                value={salary}
-                                onChange={(e) => setSalary(Number(e.target.value))}
-                            />
-                            <label></label>
-                        </div>
-                        <div className={styles.infield}>
-                            <i className="fa-solid fa-graduation-cap"></i>
-                            <input
-                                type="text"
-                                placeholder="Experience"
-                                name="experience"
-                                value={experience}
-                                onChange={(e) => setExperience(e.target.value)}
                             />
                             <label></label>
                         </div>
