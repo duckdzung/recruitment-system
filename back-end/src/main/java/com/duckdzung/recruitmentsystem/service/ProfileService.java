@@ -33,7 +33,7 @@ public class ProfileService {
         this.candidateRepository = candidateRepository;
     }
 
-    public void createProfile(String memberId, MultipartFile file) {
+    public int createProfile(String memberId, MultipartFile file) {
         if (file == null || memberId == null) {
             throw new InvalidRequestException("File and memberId cannot be null");
         }
@@ -57,7 +57,9 @@ public class ProfileService {
                     .build();
         }
 
-        profileRepository.save(profile);
+        profile = profileRepository.save(profile);
+
+        return profile.getId();
     }
 
     private String storeFile(MultipartFile file) {

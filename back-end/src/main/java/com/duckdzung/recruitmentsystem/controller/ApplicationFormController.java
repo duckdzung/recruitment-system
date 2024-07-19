@@ -9,8 +9,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin
 @RestController
-@RequestMapping("/application-form")
+@RequestMapping("/api/application-form")
 public class ApplicationFormController {
     private final ApplicationFormService applicationFormService;
     private final JwtService jwtService;

@@ -21,8 +21,9 @@ const Header = () => {
     const [locationList] = useState<string[]>(['Hồ Chí Minh', 'Hà Nội']);
     const [position, setPosition] = useState<string>('');
 
-    const handleLogout = (): void => {
-        dispatch(logoutThunk());
+    const handleLogout = async () => {
+        await dispatch(logoutThunk());
+        navigate('/login');
     };
 
     // Handle for search button click
@@ -197,7 +198,6 @@ const Header = () => {
                         <Link to="/">Home</Link>
                         <Link to="/job-list">Find Work</Link>
                         <Link to="/contact">Contact Us</Link>
-                        <Link to="/test">Test</Link>
                     </div>
                 </div>
 

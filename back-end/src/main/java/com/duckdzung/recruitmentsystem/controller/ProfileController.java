@@ -30,11 +30,12 @@ public class ProfileController {
             @RequestBody MultipartFile file
     ) {
         String memberId = jwtService.extractUserIdFromToken(authorization);
-        profileService.createProfile(memberId, file);
+        int profileId =  profileService.createProfile(memberId, file);
         return ResponseEntity.ok()
                 .body(ResponseObject.builder()
                         .statusCode(201)
                         .message("Upload file successfully")
+                        .data(profileId)
                         .build()
                 );
     }

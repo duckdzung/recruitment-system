@@ -1,23 +1,30 @@
 import { ChangeEvent, useRef, useState } from 'react';
-import axios from 'axios';
 import styles from './ApplyJob.module.scss';
 import axiosClient from '../../axios/axiosClient';
+import { toast } from 'react-toastify';
+import { useNavigate, useParams } from 'react-router-dom';
+import { getRecruitmentFormById } from '../../services/recruitmentService';
+import { applyJob } from '../../services/profileService';
 
 interface UploadFile {
+    id: number;
     title: string;
     size: number;
     progress: number;
+    isSelected: boolean;
 }
 
 const ApplyJob = () => {
+    const { jobId } = useParams<{ jobId: string }>();
+    const navigate = useNavigate();
+
     // Ref for elements
     const fileInputRef = useRef<HTMLInputElement>(null);
     const inputBtnRef = useRef<HTMLDivElement>(null);
 
     // State to store selected file
-    const [selectedFile, setSelectedFile] = useState<File | null>(null);
+    const [selectedFile, setSelectedFile] = useState<UploadFile | null>(null);
     const [uploadFileList, setUploadFileList] = useState<UploadFile[]>([]);
-    const [uploadProgress, setUploadProgress] = useState<number>(0);
 
     // Handle input button click
     const handleInputBtnClick = () => {
@@ -30,8 +37,6 @@ const ApplyJob = () => {
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files.length > 0) {
             const file = e.target.files[0];
-            setSelectedFile(file);
-
             // Upload file
             uploadFile(file);
         }
@@ -46,21 +51,57 @@ const ApplyJob = () => {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
-                onUploadProgress: (progressEvent) => {
-                    const percentCompleted =
-                        progressEvent.total !== undefined
-                            ? Math.round((progressEvent.loaded * 100) / progressEvent.total)
-                            : 0;
-                    setUploadProgress(percentCompleted);
-                },
             });
 
-            if (response.status === 201) {
-                setUploadFileList((prevList) => [...prevList, { title: file.name, size: file.size, progress: 100 }]);
+            console.log(response);
+
+            if (response.status === 200) {
+                setUploadFileList((prevList) => [
+                    ...prevList,
+                    { id: response.data.data, title: file.name, size: file.size, progress: 100, isSelected: false },
+                ]);
             }
         } catch (error) {
-            console.error('Error uploading file', error);
+            toast.error('Error uploading file');
         }
+    };
+
+    const handleChangeIsSelected = (fileName: string) => {
+        setUploadFileList((prevList) => {
+            return prevList.map((prev) => {
+                if (prev.title === fileName) {
+                    setSelectedFile(prev);
+                    return {
+                        ...prev,
+                        isSelected: !prev.isSelected,
+                    };
+                } else {
+                    return {
+                        ...prev,
+                        isSelected: false,
+                    };
+                }
+            });
+        });
+    };
+
+    const handleSubmit = async () => {
+        if (selectedFile === null) {
+            toast.error('Please select a file to apply');
+            return;
+        }
+
+        const response = await getRecruitmentFormById(jobId || '1');
+        const { recruitmentDetails } = response?.data;
+        const nomineeId: number = recruitmentDetails.nominee.nomineeId;
+        const recruitId = recruitmentDetails.recruitmentInformation.recruitId;
+        const profileId = selectedFile.id;
+
+        // Call api apply job
+        await applyJob(nomineeId, recruitId, profileId);
+
+        toast.success('Apply job successfully');
+        navigate('/job-list');
     };
 
     return (
@@ -86,7 +127,7 @@ const ApplyJob = () => {
                 </div>
                 <div className={styles.rightForm}>
                     <div className={styles.uploadList}>
-                        {uploadFileList.map((file, index) => (
+                        {uploadFileList?.map((file, index) => (
                             <div className={styles.uploadFile} key={index}>
                                 <div className={styles.thumbnail}>
                                     <i className="fas fa-file-alt"></i>
@@ -96,12 +137,9 @@ const ApplyJob = () => {
                                 </div>
                                 <div className={styles.properties}>
                                     <div className={styles.title}>{file.title}</div>
-                                    <div className={styles.size}>{file.size} KB</div>
+                                    <div className={styles.size}>{file.size / 1000} KB</div>
                                     <div className={styles.progress}>
-                                        <div
-                                            style={{ width: `${file.progress}%` }}
-                                            className={styles.progressBar}
-                                        ></div>
+                                        <div className={styles.progressBar}></div>
                                     </div>
                                 </div>
                                 <div className={styles.progressArea}>
@@ -110,43 +148,23 @@ const ApplyJob = () => {
                                             <i className="fa-solid fa-circle-xmark"></i>
                                         </div>
                                         <div className={styles.checkBox}>
-                                            <input type="checkbox" />
+                                            <input
+                                                type="checkbox"
+                                                checked={file.isSelected}
+                                                onChange={() => handleChangeIsSelected(file.title)}
+                                            />
                                         </div>
                                     </div>
                                     <span className={styles.percent}>{file.progress}%</span>
                                 </div>
                             </div>
                         ))}
-                        {selectedFile && (
-                            <div className={styles.uploadFile}>
-                                <div className={styles.thumbnail}>
-                                    <i className="fas fa-file-alt"></i>
-                                    <div className={styles.checkIcon}>
-                                        <i className="fa-solid fa-circle-check"></i>
-                                    </div>
-                                </div>
-                                <div className={styles.properties}>
-                                    <div className={styles.title}>{selectedFile.name}</div>
-                                    <div className={styles.size}>{selectedFile.size} KB</div>
-                                    <div className={styles.progress}>
-                                        <div
-                                            style={{ width: `${uploadProgress}%` }}
-                                            className={styles.progressBar}
-                                        ></div>
-                                    </div>
-                                </div>
-                                <div className={styles.progressArea}>
-                                    <div className={styles.uploadHandler}>
-                                        <div className={styles.remove}>
-                                            <i className="fa-solid fa-circle-xmark"></i>
-                                        </div>
-                                        <div className={styles.checkBox}>
-                                            <input type="checkbox" />
-                                        </div>
-                                    </div>
-                                    <span className={styles.percent}>{uploadProgress}%</span>
-                                </div>
-                            </div>
+                    </div>
+                    <div className={styles.submitBtnConainer}>
+                        {uploadFileList?.length > 0 && (
+                            <button type="button" className={styles.submitBtn} onClick={handleSubmit}>
+                                Submit
+                            </button>
                         )}
                     </div>
                 </div>

@@ -53,7 +53,6 @@ const App: React.FC = () => {
 
                 <Route element={<PublicRoute restricted={false} />}>
                     <Route path="/" element={<Home />} />
-                    <Route path="/test" element={<Payment />} />
                     <Route path="/job-list" element={<FindWork />} />
                     <Route path="/job-details/:jobId" element={<WorkDetails />} />
                     <Route path="/contact" element={<ContactUs />} />

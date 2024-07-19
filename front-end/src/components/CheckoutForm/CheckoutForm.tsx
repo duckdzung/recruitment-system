@@ -1,5 +1,5 @@
 import { PaymentElement } from '@stripe/react-stripe-js';
-import { useState, FormEvent, useEffect } from 'react';
+import { useState, FormEvent } from 'react';
 import { useStripe, useElements } from '@stripe/react-stripe-js';
 import { toast } from 'react-toastify';
 import { useAppDispatch } from '../../redux/hooks';
@@ -8,8 +8,6 @@ import { RootState } from '../../redux/store';
 import { confirmPaymentThunk } from '../../redux/payment/paymentThunks';
 import { PaymentMethod } from '../../types';
 import { useNavigate } from 'react-router-dom';
-
-import styles from './CheckoutForm.module.scss';
 
 const CheckoutForm = () => {
     const stripe = useStripe();
@@ -22,8 +20,7 @@ const CheckoutForm = () => {
     const [message, setMessage] = useState<string | null>(null);
     const [isProcessing, setIsProcessing] = useState(false);
 
-    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-        console.log('call');
+    const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
 
         if (!stripe || !elements) {
@@ -62,23 +59,17 @@ const CheckoutForm = () => {
         setIsProcessing(false);
     };
 
-    useEffect(() => {
-        document.querySelector;
-    }, []);
-
     return (
-        <div className={styles.checkoutForm}>
-            <form id="payment-form" onSubmit={handleSubmit}>
-                <PaymentElement id="payment-element" />
+        <form id="payment-form" onSubmit={handleSubmit}>
+            <PaymentElement id="payment-element" />
 
-                <button disabled={isProcessing || !stripe || !elements} id="submit" className={styles.payBtn}>
-                    <span id="button-text">{isProcessing ? 'Processing ... ' : 'Pay now'}</span>
-                </button>
+            <button disabled={isProcessing || !stripe || !elements} id="submit" type="submit">
+                <span id="button-text">{isProcessing ? 'Processing ... ' : 'Pay now'}</span>
+            </button>
 
-                {/* Show any error or success messages */}
-                {message && <div id="payment-message">{message}</div>}
-            </form>
-        </div>
+            {/* Show any error or success messages */}
+            {message && <div id="payment-message">{message}</div>}
+        </form>
     );
 };
 
